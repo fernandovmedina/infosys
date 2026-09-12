@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Show, UserButton } from "@clerk/nextjs";
 
 export function SiteHeader() {
   return (
@@ -13,30 +12,24 @@ export function SiteHeader() {
         </Link>
 
         <nav className="flex items-center gap-2">
-          <Show when="signed-out">
-            <Link
-              href="/auth/login"
-              className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
-            >
-              Iniciar sesión
-            </Link>
-            <Link
-              href="/auth/register"
-              className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
-            >
-              Crear cuenta
-            </Link>
-          </Show>
-
-          <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
-            >
-              Panel
-            </Link>
-            <UserButton />
-          </Show>
+          <Link
+            href="/dashboard"
+            className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
+          >
+            Panel
+          </Link>
+          <Link
+            href="/auth/login"
+            className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
+          >
+            Iniciar sesión
+          </Link>
+          <Link
+            href="/auth/register"
+            className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+          >
+            Crear cuenta
+          </Link>
         </nav>
       </div>
     </header>

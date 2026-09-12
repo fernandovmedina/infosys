@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Show } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -13,29 +12,18 @@ export default function Home() {
         </p>
 
         <div className="mt-8 flex items-center gap-3">
-          <Show when="signed-out">
-            <Link
-              href="/auth/register"
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
-            >
-              Crear cuenta
-            </Link>
-            <Link
-              href="/auth/login"
-              className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
-            >
-              Iniciar sesión
-            </Link>
-          </Show>
-
-          <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
-            >
-              Ir al panel
-            </Link>
-          </Show>
+          <Link
+            href="/auth/register"
+            className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+          >
+            Crear cuenta
+          </Link>
+          <Link
+            href="/auth/login"
+            className="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+          >
+            Iniciar sesión
+          </Link>
         </div>
       </div>
     </main>

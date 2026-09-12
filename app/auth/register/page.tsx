@@ -3,70 +3,75 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSignUp } from "@clerk/nextjs";
 import { AuthCard, Field, FormError, SubmitButton } from "@/components/auth/ui";
-import { navigateAfterAuth } from "@/lib/auth-navigate";
-import { firstErrorMessage } from "@/lib/clerk-errors";
-
-/** Clerk guarda nombre y apellido por separado; aqui pedimos un solo campo. */
-function splitName(fullName: string) {
-  const [firstName, ...rest] = fullName.trim().split(/\s+/);
-  return { firstName, lastName: rest.join(" ") || undefined };
-}
+import { resendEmailCode, signUp, verifyEmailCode } from "@/lib/auth";
 
 export default function RegisterPage() {
-  const { signUp, errors, fetchStatus } = useSignUp();
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [code, setCode] = useState("");
-
-  const submitting = fetchStatus === "fetching";
-
-  // Clerk ya creo el registro y solo falta verificar el correo.
-  const needsEmailCode =
-    signUp.status === "missing_requirements" &&
-    signUp.unverifiedFields.includes("email_address") &&
-    signUp.missingFields.length === 0;
+  const [needsEmailCode, setNeedsEmailCode] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleRegister(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting) return;
 
-    const { error } = await signUp.password({
-      ...splitName(name),
-      emailAddress: email,
-      password,
-    });
-    if (error) return;
+    setSubmitting(true);
+    setError(null);
 
-    await signUp.verifications.sendEmailCode();
+    const result = await signUp({ name, email, password });
+
+    setSubmitting(false);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+
+    if (result.needsEmailVerification) {
+      setNeedsEmailCode(true);
+      return;
+    }
+
+    router.push("/dashboard");
   }
 
   async function handleVerify(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting) return;
 
-    const { error } = await signUp.verifications.verifyEmailCode({ code });
-    if (error) return;
+    setSubmitting(true);
+    setError(null);
 
-    if (signUp.status === "complete") {
-      await signUp.finalize({
-        navigate: navigateAfterAuth(router, "/dashboard"),
-      });
+    const result = await verifyEmailCode({ email, code });
+
+    setSubmitting(false);
+    if (result.error) {
+      setError(result.error);
+      return;
     }
+
+    router.push("/dashboard");
+  }
+
+  async function handleResend() {
+    setError(null);
+    const result = await resendEmailCode({ email });
+    if (result.error) setError(result.error);
   }
 
   if (needsEmailCode) {
     return (
       <AuthCard
         title="Verifica tu correo"
-        subtitle={`Enviamos un código a ${signUp.emailAddress ?? email}.`}
+        subtitle={`Enviamos un código a ${email}.`}
         footer={
           <button
             type="button"
-            onClick={() => signUp.verifications.sendEmailCode()}
+            onClick={handleResend}
             className="font-medium text-zinc-900 underline underline-offset-4"
           >
             Reenviar código
@@ -86,7 +91,7 @@ export default function RegisterPage() {
             onChange={(event) => setCode(event.target.value)}
           />
 
-          <FormError message={firstErrorMessage(errors)} />
+          <FormError message={error} />
 
           <SubmitButton disabled={submitting}>
             {submitting ? "Verificando…" : "Verificar y continuar"}
@@ -147,10 +152,7 @@ export default function RegisterPage() {
           onChange={(event) => setPassword(event.target.value)}
         />
 
-        <FormError message={firstErrorMessage(errors)} />
-
-        {/* Clerk monta aqui el CAPTCHA del flujo personalizado de registro */}
-        <div id="clerk-captcha" className="empty:hidden" />
+        <FormError message={error} />
 
         <SubmitButton disabled={submitting}>
           {submitting ? "Creando cuenta…" : "Crear cuenta"}

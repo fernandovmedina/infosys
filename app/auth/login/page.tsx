@@ -3,31 +3,32 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSignIn } from "@clerk/nextjs";
 import { AuthCard, Field, FormError, SubmitButton } from "@/components/auth/ui";
-import { navigateAfterAuth } from "@/lib/auth-navigate";
-import { firstErrorMessage } from "@/lib/clerk-errors";
+import { signIn } from "@/lib/auth";
 
 export default function LoginPage() {
-  const { signIn, errors, fetchStatus } = useSignIn();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const submitting = fetchStatus === "fetching";
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submitting) return;
 
-    const { error } = await signIn.password({ identifier: email, password });
-    if (error) return;
+    setSubmitting(true);
+    setError(null);
 
-    if (signIn.status === "complete") {
-      await signIn.finalize({
-        navigate: navigateAfterAuth(router, "/dashboard"),
-      });
+    const result = await signIn({ email, password });
+
+    setSubmitting(false);
+    if (result.error) {
+      setError(result.error);
+      return;
     }
+
+    router.push("/dashboard");
   }
 
   return (
@@ -69,7 +70,7 @@ export default function LoginPage() {
           onChange={(event) => setPassword(event.target.value)}
         />
 
-        <FormError message={firstErrorMessage(errors)} />
+        <FormError message={error} />
 
         <SubmitButton disabled={submitting}>
           {submitting ? "Entrando…" : "Entrar"}
