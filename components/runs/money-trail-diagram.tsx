@@ -27,7 +27,10 @@ import {
   strokeWidthFor,
 } from "./flow/layout";
 import { buildSvg, downloadPng, downloadSvg } from "./flow/svg-export";
-import { KIND_LABELS } from "@/lib/runs/labels";
+import {
+  KIND_LABELS,
+  resolveEntityEndpoint,
+} from "@/lib/runs/labels";
 import { Button, Icon, Notice, useMediaQuery } from "./ui";
 
 const circled = (index: number) => (index < 20 ? String.fromCharCode(0x2460 + index) : `(${index + 1})`);
@@ -47,7 +50,7 @@ export function MoneyTrailDiagram({
   hoveredExhibit: string | null;
   onHoverExhibit: (exhibitId: string | null) => void;
 }) {
-  const { report, entity, openEntity, openFinding } = useCaseFile();
+  const { report, openEntity, openFinding } = useCaseFile();
   const isMobile = useMediaQuery("(max-width: 639px)");
   const steps = useMemo(() => finding.money_trail ?? [], [finding.money_trail]);
   const extra = report.findings_extra[findingIndex];
@@ -62,20 +65,31 @@ export function MoneyTrailDiagram({
     for (const item of extra?.shared_entities ?? []) {
       shared.set(item.entity, [...(shared.get(item.entity) ?? []), item.other_finding_index]);
     }
+    const resolved = new Map(
+      ids.map((id) => [id, resolveEntityEndpoint(id, report.entities)]),
+    );
     const layoutEdges = steps.map((step, index) => ({ id: `step-${index}`, from: step.from, to: step.to }));
     const positions = layoutGraph(
-      ids.map((id) => ({ id, height: shared.has(id) ? NODE_HEIGHT_WITH_CHIP : NODE_HEIGHT })),
+      ids.map((id) => ({
+        id,
+        height: shared.has(resolved.get(id)?.entityId ?? "")
+          ? NODE_HEIGHT_WITH_CHIP
+          : NODE_HEIGHT,
+      })),
       layoutEdges,
       { ranksep: 300, nodesep: 90 },
     );
     const offsets = parallelOffsets(layoutEdges, 70);
     const maxAmount = Math.max(...steps.map((step) => step.amount), 0);
-    return { ids, shared, positions, offsets, maxAmount };
-  }, [steps, extra]);
+    return { ids, shared, resolved, positions, offsets, maxAmount };
+  }, [steps, extra, report.entities]);
 
   const nodes = useMemo<(EntityFlowNode | SpacerFlowNode)[]>(() => {
     const entityNodes = model.ids.map((id): EntityFlowNode => {
-        const data = entity(id);
+        const resolved = model.resolved.get(id)!;
+        const data = resolved.entityId
+          ? report.entities[resolved.entityId]
+          : null;
         const position = model.positions.get(id);
         return {
           id,
@@ -85,12 +99,14 @@ export function MoneyTrailDiagram({
           selectable: false,
           data: {
             entityId: id,
-            name: data.name,
-            kind: data.is_audited_company ? "company" : data.kind,
-            status: data.known ? data.status : null,
+            name: resolved.name,
+            kind: data?.is_audited_company ? "company" : data?.kind ?? "unknown",
+            status: data?.status ?? null,
             height: position?.height ?? NODE_HEIGHT,
-            onOpen: data.known ? () => openEntity(id) : undefined,
-            chips: (model.shared.get(id) ?? []).map((other) => ({
+            onOpen: resolved.entityId
+              ? () => openEntity(resolved.entityId!)
+              : undefined,
+            chips: (model.shared.get(resolved.entityId ?? "") ?? []).map((other) => ({
               label: `También en hallazgo #${other + 1}`,
               onClick: () => openFinding(other),
             })),
@@ -99,7 +115,7 @@ export function MoneyTrailDiagram({
       });
     const hasBackEdge = steps.some((step) => (model.positions.get(step.to)?.x ?? 0) < (model.positions.get(step.from)?.x ?? 0));
     return hasBackEdge ? [...entityNodes, bottomSpacer(entityNodes, 250)] : entityNodes;
-  }, [model, steps, entity, openEntity, openFinding]);
+  }, [model, steps, report.entities, openEntity, openFinding]);
 
   const edges = useMemo<FlowEdgeType[]>(
     () =>
@@ -144,13 +160,16 @@ export function MoneyTrailDiagram({
   function exportSvg() {
     return buildSvg(
       model.ids.map((id) => {
-        const data = entity(id);
+        const resolved = model.resolved.get(id)!;
+        const data = resolved.entityId
+          ? report.entities[resolved.entityId]
+          : null;
         return {
           position: model.positions.get(id)!,
-          title: data.name,
+          title: resolved.name,
           subtitle: displayEntityId(id),
-          status: data.known ? data.status : null,
-          company: Boolean(data.is_audited_company),
+          status: data?.status ?? null,
+          company: Boolean(data?.is_audited_company),
         };
       }),
       steps.map((step, index) => ({
@@ -171,8 +190,8 @@ export function MoneyTrailDiagram({
       {isMobile ? (
         <ol className="space-y-0" aria-label="Pasos del rastro del dinero">
           {steps.map((step, index) => {
-            const from = entity(step.from);
-            const to = entity(step.to);
+            const from = resolveEntityEndpoint(step.from, report.entities);
+            const to = resolveEntityEndpoint(step.to, report.entities);
             return (
               <Fragment key={index}>
                 {(index === 0 || steps[index - 1].to !== step.from) && <TrailNodeCard id={step.from} findingIndex={findingIndex} />}
@@ -265,8 +284,8 @@ export function MoneyTrailDiagram({
               {steps.map((step, index) => (
                 <tr key={index} className={hoveredExhibit === step.exhibit_id ? "bg-amber-50" : ""}>
                   <td className="px-3 py-2 tabular-nums text-zinc-500">{index + 1}</td>
-                  <td className="px-3 py-2">{entity(step.from).name}</td>
-                  <td className="px-3 py-2">{entity(step.to).name}</td>
+                  <td className="px-3 py-2">{resolveEntityEndpoint(step.from, report.entities).name}</td>
+                  <td className="px-3 py-2">{resolveEntityEndpoint(step.to, report.entities).name}</td>
                   <td className="px-3 py-2 text-right tabular-nums">{formatMoney(step.amount)}</td>
                   <td className="whitespace-nowrap px-3 py-2">{formatDate(step.date)}</td>
                   <td className="px-3 py-2">
@@ -283,20 +302,23 @@ export function MoneyTrailDiagram({
 }
 
 function TrailNodeCard({ id, findingIndex, returning = false }: { id: string; findingIndex: number; returning?: boolean }) {
-  const { entity, openEntity, openFinding, report } = useCaseFile();
-  const shared = (report.findings_extra[findingIndex]?.shared_entities ?? []).filter((item) => item.entity === id);
-  const data = entity(id);
-  const kind = KIND_LABELS[data.is_audited_company ? "company" : data.kind];
+  const { openEntity, openFinding, report } = useCaseFile();
+  const resolved = resolveEntityEndpoint(id, report.entities);
+  const data = resolved.entityId ? report.entities[resolved.entityId] : null;
+  const shared = (report.findings_extra[findingIndex]?.shared_entities ?? []).filter(
+    (item) => item.entity === resolved.entityId,
+  );
+  const kind = KIND_LABELS[data?.is_audited_company ? "company" : data?.kind ?? "unknown"];
   return (
-    <li className={`rounded-md border-2 bg-white px-3 py-2 ${data.is_audited_company ? "border-zinc-800" : data.status === "accused" ? "border-red-500" : data.status === "declined" ? "border-amber-500" : "border-zinc-300"}`}>
-      <button type="button" onClick={() => data.known && openEntity(id)} className="w-full text-left">
+    <li className={`rounded-md border-2 bg-white px-3 py-2 ${data?.is_audited_company ? "border-zinc-800" : data?.status === "accused" ? "border-red-500" : data?.status === "declined" ? "border-amber-500" : "border-zinc-300"}`}>
+      <button type="button" onClick={() => resolved.entityId && openEntity(resolved.entityId)} className="w-full text-left">
         <span className="flex items-center gap-1.5 text-sm font-semibold text-zinc-900">
           <span aria-hidden>{kind.icon}</span>
-          {data.name}
+          {resolved.name}
         </span>
         <span className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
           <span className="font-mono">{displayEntityId(id)}</span>
-          {data.known && !data.is_audited_company && <EntityStatusBadge status={data.status} size="sm" />}
+          {data && !data.is_audited_company && <EntityStatusBadge status={data.status} size="sm" />}
           {returning && <span className="font-medium text-violet-700">↺ el dinero regresa al inicio</span>}
         </span>
       </button>

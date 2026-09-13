@@ -9,8 +9,7 @@
  * igual que iniciar sesion.
  */
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+import { API_BASE_URL } from "./config";
 
 export type AuthResult = { error: string | null };
 

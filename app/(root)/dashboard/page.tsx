@@ -1,7 +1,6 @@
 "use client";
 
 import { DatasetUpload } from "@/components/runs/dataset-upload";
-import { MockScenarioPicker } from "@/components/runs/mock-scenario-picker";
 import { RunHistory } from "@/components/runs/run-history";
 import { useRequireUser } from "@/lib/use-require-user";
 
@@ -25,7 +24,6 @@ export default function DashboardPage() {
         Sube los libros de una empresa para investigar si hay fraude.
       </p>
       <div className="mt-8 space-y-4">
-        <MockScenarioPicker />
         <DatasetUpload />
       </div>
       <div className="mt-12">

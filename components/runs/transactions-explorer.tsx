@@ -18,7 +18,7 @@ const helper = createColumnHelper<typeof features, RecordRow>();
 const EMPTY: RecordRow[] = [];
 const PAGE_SIZE = 50;
 const ROW_HEIGHT = 40;
-const WIDE_COLUMNS = new Set(["concepto_text", "description", "address", "reference", "account_name", "legal_name", "full_name", "scope"]);
+const WIDE_COLUMNS = new Set(["concepto_text", "description", "address", "reference", "account_name", "legal_name", "name", "scope_text"]);
 
 const columnWidth = (id: string) =>
   id === "risk" ? 130 : id === "cited" ? 140 : WIDE_COLUMNS.has(id) ? 260 : MONEY_COLUMNS.has(id) ? 130 : id.endsWith("clabe") ? 190 : 150;
@@ -241,7 +241,11 @@ export function TransactionsExplorer() {
 
   const inputClass = "w-full rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm text-zinc-900";
   const labelClass = "mb-1 block text-xs font-medium text-zinc-600";
-  const statusOptions = table === "invoices" ? ["vigente", "cancelado"] : table === "purchase_orders" ? ["aprobada", "cancelada"] : table === "bank_txns" ? ["liquidada"] : table === "contracts" ? ["vigente"] : table === "vendors" ? ["activo"] : [];
+  const statusOptions = table === "invoices"
+    ? ["vigente", "cancelado"]
+    : table === "efos_list"
+      ? ["definitivo", "presunto"]
+      : [];
 
   return (
     <div className="space-y-3">

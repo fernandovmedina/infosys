@@ -5,6 +5,7 @@ import type {
   ClosedBy,
   Confidence,
   EntityKind,
+  Entity,
   EntityStatus,
   RunStatus,
   SchemeType,
@@ -92,18 +93,39 @@ export const VERDICT_LABELS: Record<Verdict, string> = {
 
 /** Señales de detectores (`Entity.signals`). Si llega una desconocida se muestra la clave. */
 export const SIGNAL_LABELS: Record<string, string> = {
-  efos_match: "RFC en la lista 69-B del SAT",
-  no_po: "Facturas sin orden de compra",
-  no_contract: "Sin contrato",
-  registered_before_invoice: "Alta muy cerca de la primera factura",
-  clabe_shared_with_employee: "CLABE igual a la de un empleado",
-  clabe_shared_with_vendor: "CLABE igual a la de un proveedor",
-  clabe_partial_match: "CLABE parecida a la de un proveedor",
-  shared_legal_rep: "Mismo representante legal o domicilio que otro proveedor",
-  round_trip: "Parte de un ciclo de dinero",
-  incoming_from_vendor: "Depósito entrante de un proveedor",
-  threshold_splitting: "Órdenes justo debajo del límite de aprobación",
-  payment_mismatch: "Pagos que no cuadran con facturas",
+  EFOS_DIRECT_MATCH: "Proveedor confirmado como EFOS definitivo",
+  EFOS_PRESUNTO_MATCH: "Proveedor investigado como posible EFOS",
+  EFOS_POST_DATED: "Factura anterior a la publicación del EFOS",
+  VENDOR_SHORT_LIFECYCLE: "Proveedor facturó poco después de su alta",
+  INVOICE_NO_PO_NO_CONTRACT: "Factura sin orden de compra ni contrato",
+  SHARED_CLABE_MULTI_RFC: "Varios proveedores comparten la misma CLABE",
+  OUTBOUND_TO_SUSPECT_ENTITY: "Pago a un EFOS o una CLABE compartida",
+  PAYMENT_TO_EMPLOYEE_ACCOUNT: "Pago directo a la cuenta de un empleado",
+  APPROVER_VENDOR_CONCENTRATION: "Aprobador concentrado en un proveedor",
+  NO_SEGREGATION_OF_DUTIES: "La misma persona solicitó y aprobó la compra",
+  PRICE_OUTLIER_BY_CATEGORY: "Precio atípico para la categoría del proveedor",
+  BANK_CYCLE_2NODE: "El dinero regresó desde una segunda cuenta",
+  BANK_CYCLE_NNODE: "El dinero regresó tras pasar por varias cuentas",
+  CYCLE_LEAKAGE_RATE: "Ciclos repetidos con una comisión pequeña",
+  INVOICE_BIDIRECTIONAL: "Empresas con facturas recíprocas similares",
+  BANK_TXN_NOT_IN_LEDGER: "Movimiento bancario sin asiento contable",
+  PO_NEAR_THRESHOLD: "Orden de compra justo debajo del límite",
+  PO_WINDOW_SUM_SPLIT: "Órdenes cercanas que juntas superan el límite",
+  BANK_TXN_WINDOW_SPLIT: "Pagos cercanos fraccionados para evadir el límite",
+  SAME_APPROVER_SPLIT: "Un aprobador fraccionó órdenes al mismo proveedor",
+  CONTRACT_SPLIT_INTO_POS: "Contrato dividido en varias órdenes de compra",
+  BENFORD_DEVIATION_TOTAL: "Totales de facturas se desvían de la ley de Benford",
+  BENFORD_DEVIATION_BANK: "Montos bancarios se desvían de la ley de Benford",
+  INVOICE_NO_COLLECTION: "Factura de venta sin cobro",
+  AR_AGING_EXCESSIVE: "Cuenta por cobrar vencida sin cobro",
+  PERIOD_END_SPIKE: "Pico de facturación al cierre del periodo",
+  RECEIVER_NO_PAYMENT_HISTORY: "Receptor sin historial de pagos",
+  INFLATE_AND_CANCEL: "Factura cancelada sin reversión contable",
+  RECEIVER_IN_EFOS: "Receptor de la factura aparece en la lista EFOS",
+  LEDGER_UNBALANCED_ENTRY: "Póliza con cargos y abonos descuadrados",
+  ORPHAN_INVOICE_UUID: "Póliza vinculada a una factura inexistente",
+  MALFORMED_RFC: "RFC con formato inválido",
+  CLABE_INVALID_LENGTH: "CLABE que no tiene 18 dígitos",
 };
 
 /** Glosario del header (EXAMPLE §12). */
@@ -127,4 +149,25 @@ export function entityKindFromId(id: string): EntityKind {
   if (id.startsWith("CLABE:")) return "account";
   if (id.startsWith("RFC:")) return "vendor";
   return "unknown";
+}
+
+/** Partes de un endpoint oficial que agrupa dueños de una misma cuenta. */
+export function splitEntityEndpoint(endpoint: string): string[] {
+  return endpoint.split(" / ").filter(Boolean);
+}
+
+/**
+ * Resuelve un endpoint del money trail sin alterar su string oficial.
+ * La primera entidad conocida gobierna estado, tipo y navegación; el nombre
+ * conserva a todos los dueños en el mismo orden.
+ */
+export function resolveEntityEndpoint(
+  endpoint: string,
+  entities: Record<string, Entity>,
+): { entityId: string | null; name: string } {
+  const constituents = splitEntityEndpoint(endpoint);
+  return {
+    entityId: constituents.find((id) => Boolean(entities[id])) ?? null,
+    name: constituents.map((id) => entities[id]?.name ?? id).join(" / "),
+  };
 }
