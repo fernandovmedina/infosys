@@ -1,0 +1,370 @@
+po_id,vendor_rfc,date,amount,requester,approver,description
+PO-00121,DDE801119CII,2026-06-06,90306.00,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00098,DDU961119CQI,2026-06-12,76022.92,Elena Mora 05 00000067,Fabian Rios 06 00000067,Suministro de insumos de produccion
+PO-00269,DDG820505CJI,2026-06-28,87825.92,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00280,DDN890226CMV,2026-03-28,95573.56,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de consultoria operativa
+PO-00108,DCW721119CEI,2026-03-11,38430.80,Diego Luna 04 00000067,Elena Mora 05 00000067,Soporte y licencias de tecnologia
+PO-00146,DDU961119CQI,2026-06-10,55061.72,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00112,DDM881119CMI,2026-03-19,13926.96,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00215,DDQ921119COI,2026-04-27,92974.00,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00049,DDV970226CQV,2026-01-19,26100.00,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Soporte y licencias de tecnologia
+PO-00078,DDI841119CKI,2026-02-03,57377.08,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00008,DCD830226BUV,2026-02-01,38865.80,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00294,DCJ890812BXV,2026-04-09,50668.80,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de consultoria operativa
+PO-00064,DCB810812BTV,2026-01-13,44555.60,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Suministro de insumos de produccion
+PO-00342,DCA800505BTI,2026-01-05,49996.00,Carla Soto 03 00000067,Diego Luna 04 00000067,Cuota mensual: servicios de logistica y entrega
+PO-00003,DDM881119CMI,2026-03-16,23280.04,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Mantenimiento preventivo de instalaciones
+PO-00195,DDC780505CHI,2026-05-17,24704.52,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Mantenimiento preventivo de instalaciones
+PO-00142,DCM920505BZI,2026-05-15,58360.76,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00178,DDT950812CPV,2026-06-02,69294.92,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de logistica y entrega
+PO-00089,DDJ850226CKV,2026-02-13,42501.24,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00026,DCP950226CAV,2026-06-18,105554.20,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00187,DDO900505CNI,2026-04-04,99190.44,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00236,DCW721119CEI,2026-03-09,51060.88,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00276,DDR930226COV,2026-05-11,66197.72,Carla Soto 09 00000067,Diego Luna 10 00000067,Mantenimiento preventivo de instalaciones
+PO-00314,DCK901119BYI,2026-04-23,69380.76,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00082,DCV710812CDV,2026-03-01,40917.84,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Suministro de insumos de produccion
+PO-00060,DED750226CUV,2026-04-07,49300.00,Bruno Garcia 08 00000067,Bruno Garcia 08 00000067,Licencia anual
+PO-00001,DDS940505CPI,2026-05-20,29127.60,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de consultoria operativa
+PO-00011,DCJ890812BXV,2026-04-13,91370.88,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00129,DDD790812CHV,2026-05-29,94058.60,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de consultoria operativa
+PO-00229,DDF810226CIV,2026-06-18,66283.56,Carla Soto 03 00000067,Diego Luna 04 00000067,Suministro de insumos de produccion
+PO-00171,DCV710812CDV,2026-02-28,48126.08,Carla Soto 03 00000067,Diego Luna 04 00000067,Suministro de insumos de produccion
+PO-00075,DCH870226BWV,2026-03-21,101798.12,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00118,DDH830812CJV,2026-01-20,102766.72,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Mantenimiento preventivo de instalaciones
+PO-00300,DCC821119BUI,2026-01-25,79892.68,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00360,DCD830226BUV,2026-02-05,45024.24,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00068,DDL870812CLV,2026-03-04,23007.44,Carla Soto 09 00000067,Diego Luna 10 00000067,Soporte y licencias de tecnologia
+PO-00193,DDP910812CNV,2026-04-17,30556.72,Carla Soto 03 00000067,Diego Luna 04 00000067,Suministro de insumos de produccion
+PO-00305,DCN930812BZV,2026-05-27,21520.32,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00344,DDL870812CLV,2026-03-06,100427.00,Carla Soto 03 00000067,Diego Luna 04 00000067,Soporte y licencias de tecnologia
+PO-00297,DDM881119CMI,2026-03-17,104438.28,Diego Luna 04 00000067,Elena Mora 05 00000067,Mantenimiento preventivo de instalaciones
+PO-00208,DDE801119CII,2026-06-05,70312.24,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00228,DDN890226CMV,2026-03-27,74564.80,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de consultoria operativa
+PO-00140,DDK860505CLI,2026-02-21,105027.56,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Suministro de insumos de produccion
+PO-00299,DDR930226COV,2026-05-10,23704.60,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Mantenimiento preventivo de instalaciones
+PO-00006,DCG861119BWI,2026-03-05,79217.56,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00174,DDT950812CPV,2026-06-03,100069.72,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00047,DCR970812CBV,2026-01-13,41460.72,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00232,DCP950226CAV,2026-06-16,29203.00,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de logistica y entrega
+PO-00337,DBZ790226BSV,2026-06-05,25292.64,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Cuota mensual: servicios de consultoria operativa
+PO-00119,DDO900505CNI,2026-04-05,90150.56,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00206,DCS981119CCI,2026-01-27,50047.04,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Mantenimiento preventivo de instalaciones
+PO-00022,DCF850812BVV,2026-02-26,69286.80,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de logistica y entrega
+PO-00071,DDF810226CIV,2026-06-20,55570.96,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Suministro de insumos de produccion
+PO-00268,DCA800505BTI,2026-06-05,49996.00,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Cuota mensual: servicios de logistica y entrega
+PO-00209,DCV710812CDV,2026-03-02,47430.08,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Suministro de insumos de produccion
+PO-00263,DCK901119BYI,2026-04-25,44782.96,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de logistica y entrega
+PO-00275,DDB770226CGV,2026-05-07,35673.48,Carla Soto 03 00000067,Diego Luna 04 00000067,Soporte y licencias de tecnologia
+PO-00316,DCC821119BUI,2026-01-26,14203.04,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00347,DCC821119BUI,2026-01-24,95898.36,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Soporte y licencias de tecnologia
+PO-00090,DDE801119CII,2026-06-07,30903.56,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de logistica y entrega
+PO-00283,DEB730812CTV,2026-03-31,87000.00,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de consultoria operativa
+PO-00198,DCQ960505CBI,2026-06-25,55003.72,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Suministro de insumos de produccion
+PO-00200,DDP910812CNV,2026-04-21,43909.48,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00343,DCB810812BTV,2026-01-10,105925.40,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00293,DDR930226COV,2026-05-09,86877.04,Elena Mora 05 00000067,Fabian Rios 06 00000067,Mantenimiento preventivo de instalaciones
+PO-00159,DDT950812CPV,2026-06-04,34764.04,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00162,DCW721119CEI,2026-03-15,60955.68,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00217,DDO900505CNI,2026-04-09,19012.40,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00188,DDK860505CLI,2026-02-25,19501.92,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00023,DDE801119CII,2026-06-08,61554.24,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de logistica y entrega
+PO-00041,DCY740505CFI,2026-03-31,103829.28,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00004,DDU961119CQI,2026-06-11,98124.40,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Suministro de insumos de produccion
+PO-00289,DCT990226CCV,2026-02-10,64073.76,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00220,DBZ790226BSV,2026-05-05,25292.64,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Cuota mensual: servicios de consultoria operativa
+PO-00251,DCU700505CDI,2026-02-17,22760.36,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de logistica y entrega
+PO-00197,DCE840505BVI,2026-02-17,93016.92,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00077,DDG820505CJI,2026-01-11,23720.84,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00028,DCI880505BXI,2026-03-30,32430.12,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Mantenimiento preventivo de instalaciones
+PO-00183,DCU700505CDI,2026-02-18,18326.84,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de logistica y entrega
+PO-00073,DCY740505CFI,2026-04-05,62345.36,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00213,DDT950812CPV,2026-06-01,65274.36,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de logistica y entrega
+PO-00235,DDD790812CHV,2026-05-28,66890.24,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de consultoria operativa
+PO-00262,DCF850812BVV,2026-03-01,14348.04,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de logistica y entrega
+PO-00356,DCH870226BWV,2026-03-18,58169.36,Carla Soto 09 00000067,Diego Luna 10 00000067,Soporte y licencias de tecnologia
+PO-00368,DDV970226CQV,2026-06-21,25231.16,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00223,DCY740505CFI,2026-04-01,58303.92,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00315,DEC741119CUI,2026-04-03,69600.00,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00282,DCE840505BVI,2026-02-13,32628.48,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de consultoria operativa
+PO-00203,DCI880505BXI,2026-03-27,108432.16,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00350,DBZ790226BSV,2026-02-05,25292.64,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Cuota mensual: servicios de consultoria operativa
+PO-00131,DDA761119CGI,2026-04-24,83899.32,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Suministro de insumos de produccion
+PO-00287,DCZ750812CFV,2026-04-16,61596.00,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00086,DDO900505CNI,2026-04-07,109194.28,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de logistica y entrega
+PO-00306,DDG820505CJI,2026-06-29,108848.60,Diego Luna 04 00000067,Elena Mora 05 00000067,Soporte y licencias de tecnologia
+PO-00107,DCD830226BUV,2026-02-07,75255.00,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Mantenimiento preventivo de instalaciones
+PO-00358,DCP950226CAV,2026-06-14,16491.72,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de logistica y entrega
+PO-00016,DCL910226BYV,2026-05-04,71534.88,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00093,DDN890226CMV,2026-03-24,80084.08,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00044,DDB770226CGV,2026-05-06,93531.96,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Soporte y licencias de tecnologia
+PO-00354,DCY740505CFI,2026-04-03,14181.00,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de consultoria operativa
+PO-00136,DDL870812CLV,2026-03-02,68354.16,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00165,DDJ850226CKV,2026-02-08,73040.56,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00110,DDS940505CPI,2026-05-19,19551.80,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00224,DCN930812BZV,2026-05-24,86183.36,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Mantenimiento preventivo de instalaciones
+PO-00274,DDC780505CHI,2026-05-16,66575.88,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Mantenimiento preventivo de instalaciones
+PO-00296,DCI880505BXI,2026-04-01,27597.56,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00020,DCL910226BYV,2026-04-29,19961.28,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00156,DDO900505CNI,2026-04-10,37845.00,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00177,DDB770226CGV,2026-05-03,93984.36,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00135,DCT990226CCV,2026-02-04,28442.04,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00017,DCQ960505CBI,2026-06-28,96205.76,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00355,DDS940505CPI,2026-05-22,97964.32,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de consultoria operativa
+PO-00144,DCS981119CCI,2026-01-29,102431.48,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00191,DCW721119CEI,2026-03-14,54297.28,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00058,DDV970226CQV,2026-06-23,86302.84,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Soporte y licencias de tecnologia
+PO-00318,DCB810812BTV,2026-01-14,21959.96,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00245,DDY701119CSI,2026-02-24,142184.68,Elena Mora 05 00000067,Elena Mora 05 00000067,Reparacion urgente de equipo de manufactura
+PO-00005,DDG820505CJI,2026-01-12,15003.44,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00334,DCI880505BXI,2026-03-29,57357.36,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Mantenimiento preventivo de instalaciones
+PO-00319,DCA800505BTI,2026-03-05,49996.00,Elena Mora 05 00000067,Fabian Rios 06 00000067,Cuota mensual: servicios de logistica y entrega
+PO-00204,DDQ921119COI,2026-05-01,21828.88,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00366,DCP950226CAV,2026-06-13,94621.20,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00230,DDK860505CLI,2026-02-24,69714.84,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00233,DCX730226CEV,2026-03-24,75937.08,Carla Soto 09 00000067,Diego Luna 10 00000067,Mantenimiento preventivo de instalaciones
+PO-00092,DCR970812CBV,2026-01-16,107700.20,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Soporte y licencias de tecnologia
+PO-00007,DCC821119BUI,2026-01-21,14119.52,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00099,DDL870812CLV,2026-03-07,46054.32,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00126,DCE840505BVI,2026-02-12,106348.80,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00061,DDN890226CMV,2026-03-29,98652.20,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00199,DDU961119CQI,2026-06-15,78370.76,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00153,DDV970226CQV,2026-06-20,34700.24,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00182,DCX730226CEV,2026-03-23,15939.56,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Mantenimiento preventivo de instalaciones
+PO-00201,DDR930226COV,2026-05-08,68645.32,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00248,DCV710812CDV,2026-03-04,91548.36,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00179,DCN930812BZV,2026-05-25,65515.64,Carla Soto 09 00000067,Diego Luna 10 00000067,Mantenimiento preventivo de instalaciones
+PO-00234,DDF810226CIV,2026-06-16,92867.28,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00295,DDL870812CLV,2026-03-03,60127.44,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00330,DCU700505CDI,2026-02-16,97136.08,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00349,DDV970226CQV,2026-06-26,79573.68,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00048,DDH830812CJV,2026-01-21,49015.80,Carla Soto 09 00000067,Diego Luna 10 00000067,Mantenimiento preventivo de instalaciones
+PO-00252,DCH870226BWV,2026-03-16,88084.60,Elena Mora 05 00000067,Fabian Rios 06 00000067,Soporte y licencias de tecnologia
+PO-00325,DCR970812CBV,2026-01-17,108353.28,Carla Soto 03 00000067,Diego Luna 04 00000067,Soporte y licencias de tecnologia
+PO-00310,DDG820505CJI,2026-06-27,14917.60,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00362,DCS981119CCI,2026-01-24,32623.84,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00194,DDO900505CNI,2026-04-06,44142.64,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de logistica y entrega
+PO-00345,DCG861119BWI,2026-03-08,18448.64,Elena Mora 05 00000067,Fabian Rios 06 00000067,Suministro de insumos de produccion
+PO-00067,DCD830226BUV,2026-02-02,83989.80,Elena Mora 05 00000067,Fabian Rios 06 00000067,Mantenimiento preventivo de instalaciones
+PO-00091,DCT990226CCV,2026-02-07,74260.88,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de consultoria operativa
+PO-00137,DDC780505CHI,2026-05-18,94071.36,Diego Luna 04 00000067,Elena Mora 05 00000067,Mantenimiento preventivo de instalaciones
+PO-00363,DDS940505CPI,2026-05-18,67071.20,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00181,DCU700505CDI,2026-02-19,37776.56,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de logistica y entrega
+PO-00033,DDR930226COV,2026-05-13,30337.48,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00214,DDQ921119COI,2026-04-28,44257.48,Diego Luna 04 00000067,Elena Mora 05 00000067,Soporte y licencias de tecnologia
+PO-00052,DCU700505CDI,2026-02-20,73508.04,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00261,DCF850812BVV,2026-02-27,81280.04,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00320,DDI841119CKI,2026-02-01,64436.84,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de consultoria operativa
+PO-00176,DCS981119CCI,2026-01-26,108576.00,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Mantenimiento preventivo de instalaciones
+PO-00152,DCO941119CAI,2026-06-07,58887.40,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00169,DCJ890812BXV,2026-04-10,82529.36,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de consultoria operativa
+PO-00250,DDO900505CNI,2026-04-08,53607.08,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de logistica y entrega
+PO-00304,DDD790812CHV,2026-05-26,35465.84,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00273,DCK901119BYI,2026-04-22,65179.24,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de logistica y entrega
+PO-00271,DCT990226CCV,2026-02-09,67208.08,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00094,DCJ890812BXV,2026-04-07,56191.56,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00096,DCB810812BTV,2026-01-11,90459.12,Carla Soto 03 00000067,Diego Luna 04 00000067,Suministro de insumos de produccion
+PO-00301,DDT950812CPV,2026-05-29,49774.44,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00120,DDF810226CIV,2026-06-21,75586.76,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00117,DDJ850226CKV,2026-02-10,68485.24,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de logistica y entrega
+PO-00138,DDU961119CQI,2026-06-13,87031.32,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Suministro de insumos de produccion
+PO-00109,DCT990226CCV,2026-02-08,14392.12,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de consultoria operativa
+PO-00046,DCN930812BZV,2026-05-23,105152.84,Elena Mora 05 00000067,Fabian Rios 06 00000067,Mantenimiento preventivo de instalaciones
+PO-00103,DCZ750812CFV,2026-04-12,80582.88,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00111,DDZ710226CSV,2026-02-28,51078.28,Fabian Rios 06 00000067,Fabian Rios 06 00000067,Paquete integrado de adecuacion de planta zona norte
+PO-00286,DCE840505BVI,2026-02-16,17564.72,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00258,DDC780505CHI,2026-05-19,55400.44,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00113,DCK901119BYI,2026-04-20,95727.84,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de logistica y entrega
+PO-00290,DDS940505CPI,2026-05-24,19936.92,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00100,DDK860505CLI,2026-02-19,20129.48,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00244,DDD790812CHV,2026-05-30,77461.32,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00180,DBY781119BSI,2026-05-05,23722.00,Elena Mora 05 00000067,Fabian Rios 06 00000067,Cuota mensual: mantenimiento preventivo de instalaciones
+PO-00255,DDA761119CGI,2026-04-22,74374.56,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00045,DCG861119BWI,2026-03-09,47127.32,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Suministro de insumos de produccion
+PO-00009,DDR930226COV,2026-05-07,81146.64,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00278,DDA761119CGI,2026-04-27,95155.96,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00226,DDM881119CMI,2026-03-13,38266.08,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00328,DBY781119BSI,2026-01-05,23722.00,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Cuota mensual: mantenimiento preventivo de instalaciones
+PO-00014,DDM881119CMI,2026-03-14,60599.56,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00202,DCN930812BZV,2026-05-22,34259.44,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00127,DCG861119BWI,2026-03-06,80709.32,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00130,DCX730226CEV,2026-03-21,23493.48,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00205,DDA761119CGI,2026-04-25,37726.68,Elena Mora 05 00000067,Fabian Rios 06 00000067,Suministro de insumos de produccion
+PO-00015,DCB810812BTV,2026-01-09,76011.32,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00341,DCL910226BYV,2026-04-30,101326.00,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00353,DBZ790226BSV,2026-03-05,25292.64,Carla Soto 09 00000067,Diego Luna 10 00000067,Cuota mensual: servicios de consultoria operativa
+PO-00051,DCD830226BUV,2026-01-31,77062.28,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00172,DCU700505CDI,2026-02-21,48249.04,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00352,DCS981119CCI,2026-01-28,19469.44,Diego Luna 04 00000067,Elena Mora 05 00000067,Mantenimiento preventivo de instalaciones
+PO-00164,DCA800505BTI,2026-04-05,49996.00,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Cuota mensual: servicios de logistica y entrega
+PO-00357,DDS940505CPI,2026-05-21,83455.04,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de consultoria operativa
+PO-00254,DDV970226CQV,2026-06-24,108124.76,Carla Soto 03 00000067,Diego Luna 04 00000067,Soporte y licencias de tecnologia
+PO-00216,DCZ750812CFV,2026-04-13,15437.28,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de logistica y entrega
+PO-00084,DCO941119CAI,2026-06-02,42860.84,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00063,DDE801119CII,2026-06-11,89622.76,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00219,DDB770226CGV,2026-05-05,90364.00,Carla Soto 09 00000067,Diego Luna 10 00000067,Soporte y licencias de tecnologia
+PO-00157,DDH830812CJV,2026-01-18,51239.52,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00175,DDL870812CLV,2026-03-08,47326.84,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00369,DDP910812CNV,2026-04-15,14353.84,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00367,DCV710812CDV,2026-02-27,32195.80,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00133,DCG861119BWI,2026-03-10,107022.76,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00185,DCK901119BYI,2026-04-18,44898.96,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00083,DCN930812BZV,2026-05-26,15129.88,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00065,DCF850812BVV,2026-02-24,35080.72,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de logistica y entrega
+PO-00095,DDA761119CGI,2026-04-26,95626.92,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Suministro de insumos de produccion
+PO-00333,DDB770226CGV,2026-05-04,49790.68,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00242,DDJ850226CKV,2026-02-12,102555.60,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de logistica y entrega
+PO-00265,DCE840505BVI,2026-02-18,21363.72,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de consultoria operativa
+PO-00346,DCX730226CEV,2026-03-20,74843.20,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00231,DCQ960505CBI,2026-06-24,95695.36,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00190,DDV970226CQV,2026-06-25,107463.56,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00307,DCG861119BWI,2026-03-11,57230.92,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00264,DDI841119CKI,2026-01-28,49345.24,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00321,DDJ850226CKV,2026-02-09,28598.64,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00030,DCO941119CAI,2026-06-04,61011.36,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de consultoria operativa
+PO-00115,DCL910226BYV,2026-05-03,99945.60,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Suministro de insumos de produccion
+PO-00102,DDA761119CGI,2026-04-28,34202.60,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00036,DCH870226BWV,2026-03-20,108629.36,Carla Soto 03 00000067,Diego Luna 04 00000067,Soporte y licencias de tecnologia
+PO-00207,DDT950812CPV,2026-05-30,29096.28,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00313,DCC821119BUI,2026-01-27,45896.56,Carla Soto 09 00000067,Diego Luna 10 00000067,Soporte y licencias de tecnologia
+PO-00087,DCH870226BWV,2026-03-22,29650.76,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00302,DDP910812CNV,2026-04-18,22658.28,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Suministro de insumos de produccion
+PO-00021,DDN890226CMV,2026-03-25,103062.52,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00298,DDQ921119COI,2026-04-30,60260.84,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Soporte y licencias de tecnologia
+PO-00029,DCG861119BWI,2026-03-12,105408.04,Carla Soto 03 00000067,Diego Luna 04 00000067,Suministro de insumos de produccion
+PO-00079,DCQ960505CBI,2026-06-29,82799.64,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00114,DDK860505CLI,2026-02-22,90053.12,Elena Mora 05 00000067,Fabian Rios 06 00000067,Suministro de insumos de produccion
+PO-00150,DDN890226CMV,2026-03-30,61268.88,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00160,DDP910812CNV,2026-04-19,36694.28,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Suministro de insumos de produccion
+PO-00311,DDQ921119COI,2026-04-26,104481.20,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00055,DDQ921119COI,2026-04-29,77884.72,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Soporte y licencias de tecnologia
+PO-00322,DCP950226CAV,2026-06-15,97477.12,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de logistica y entrega
+PO-00032,DCM920505BZI,2026-05-13,60739.92,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Soporte y licencias de tecnologia
+PO-00043,DCX730226CEV,2026-03-22,36947.16,Elena Mora 05 00000067,Fabian Rios 06 00000067,Mantenimiento preventivo de instalaciones
+PO-00239,DCD830226BUV,2026-02-03,69305.36,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Mantenimiento preventivo de instalaciones
+PO-00241,DDJ850226CKV,2026-02-11,24298.52,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de logistica y entrega
+PO-00168,DCI880505BXI,2026-04-02,16582.20,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00221,DCD830226BUV,2026-02-06,52728.96,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00056,DCX730226CEV,2026-03-26,90078.64,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00039,DCC821119BUI,2026-01-20,85021.04,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00284,DCR970812CBV,2026-01-14,17212.08,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00106,DCR970812CBV,2026-01-18,73234.28,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00348,DCT990226CCV,2026-02-06,60175.00,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de consultoria operativa
+PO-00035,DDH830812CJV,2026-01-19,23565.40,Elena Mora 05 00000067,Fabian Rios 06 00000067,Mantenimiento preventivo de instalaciones
+PO-00139,DDK860505CLI,2026-02-20,87158.92,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00317,DED750226CUV,2026-04-08,49300.00,Bruno Garcia 08 00000067,Bruno Garcia 08 00000067,Insumo de seguridad
+PO-00161,DCF850812BVV,2026-02-28,58624.08,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00246,DCZ750812CFV,2026-04-15,95809.04,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de logistica y entrega
+PO-00173,DCQ960505CBI,2026-06-27,63506.52,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Suministro de insumos de produccion
+PO-00054,DDC780505CHI,2026-05-20,45292.20,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00066,DEA720505CTI,2026-03-28,46400.00,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de logistica y entrega
+PO-00141,DDI841119CKI,2026-01-31,89394.24,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de consultoria operativa
+PO-00076,DCC821119BUI,2026-01-22,51433.24,Diego Luna 04 00000067,Elena Mora 05 00000067,Soporte y licencias de tecnologia
+PO-00074,DCO941119CAI,2026-06-03,96675.56,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de consultoria operativa
+PO-00243,DDF810226CIV,2026-06-19,94232.60,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Suministro de insumos de produccion
+PO-00072,DCZ750812CFV,2026-04-11,15852.56,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00365,DCF850812BVV,2026-02-22,104591.40,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00143,DDZ710226CSV,2026-03-01,51253.44,Fabian Rios 06 00000067,Fabian Rios 06 00000067,Paquete integrado de adecuacion de planta zona norte
+PO-00088,DCP950226CAV,2026-06-17,16125.16,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega
+PO-00335,DCD830226BUV,2026-02-04,64397.40,Carla Soto 09 00000067,Diego Luna 10 00000067,Mantenimiento preventivo de instalaciones
+PO-00351,DCQ960505CBI,2026-06-26,100494.28,Elena Mora 05 00000067,Fabian Rios 06 00000067,Suministro de insumos de produccion
+PO-00361,DDN890226CMV,2026-03-26,107088.88,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de consultoria operativa
+PO-00364,DCZ750812CFV,2026-04-14,99035.00,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de logistica y entrega
+PO-00324,DCM920505BZI,2026-05-12,81857.72,Diego Luna 04 00000067,Elena Mora 05 00000067,Soporte y licencias de tecnologia
+PO-00259,DDZ710226CSV,2026-02-27,50767.40,Fabian Rios 06 00000067,Fabian Rios 06 00000067,Paquete integrado de adecuacion de planta zona norte
+PO-00326,DCY740505CFI,2026-04-04,39015.44,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de consultoria operativa
+PO-00018,DCS981119CCI,2026-01-25,78848.68,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00359,DCJ890812BXV,2026-04-11,93624.76,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de consultoria operativa
+PO-00279,DCV710812CDV,2026-03-03,103436.04,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00012,DCK901119BYI,2026-04-24,53510.80,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00104,DCP950226CAV,2026-06-12,37943.60,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00270,DDM881119CMI,2026-03-15,67740.52,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Mantenimiento preventivo de instalaciones
+PO-00025,DBY781119BSI,2026-04-05,23722.00,Diego Luna 04 00000067,Elena Mora 05 00000067,Cuota mensual: mantenimiento preventivo de instalaciones
+PO-00222,DCE840505BVI,2026-02-11,54492.16,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00070,DCY740505CFI,2026-04-06,105885.96,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00042,DCJ890812BXV,2026-04-14,26496.72,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de consultoria operativa
+PO-00267,DCA800505BTI,2026-02-05,49996.00,Diego Luna 04 00000067,Elena Mora 05 00000067,Cuota mensual: servicios de logistica y entrega
+PO-00257,DDC780505CHI,2026-05-14,38335.68,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00327,DBZ790226BSV,2026-01-05,25292.64,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Cuota mensual: servicios de consultoria operativa
+PO-00189,DCF850812BVV,2026-02-23,50379.96,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de logistica y entrega
+PO-00329,DCL910226BYV,2026-05-05,55304.16,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00336,DCW721119CEI,2026-03-10,72190.28,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00266,DDP910812CNV,2026-04-20,84642.88,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00145,DDJ850226CKV,2026-02-14,35955.36,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00059,DBY781119BSI,2026-06-05,23722.00,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Cuota mensual: mantenimiento preventivo de instalaciones
+PO-00013,DDB770226CGV,2026-05-09,99214.80,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00132,DCK901119BYI,2026-04-21,81201.16,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de logistica y entrega
+PO-00123,DCO941119CAI,2026-06-01,19238.60,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00037,DCB810812BTV,2026-01-12,87414.12,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Suministro de insumos de produccion
+PO-00151,DCK901119BYI,2026-04-19,53260.24,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00122,DCB810812BTV,2026-01-16,43568.44,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Suministro de insumos de produccion
+PO-00285,DDE801119CII,2026-06-09,79776.68,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de logistica y entrega
+PO-00024,DDL870812CLV,2026-03-05,51396.12,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Soporte y licencias de tecnologia
+PO-00303,DBY781119BSI,2026-03-05,23722.00,Carla Soto 03 00000067,Diego Luna 04 00000067,Cuota mensual: mantenimiento preventivo de instalaciones
+PO-00148,DDH830812CJV,2026-01-17,81477.24,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00277,DBY781119BSI,2026-02-05,23722.00,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Cuota mensual: mantenimiento preventivo de instalaciones
+PO-00309,DDU961119CQI,2026-06-09,17875.60,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00038,DCX730226CEV,2026-03-25,66232.52,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00101,DDT950812CPV,2026-05-31,28357.36,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de logistica y entrega
+PO-00184,DED750226CUV,2026-04-06,49300.00,Bruno Garcia 08 00000067,Bruno Garcia 08 00000067,Mantenimiento mensual
+PO-00167,DCL910226BYV,2026-05-01,22135.12,Carla Soto 03 00000067,Diego Luna 04 00000067,Suministro de insumos de produccion
+PO-00158,DCN930812BZV,2026-05-21,57704.20,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00291,DCM920505BZI,2026-05-11,89741.08,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00163,DDI841119CKI,2026-02-02,96897.12,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00272,DCW721119CEI,2026-03-13,66135.08,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Soporte y licencias de tecnologia
+PO-00081,DCS981119CCI,2026-01-30,85131.24,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Mantenimiento preventivo de instalaciones
+PO-00097,DCJ890812BXV,2026-04-12,107875.36,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Servicios de consultoria operativa
+PO-00256,DDW980505CRI,2026-02-14,83652.24,Carla Soto 09 00000067,Diego Luna 10 00000067,Coordinacion de entregas regionales
+PO-00288,DDB770226CGV,2026-05-08,97675.48,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00210,DDG820505CJI,2026-01-09,31441.80,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Soporte y licencias de tecnologia
+PO-00154,DDV970226CQV,2026-06-22,18720.08,Carla Soto 09 00000067,Diego Luna 10 00000067,Soporte y licencias de tecnologia
+PO-00332,DDS940505CPI,2026-05-23,21588.76,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00124,DCM920505BZI,2026-05-10,40796.04,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Soporte y licencias de tecnologia
+PO-00292,DCL910226BYV,2026-05-02,64151.48,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Suministro de insumos de produccion
+PO-00339,DBZ790226BSV,2026-04-05,25292.64,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Cuota mensual: servicios de consultoria operativa
+PO-00312,DCH870226BWV,2026-03-19,106083.16,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Soporte y licencias de tecnologia
+PO-00249,DDG820505CJI,2026-01-10,96080.48,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Soporte y licencias de tecnologia
+PO-00227,DCJ890812BXV,2026-04-08,17670.28,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00125,DCG861119BWI,2026-03-07,108187.40,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Suministro de insumos de produccion
+PO-00128,DDA761119CGI,2026-04-23,71942.04,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00085,DCY740505CFI,2026-04-02,82000.40,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de consultoria operativa
+PO-00050,DCI880505BXI,2026-03-31,33130.76,Diego Luna 04 00000067,Elena Mora 05 00000067,Mantenimiento preventivo de instalaciones
+PO-00062,DCQ960505CBI,2026-06-23,80737.16,Diego Luna 04 00000067,Elena Mora 05 00000067,Suministro de insumos de produccion
+PO-00186,DCB810812BTV,2026-01-15,36147.92,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00225,DCI880505BXI,2026-03-28,74133.28,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00331,DDH830812CJV,2026-01-23,28371.28,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00027,DDD790812CHV,2026-05-31,72321.36,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00002,DCW721119CEI,2026-03-12,62178.32,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Soporte y licencias de tecnologia
+PO-00340,DDD790812CHV,2026-05-25,37139.72,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00247,DCE840505BVI,2026-02-15,67070.04,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de consultoria operativa
+PO-00034,DCO941119CAI,2026-06-06,18975.28,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Servicios de consultoria operativa
+PO-00147,DCR970812CBV,2026-01-19,32310.64,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Soporte y licencias de tecnologia
+PO-00238,DCM920505BZI,2026-05-16,25509.56,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00040,DCF850812BVV,2026-02-25,60802.56,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de logistica y entrega
+PO-00260,DDH830812CJV,2026-01-22,23443.60,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00105,DDR930226COV,2026-05-12,82971.32,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Mantenimiento preventivo de instalaciones
+PO-00166,DCZ750812CFV,2026-04-17,100487.32,Elena Mora 05 00000067,Fabian Rios 06 00000067,Servicios de logistica y entrega
+PO-00192,DCA800505BTI,2026-05-05,49996.00,Ana Ruiz 07 00000067,Bruno Garcia 08 00000067,Cuota mensual: servicios de logistica y entrega
+PO-00053,DCR970812CBV,2026-01-15,91646.96,Carla Soto 09 00000067,Diego Luna 10 00000067,Soporte y licencias de tecnologia
+PO-00155,DCE840505BVI,2026-02-14,105967.16,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de consultoria operativa
+PO-00080,DCH870226BWV,2026-03-23,83423.72,Diego Luna 04 00000067,Elena Mora 05 00000067,Soporte y licencias de tecnologia
+PO-00253,DCM920505BZI,2026-05-14,83602.36,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Soporte y licencias de tecnologia
+PO-00218,DCH870226BWV,2026-03-17,25725.32,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00281,DCT990226CCV,2026-02-05,59438.40,Diego Luna 04 00000067,Elena Mora 05 00000067,Servicios de consultoria operativa
+PO-00010,DDE801119CII,2026-06-10,97069.96,Carla Soto 03 00000067,Diego Luna 04 00000067,Servicios de logistica y entrega
+PO-00170,DDC780505CHI,2026-05-15,15090.44,Carla Soto 03 00000067,Diego Luna 04 00000067,Mantenimiento preventivo de instalaciones
+PO-00069,DDI841119CKI,2026-01-29,61670.24,Carla Soto 09 00000067,Diego Luna 10 00000067,Servicios de consultoria operativa
+PO-00196,DCC821119BUI,2026-01-23,57866.60,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Soporte y licencias de tecnologia
+PO-00211,DCO941119CAI,2026-06-05,41212.48,Diego Luna 10 00000067,Ana Ruiz 01 00000067,Servicios de consultoria operativa
+PO-00149,DDF810226CIV,2026-06-17,83103.56,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00240,DCI880505BXI,2026-04-03,42986.12,Elena Mora 05 00000067,Fabian Rios 06 00000067,Mantenimiento preventivo de instalaciones
+PO-00057,DDI841119CKI,2026-01-30,108507.56,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Servicios de consultoria operativa
+PO-00019,DDQ921119COI,2026-05-02,74052.08,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Soporte y licencias de tecnologia
+PO-00134,DCV710812CDV,2026-02-26,60781.68,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00116,DDM881119CMI,2026-03-18,29981.36,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Mantenimiento preventivo de instalaciones
+PO-00308,DDU961119CQI,2026-06-14,69480.52,Carla Soto 09 00000067,Diego Luna 10 00000067,Suministro de insumos de produccion
+PO-00237,DDP910812CNV,2026-04-16,72830.60,Fabian Rios 06 00000067,Ana Ruiz 07 00000067,Suministro de insumos de produccion
+PO-00323,DDF810226CIV,2026-06-22,21586.44,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Suministro de insumos de produccion
+PO-00338,DDK860505CLI,2026-02-23,66930.84,Bruno Garcia 02 00000067,Carla Soto 03 00000067,Suministro de insumos de produccion
+PO-00031,DDD790812CHV,2026-05-27,36716.32,Ana Ruiz 01 00000067,Bruno Garcia 02 00000067,Servicios de consultoria operativa
+PO-00212,DCU700505CDI,2026-02-15,88603.12,Bruno Garcia 08 00000067,Carla Soto 09 00000067,Servicios de logistica y entrega

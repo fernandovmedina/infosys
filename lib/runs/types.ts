@@ -2,8 +2,7 @@
 //
 // La primera parte está copiada tal cual de EXAMPLE.md §10 (contrato oficial +
 // view-model propuesto). La segunda parte ("Extensiones del frontend") define
-// las respuestas de endpoints de §9 que EXAMPLE.md no tipa todavía; el backend
-// debe implementarlas con esta forma.
+// las respuestas implementadas por los endpoints de §9.
 
 // ---------- Contrato oficial (submission_schema.json) ----------
 export type SchemeType =
@@ -57,8 +56,15 @@ export type EntityKind = 'company' | 'vendor' | 'employee' | 'account' | 'unknow
 export type Verdict = 'fraud_proven' | 'fraud_probable' | 'clean_with_leads' | 'clean';
 export type RunStatus = 'validating' | 'ready' | 'running' | 'completed' | 'failed';
 
+export interface IgnoredFile {
+  filename: string;
+  reason: string;
+}
+
 export interface TableDiagnostic {
   name: SourceTable; rows: number; status: 'ok' | 'warning' | 'error'; warnings: string[];
+  source_file: string | null;
+  missing: boolean;
 }
 
 export interface Entity {
@@ -105,7 +111,7 @@ export interface Report {
   submission: Submission;
   findings_extra: FindingExtra[];
   entities: Record<string, Entity>;
-  records: Record<string, RecordView>;   // llave: "invoices:INV-00001"
+  records: Record<string, RecordView>;   // llave: "invoices:<uuid>"
   method_and_limits: {
     architecture: string; out_of_scope: string[]; cannot_detect: string[];
     reproduce: { seed: number; version: string; dataset_sha256: string; command: string };
@@ -113,7 +119,7 @@ export interface Report {
 }
 
 // =====================================================================
-// Extensiones del frontend: respuestas de §9 que EXAMPLE.md no tipa aún.
+// Extensiones del frontend: respuestas implementadas para §9.
 // =====================================================================
 
 /** Sobre de error del backend: `{ error: { code, message, details } }`. */
@@ -123,10 +129,10 @@ export interface ApiErrorBody {
   details?: unknown;
 }
 
-/** `POST /runs` → 202. */
+/** `POST /runs` → 201. */
 export interface CreateRunResponse {
   run_id: string;
-  status: 'validating';
+  status: RunStatus;
 }
 
 /** Advertencia de columna del diagnóstico (§4.3). */
@@ -141,8 +147,11 @@ export interface ValidationResult {
   run_id: string;
   status: RunStatus;
   filename: string;
+  format: 'zip' | 'csv';
+  sha256: string;
   tables: TableDiagnostic[];
   column_warnings: ColumnWarning[];
+  ignored_files: IgnoredFile[];
 }
 
 /** Contadores en vivo de una corrida. */
@@ -335,7 +344,7 @@ export interface SearchResponse {
   hits: SearchHit[];
 }
 
-export type ExportFormat = 'html' | 'pdf' | 'md' | 'submission';
+export type ExportFormat = 'html' | 'md' | 'submission';
 
 export interface SubscribeHandlers {
   onEvent: (event: RunEvent) => void;

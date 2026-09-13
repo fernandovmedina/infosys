@@ -1,14 +1,18 @@
 "use client";
 
 import { formatClabe } from "@/lib/format";
-import { STATUS_LABELS } from "@/lib/runs/labels";
+import { splitEntityEndpoint, STATUS_LABELS } from "@/lib/runs/labels";
 import type { EntityStatus } from "@/lib/runs/types";
 import { STATUS_STYLES } from "./entity-status-badge";
 import { Icon, Tooltip } from "./ui";
 
-/** Muestra `CLABE:…` abreviada; RFC y EMP completos. */
+/** Muestra cada `CLABE:…` abreviada; RFC, EMP y separadores completos. */
 export function displayEntityId(id: string) {
-  return id.startsWith("CLABE:") ? `CLABE ${formatClabe(id)}` : id;
+  return splitEntityEndpoint(id)
+    .map((part) =>
+      part.startsWith("CLABE:") ? `CLABE ${formatClabe(part)}` : part,
+    )
+    .join(" / ");
 }
 
 /**

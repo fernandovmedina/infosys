@@ -97,25 +97,22 @@ a investigar**. Esto es parte del requisito de determinismo y replay offline.
 
 ### 4.1 Qué acepta
 
-El formato final todavía no está decidido, así que el uploader debe aceptar:
+El uploader acepta únicamente estas dos formas:
 
 | Formato | Cómo llega | Nota |
 |---|---|---|
-| `.zip` | Un CSV por tabla (`vendors.csv`, `invoices.csv`, …) | Es lo que genera hoy `estate-generate`. |
-| `.csv` | Uno o varios archivos sueltos | Se mapea por nombre de archivo o por columnas. |
-| `.xlsx` | Una hoja por tabla | El nombre de la hoja es el nombre de la tabla. |
-| `.db` / `.sqlite` | SQLite con las 8 tablas | Es lo que usa `validate_format.py --estate`. |
-| `.sql` | Dump con `CREATE TABLE` + `INSERT` | |
+| `.zip` | Exactamente un archivo, con un CSV por tabla (`vendors.csv`, `invoices.csv`, …) | Puede contener una sola carpeta raíz; archivos `private/`, `__MACOSX/`, ocultos y no CSV se ignoran. |
+| `.csv` | Uno o varios archivos sueltos, uno por tabla | Se mapea por nombre de archivo o por columnas. No se puede mezclar con un ZIP. |
 
 El frontend **no parsea** el contenido: sube el archivo y el backend responde con el
-diagnóstico. El frontend solo valida extensión y tamaño antes de enviar.
+diagnóstico. El frontend solo valida extensión, combinación y tamaño total (máximo 200 MB) antes de enviar.
 
 ### 4.2 Qué se muestra
 
 ```
 ┌───────────────────────────────────────────────────────────┐
 │   ⬆  Arrastra aquí los libros de la empresa              │
-│      .zip · .csv · .xlsx · .db · .sql   (máx. N MB)       │
+│      .zip · .csv                         (máx. 200 MB)    │
 └───────────────────────────────────────────────────────────┘
 
 Tablas detectadas
@@ -127,6 +124,10 @@ Tablas detectadas
  ⚠ contracts           0 filas   → sin contratos no se puede verificar alcance de servicios
  ✔ employees          45 filas
  ✖ efos_list       no encontrada → sin lista EFOS no corre el detector de proveedores 69-B
+
+ Formato: ZIP · SHA-256: 9f2c4b7e1d0a…
+ Origen: `seed67/vendors.csv` (se muestra por tabla; el hash completo está en el detalle)
+ Archivos ignorados (2) [ver detalle]
 
  Columnas: 2 advertencias  [ver detalle]
 
@@ -142,6 +143,9 @@ Tablas detectadas
   no se pudo leer. El botón "Iniciar investigación" queda deshabilitado.
 - Las advertencias de columnas se abren en un panel: `invoices.metodo_pago` falta, se
   esperaba `PUE | PPD`.
+- El diagnóstico también muestra el formato (`zip` o `csv`), el SHA-256 del dataset, el archivo
+  de origen de cada tabla (`source_file`) y si una tabla no fue encontrada (`missing`). Los
+  archivos omitidos aparecen en una lista expandible con su razón (`ignored_files`).
 - Estas advertencias deben reaparecer después en la sección **Método y límites** del case file,
   para que el lector sepa que el análisis fue parcial.
 

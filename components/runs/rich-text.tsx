@@ -1,6 +1,6 @@
 import { Fragment, type ReactNode } from "react";
 
-const TOKEN = /(RFC:[A-ZÑ&0-9]{12,13}|EMP:\d{3,5}|CLABE:\d{18}|EX-\d{2,3})/g;
+const TOKEN = /(RFC:[A-ZÑ&0-9]{12,13}|EMP:[0-9A-Za-z]+(?:-[0-9A-Za-z]+)*|CLABE:\d{18}|EX-\d{2,3})/g;
 
 /**
  * Texto con los RFC, `EMP:` y `EX-xx` convertidos en chips interactivos

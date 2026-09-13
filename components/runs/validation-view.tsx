@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useEffectEvent, useState } from "react";
-import { errorMessage } from "@/lib/runs/errors";
+import { ApiError, errorMessage } from "@/lib/runs/errors";
 import { getValidation, startRun } from "@/lib/runs/api";
 import type { RunState, ValidationResult } from "@/lib/runs/types";
 import { TableDiagnostics } from "./table-diagnostics";
@@ -20,7 +20,7 @@ export function ValidationView({
 }) {
   const [validation, setValidation] = useState<ValidationResult | null>(null);
   const [starting, setStarting] = useState(false);
-  const [startError, setStartError] = useState<string | null>(null);
+  const [startError, setStartError] = useState<{ code?: string; message: string } | null>(null);
   const reportError = useEffectEvent(onError);
 
   useEffect(() => {
@@ -52,7 +52,10 @@ export function ValidationView({
     try {
       onStarted(await startRun(runId));
     } catch (error) {
-      setStartError(errorMessage(error));
+      setStartError({
+        code: error instanceof ApiError ? error.code : undefined,
+        message: errorMessage(error),
+      });
       setStarting(false);
     }
   }
@@ -67,7 +70,17 @@ export function ValidationView({
       <h1 id="validation-title" className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900">
         {validating ? "Revisando las tablas…" : "Tablas detectadas"}
       </h1>
-      {validation && <p className="mt-1 truncate text-sm text-zinc-600">{validation.filename}</p>}
+      {validation && (
+        <div className="mt-1 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600">
+          <p className="min-w-0 max-w-full truncate">{validation.filename}</p>
+          <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-xs font-medium text-zinc-600">
+            {validation.format.toUpperCase()}
+          </span>
+          <span className="font-mono text-xs text-zinc-400" title={validation.sha256}>
+            SHA-256 {validation.sha256.slice(0, 12)}…
+          </span>
+        </div>
+      )}
 
       <div className="mt-6">
         {validating ? (
@@ -75,7 +88,11 @@ export function ValidationView({
             <LoadingBlock label="Leyendo el archivo y buscando las 8 tablas del estate…" />
           </div>
         ) : (
-          <TableDiagnostics tables={validation.tables} columnWarnings={validation.column_warnings} />
+          <TableDiagnostics
+            tables={validation.tables}
+            columnWarnings={validation.column_warnings}
+            ignoredFiles={validation.ignored_files}
+          />
         )}
       </div>
 
@@ -89,9 +106,14 @@ export function ValidationView({
           Las advertencias aparecerán en la sección Método y límites del case file.
         </Notice>
       )}
-      {startError && (
+      {startError?.code === "investigation_unavailable" && (
+        <Notice tone="info" title="Dataset validado y guardado" className="mt-4">
+          La investigación automática aún no está disponible.
+        </Notice>
+      )}
+      {startError && startError.code !== "investigation_unavailable" && (
         <Notice tone="error" className="mt-4">
-          {startError}
+          {startError.message}
         </Notice>
       )}
 

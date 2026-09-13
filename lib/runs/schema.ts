@@ -1,5 +1,5 @@
 /**
- * Metadatos del schema del estate (tablas, columnas y catálogos SAT).
+ * Metadatos del schema crudo del estate (tablas, columnas y catálogos SAT).
  *
  * Los nombres técnicos se muestran tal cual en tablas y drawers porque los
  * jueces los leen; la traducción va en tooltip (EXAMPLE §12).
@@ -30,8 +30,18 @@ export const TABLES: Record<SourceTable, TableMeta> = {
     dateField: "issue_date",
     amountField: "total",
     columns: [
-      "uuid", "issuer_rfc", "receiver_rfc", "issue_date", "subtotal", "iva", "total",
-      "concepto_text", "uso_cfdi", "forma_pago", "metodo_pago", "status",
+      "uuid",
+      "issuer_rfc",
+      "receiver_rfc",
+      "issue_date",
+      "subtotal",
+      "iva",
+      "total",
+      "concepto_text",
+      "uso_cfdi",
+      "forma_pago",
+      "metodo_pago",
+      "status",
     ],
   },
   bank_txns: {
@@ -39,11 +49,16 @@ export const TABLES: Record<SourceTable, TableMeta> = {
     plural: "Pagos",
     description: "Movimientos bancarios de las cuentas de la empresa.",
     idField: "txn_id",
-    dateField: "txn_date",
+    dateField: "date",
     amountField: "amount",
     columns: [
-      "txn_id", "txn_date", "direction", "amount", "channel", "origin_clabe",
-      "beneficiary_clabe", "counterparty_rfc", "reference", "status",
+      "txn_id",
+      "date",
+      "from_clabe",
+      "to_clabe",
+      "amount",
+      "reference",
+      "channel",
     ],
   },
   ledger: {
@@ -51,21 +66,37 @@ export const TABLES: Record<SourceTable, TableMeta> = {
     plural: "Pólizas",
     description: "Pólizas del libro mayor (contabilidad).",
     idField: "entry_id",
-    dateField: "entry_date",
+    dateField: "date",
     amountField: null,
     columns: [
-      "entry_id", "entry_date", "account_code", "account_name", "debit", "credit",
-      "counterparty_rfc", "description", "source_ref",
+      "entry_id",
+      "date",
+      "account_code",
+      "account_name",
+      "debit",
+      "credit",
+      "description",
+      "invoice_uuid",
+      "cost_center",
+      "approver",
     ],
   },
   purchase_orders: {
     label: "Orden de compra",
     plural: "Órdenes de compra",
-    description: "Órdenes de compra aprobadas o canceladas.",
+    description: "Órdenes de compra emitidas a proveedores.",
     idField: "po_id",
-    dateField: "po_date",
+    dateField: "date",
     amountField: "amount",
-    columns: ["po_id", "po_date", "vendor_rfc", "amount", "description", "plant", "approved_by", "status"],
+    columns: [
+      "po_id",
+      "vendor_rfc",
+      "date",
+      "amount",
+      "requester",
+      "approver",
+      "description",
+    ],
   },
   contracts: {
     label: "Contrato",
@@ -74,42 +105,58 @@ export const TABLES: Record<SourceTable, TableMeta> = {
     idField: "contract_id",
     dateField: "start_date",
     amountField: "value",
-    columns: ["contract_id", "vendor_rfc", "start_date", "end_date", "value", "scope", "status"],
+    columns: ["contract_id", "vendor_rfc", "start_date", "value", "scope_text"],
   },
   vendors: {
     label: "Proveedor",
     plural: "Proveedores",
     description: "Catálogo de proveedores dados de alta.",
     idField: "rfc",
-    dateField: "registered_at",
+    dateField: "registered_date",
     amountField: null,
-    columns: ["rfc", "legal_name", "registered_at", "bank_clabe", "address", "legal_rep", "status"],
+    columns: [
+      "rfc",
+      "legal_name",
+      "registered_date",
+      "address",
+      "bank_clabe",
+      "category",
+      "contact_email",
+    ],
   },
   employees: {
     label: "Empleado",
     plural: "Empleados",
     description: "Plantilla de empleados y sus cuentas de nómina.",
-    idField: "employee_id",
+    idField: "emp_id",
     dateField: "hire_date",
     amountField: null,
-    columns: ["employee_id", "full_name", "rfc", "role", "department", "hire_date", "bank_clabe"],
+    columns: ["emp_id", "name", "role", "bank_clabe", "hire_date"],
   },
   efos_list: {
     label: "Lista SAT 69-B",
     plural: "EFOS",
-    description: "Lista del SAT de contribuyentes que facturan operaciones simuladas (Art. 69-B CFF).",
+    description:
+      "Lista del SAT de contribuyentes que facturan operaciones simuladas (Art. 69-B CFF).",
     idField: "rfc",
-    dateField: "dof_date",
+    dateField: "publication_date",
     amountField: null,
-    columns: ["rfc", "legal_name", "efos_status", "dof_date"],
+    columns: ["rfc", "legal_name", "status", "publication_date"],
   },
 };
 
 export const TABLE_ORDER: SourceTable[] = [
-  "invoices", "bank_txns", "ledger", "purchase_orders", "contracts", "vendors", "employees", "efos_list",
+  "invoices",
+  "bank_txns",
+  "ledger",
+  "purchase_orders",
+  "contracts",
+  "vendors",
+  "employees",
+  "efos_list",
 ];
 
-/** Traducción de cada columna (tooltip). */
+/** Traducción de cada columna cruda (tooltip). */
 export const COLUMN_LABELS: Record<string, string> = {
   uuid: "Folio fiscal de la factura",
   issuer_rfc: "RFC de quien emite la factura",
@@ -122,56 +169,68 @@ export const COLUMN_LABELS: Record<string, string> = {
   uso_cfdi: "Uso que el receptor da a la factura (catálogo SAT)",
   forma_pago: "Forma de pago (catálogo SAT)",
   metodo_pago: "Método de pago: en una exhibición o en parcialidades",
-  status: "Estatus del registro",
+  status: "Estatus de la factura o situación en la lista 69-B",
   txn_id: "Identificador del movimiento bancario",
-  txn_date: "Fecha del movimiento",
-  direction: "Salida o entrada de dinero",
+  date: "Fecha del registro",
+  from_clabe: "CLABE de la cuenta que envía",
+  to_clabe: "CLABE de la cuenta que recibe",
   amount: "Monto",
-  channel: "Medio: SPEI, cheque o efectivo",
-  origin_clabe: "CLABE de la cuenta que envía",
-  beneficiary_clabe: "CLABE de la cuenta que recibe",
-  counterparty_rfc: "RFC de la contraparte",
   reference: "Referencia o concepto bancario",
+  channel: "Medio: SPEI, cheque o efectivo",
   entry_id: "Número de póliza",
-  entry_date: "Fecha de la póliza",
   account_code: "Cuenta contable",
   account_name: "Nombre de la cuenta contable",
   debit: "Cargo",
   credit: "Abono",
   description: "Descripción",
-  source_ref: "Documento que origina el registro",
+  invoice_uuid: "Folio fiscal de la factura relacionada",
+  cost_center: "Centro de costos",
+  approver: "Persona que aprobó el registro",
   po_id: "Número de orden de compra",
-  po_date: "Fecha de la orden",
   vendor_rfc: "RFC del proveedor",
-  plant: "Planta o centro de costos",
-  approved_by: "Empleado que aprobó",
+  requester: "Persona que solicitó la compra",
   contract_id: "Número de contrato",
   start_date: "Inicio de vigencia",
-  end_date: "Fin de vigencia",
   value: "Valor del contrato",
-  scope: "Alcance de los servicios contratados",
+  scope_text: "Alcance de los servicios contratados",
   rfc: "Registro Federal de Contribuyentes",
   legal_name: "Razón social",
-  registered_at: "Fecha de alta como proveedor",
-  bank_clabe: "CLABE registrada",
+  registered_date: "Fecha de alta como proveedor",
   address: "Domicilio fiscal",
-  legal_rep: "Representante legal",
-  employee_id: "Número de empleado",
-  full_name: "Nombre completo",
+  bank_clabe: "CLABE registrada",
+  category: "Categoría del proveedor",
+  contact_email: "Correo de contacto",
+  emp_id: "Número de empleado",
+  name: "Nombre del empleado",
   role: "Puesto",
-  department: "Área",
   hire_date: "Fecha de ingreso",
-  efos_status: "Situación en la lista 69-B",
-  dof_date: "Fecha de publicación en el Diario Oficial",
+  publication_date: "Fecha de publicación en el Diario Oficial",
 };
 
 /** Columnas con montos en pesos. */
-export const MONEY_COLUMNS = new Set(["subtotal", "iva", "total", "amount", "debit", "credit", "value"]);
+export const MONEY_COLUMNS = new Set([
+  "subtotal",
+  "iva",
+  "total",
+  "amount",
+  "debit",
+  "credit",
+  "value",
+]);
 
 /** Columnas cuyo valor es un RFC, una CLABE o un número de empleado. */
-export const RFC_COLUMNS = new Set(["issuer_rfc", "receiver_rfc", "counterparty_rfc", "vendor_rfc", "rfc"]);
-export const CLABE_COLUMNS = new Set(["origin_clabe", "beneficiary_clabe", "bank_clabe"]);
-export const EMPLOYEE_COLUMNS = new Set(["employee_id", "approved_by"]);
+export const RFC_COLUMNS = new Set([
+  "issuer_rfc",
+  "receiver_rfc",
+  "vendor_rfc",
+  "rfc",
+]);
+export const CLABE_COLUMNS = new Set([
+  "from_clabe",
+  "to_clabe",
+  "bank_clabe",
+]);
+export const EMPLOYEE_COLUMNS = new Set(["emp_id"]);
 
 /** Catálogos SAT y de negocio para tooltips de códigos (EXAMPLE §7.6). */
 export const CODE_LABELS: Record<string, Record<string, string>> = {
@@ -199,40 +258,37 @@ export const CODE_LABELS: Record<string, Record<string, string>> = {
   status: {
     vigente: "La factura es válida ante el SAT",
     cancelado: "La factura fue cancelada ante el SAT",
-    liquidada: "El movimiento se completó",
-    aprobada: "Orden aprobada",
-    cancelada: "Orden cancelada",
-    activo: "Proveedor activo",
-    vigente_contrato: "Contrato vigente",
-  },
-  efos_status: {
-    Presunto: "El SAT presume que factura operaciones simuladas; el contribuyente puede aclarar.",
-    Desvirtuado: "El contribuyente demostró que sus operaciones son reales. Ya limpió su situación.",
-    Definitivo: "El SAT confirmó que factura operaciones inexistentes.",
-    "Sentencia Favorable": "Un tribunal le dio la razón al contribuyente. Ya no se presume que simule operaciones.",
+    definitivo: "El SAT confirmó que factura operaciones inexistentes",
+    presunto:
+      "El SAT presume que factura operaciones simuladas; el contribuyente puede aclarar",
+    desvirtuado:
+      "El contribuyente demostró que sus operaciones son reales y aclaró su situación",
+    "sentencia favorable":
+      "Un tribunal dio la razón al contribuyente; ya no se presume que simule operaciones",
   },
   channel: {
     SPEI: "Transferencia electrónica interbancaria",
     cheque: "Pago con cheque",
     efectivo: "Pago en efectivo",
   },
-  direction: {
-    salida: "Dinero que sale de la empresa",
-    entrada: "Dinero que entra a la empresa",
-  },
 };
 
-export function codeLabel(column: string, value: string | number | null): string | null {
+export function codeLabel(
+  column: string,
+  value: string | number | null,
+): string | null {
   if (value === null) return null;
   return CODE_LABELS[column]?.[String(value)] ?? null;
 }
 
-/** Llave de `Report.records`: `"invoices:INV-00001"`. */
+/** Llave de `Report.records`: `"invoices:<uuid>"`. */
 export function recordKey(table: SourceTable, recordId: string): string {
   return `${table}:${recordId}`;
 }
 
-export function parseRecordKey(key: string): { table: SourceTable; recordId: string } | null {
+export function parseRecordKey(
+  key: string,
+): { table: SourceTable; recordId: string } | null {
   const index = key.indexOf(":");
   if (index <= 0) return null;
   const table = key.slice(0, index) as SourceTable;
@@ -243,7 +299,9 @@ export function parseRecordKey(key: string): { table: SourceTable; recordId: str
 /** Id de entidad a partir del valor crudo de una columna. */
 export function entityIdFromValue(column: string, value: string): string | null {
   if (RFC_COLUMNS.has(column)) return `RFC:${value}`;
-  if (EMPLOYEE_COLUMNS.has(column)) return `EMP:${value.replace(/^EMP-/, "")}`;
+  if (EMPLOYEE_COLUMNS.has(column)) {
+    return value.startsWith("EMP:") ? value : `EMP:${value}`;
+  }
   if (CLABE_COLUMNS.has(column)) return `CLABE:${value}`;
   return null;
 }

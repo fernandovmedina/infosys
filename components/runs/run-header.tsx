@@ -2,14 +2,13 @@
 
 import { useId, useRef, useState } from "react";
 import { formatCost, formatDuration, formatNumber, formatPeriod } from "@/lib/format";
-import { getExportUrl, isMockMode } from "@/lib/runs/api";
+import { getExportUrl } from "@/lib/runs/api";
 import { GLOSSARY, ROLE_LABELS } from "@/lib/runs/labels";
 import type { AgentRole, ExportFormat, Report } from "@/lib/runs/types";
 import { Button, CopyButton, Icon, Modal, Tooltip } from "./ui";
 
 const EXPORT_OPTIONS: { format: ExportFormat; label: string }[] = [
   { format: "html", label: "Case file HTML (sin red)" },
-  { format: "pdf", label: "Case file PDF" },
   { format: "md", label: "Markdown con diagramas" },
   { format: "submission", label: "Submission JSON oficial" },
 ];
@@ -18,21 +17,6 @@ function ExportMenu({ runId }: { runId: string }) {
   const [open, setOpen] = useState(false);
   const menuId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
-
-  if (isMockMode) {
-    return (
-      <Tooltip content="Disponible cuando el backend implemente la exportación">
-        <button
-          type="button"
-          aria-disabled="true"
-          onClick={(event) => event.preventDefault()}
-          className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-md border border-zinc-200 bg-white px-3 py-1.5 text-sm font-medium text-zinc-400 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900"
-        >
-          <Icon name="download" /> Exportar
-        </button>
-      </Tooltip>
-    );
-  }
 
   return (
     <div
@@ -57,7 +41,7 @@ function ExportMenu({ runId }: { runId: string }) {
               role="menuitem"
               onClick={() => {
                 const url = getExportUrl(runId, option.format);
-                if (url) window.open(url, "_blank", "noopener");
+                window.open(url, "_blank", "noopener");
                 setOpen(false);
               }}
               className="block w-full px-3 py-2 text-left text-sm text-zinc-700 hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-none"
