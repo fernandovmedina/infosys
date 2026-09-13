@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FileDropzone } from "@/components/dashboard/file-dropzone";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth";
 
 export default function DashboardPage() {
@@ -38,9 +39,9 @@ export default function DashboardPage() {
       <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
         Hola, {user.name}
       </h1>
-      <p className="mt-2 text-sm text-zinc-600">
-        Aquí irá la detección de fraudes cuando conectemos el backend.
-      </p>
+      <div className="mt-8">
+        <FileDropzone />
+      </div>
     </main>
   );
 }

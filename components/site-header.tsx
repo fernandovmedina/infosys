@@ -45,13 +45,6 @@ export function SiteHeader() {
         </Link>
 
         <nav className="flex items-center gap-2">
-          <Link
-            href="/dashboard"
-            className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
-          >
-            Panel
-          </Link>
-
           {loading ? null : user ? (
             <>
               <span className="px-3 py-1.5 text-sm text-zinc-500">
