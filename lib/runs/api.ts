@@ -14,6 +14,7 @@ import type {
   EntitiesQuery,
   EntityListItem,
   EntityTimeline,
+  ExplainAnswer,
   ExportFormat,
   GraphData,
   LogQuery,
@@ -243,6 +244,14 @@ export function search(runId: string, q: string): Promise<SearchResponse> {
   return request<SearchResponse>(
     `${runPath(runId)}/search${queryString({ q })}`,
   );
+}
+
+export function explainCaseFile(runId: string, question: string): Promise<ExplainAnswer> {
+  return request<ExplainAnswer>(`${runPath(runId)}/explain`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question }),
+  });
 }
 
 /** URL del case file exportado por el backend. */

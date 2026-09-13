@@ -18,6 +18,7 @@ import { RecordDrawer } from "./record-drawer";
 import { SearchPalette } from "./search-palette";
 import { TransactionsExplorer } from "./transactions-explorer";
 import { RunHeader } from "./run-header";
+import { ExplainabilityChat } from "./explainability-chat";
 import { VERDICT_STYLES } from "./run-history";
 import { Button, Icon, LoadingBlock, Notice, type IconName } from "./ui";
 
@@ -168,6 +169,7 @@ function CaseFileLayout({ justFinished }: { justFinished: boolean }) {
       <div ref={summaryRef} className="mt-6">
         <ExecutiveSummary report={report} />
       </div>
+      <ExplainabilityChat />
 
       <div className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[13rem_minmax(0,1fr)]">
         <aside className="min-w-0 lg:sticky lg:top-16 lg:self-start">

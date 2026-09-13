@@ -344,6 +344,13 @@ export interface SearchResponse {
   hits: SearchHit[];
 }
 
+/** Grounded response from the optional local Ollama case-file assistant. */
+export interface ExplainAnswer {
+  answer: string;
+  grounded_in: string[];
+  model: string;
+}
+
 export type ExportFormat = 'html' | 'md' | 'submission';
 
 export interface SubscribeHandlers {
