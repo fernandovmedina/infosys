@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { formatDateTime, formatMoneyMXN } from "@/lib/format";
 import { errorMessage } from "@/lib/runs/errors";
 import { RUN_STATUS_LABELS, VERDICT_LABELS } from "@/lib/runs/labels";
-import { listRuns } from "@/lib/runs/api";
+import { deleteAllRuns, deleteRun, listRuns } from "@/lib/runs/api";
 import type { RunStatus, RunSummary, Verdict } from "@/lib/runs/types";
-import { Icon, LoadingBlock, Notice, type IconName } from "./ui";
+import { Button, Icon, LoadingBlock, Notice, Spinner, type IconName } from "./ui";
 
 export const VERDICT_STYLES: Record<Verdict, { badge: string; icon: IconName }> = {
   fraud_proven: { badge: "bg-red-50 text-red-700 ring-red-200", icon: "xCircle" },
@@ -50,6 +50,13 @@ function Outcome({ run }: { run: RunSummary }) {
 export function RunHistory() {
   const [runs, setRuns] = useState<RunSummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confirmingRunId, setConfirmingRunId] = useState<string | null>(null);
+  const [deletingRunId, setDeletingRunId] = useState<string | null>(null);
+  const [runDeleteErrors, setRunDeleteErrors] = useState<Record<string, string>>({});
+  const [confirmingDeleteAll, setConfirmingDeleteAll] = useState(false);
+  const [deletingAll, setDeletingAll] = useState(false);
+  const [deleteAllError, setDeleteAllError] = useState<string | null>(null);
+  const deletableCount = runs?.filter((run) => run.status !== "running").length ?? 0;
 
   useEffect(() => {
     let cancelled = false;
@@ -65,11 +72,86 @@ export function RunHistory() {
     };
   }, []);
 
+  async function handleDeleteRun(runId: string) {
+    setDeletingRunId(runId);
+    try {
+      await deleteRun(runId);
+      setRuns((current) => current?.filter((run) => run.run_id !== runId) ?? current);
+      setConfirmingRunId(null);
+      setRunDeleteErrors((current) => {
+        const next = { ...current };
+        delete next[runId];
+        return next;
+      });
+    } catch (cause) {
+      setRunDeleteErrors((current) => ({ ...current, [runId]: errorMessage(cause) }));
+    } finally {
+      setDeletingRunId(null);
+    }
+  }
+
+  async function handleDeleteAll() {
+    setDeletingAll(true);
+    setDeleteAllError(null);
+    try {
+      await deleteAllRuns();
+      setRuns(await listRuns());
+      setConfirmingDeleteAll(false);
+      setConfirmingRunId(null);
+      setRunDeleteErrors({});
+    } catch (cause) {
+      setDeleteAllError(errorMessage(cause));
+    } finally {
+      setDeletingAll(false);
+    }
+  }
+
   return (
     <section aria-labelledby="history-title">
-      <h2 id="history-title" className="text-lg font-semibold tracking-tight text-zinc-900">
-        Historial de corridas
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 id="history-title" className="text-lg font-semibold tracking-tight text-zinc-900">
+          Historial de corridas
+        </h2>
+        {deletableCount > 0 && !confirmingDeleteAll && (
+          <Button
+            variant="secondary"
+            className="text-xs"
+            onClick={() => {
+              setDeleteAllError(null);
+              setConfirmingDeleteAll(true);
+            }}
+            disabled={deletingAll || deletingRunId !== null}
+          >
+            Borrar historial
+          </Button>
+        )}
+      </div>
+      {confirmingDeleteAll && runs && deletableCount > 0 && (
+        <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p>
+            {deletableCount === 1 ? "Se eliminará 1 corrida y su dataset." : `Se eliminarán ${deletableCount} corridas y sus datasets.`}{" "}
+            {deletableCount < runs.length && "Las corridas en curso se conservan. "}
+            Esta acción no se puede deshacer.
+          </p>
+          <div className="mt-3 flex flex-wrap justify-end gap-2">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setConfirmingDeleteAll(false);
+                setDeleteAllError(null);
+              }}
+              disabled={deletingAll}
+            >
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={() => void handleDeleteAll()} disabled={deletingAll} aria-busy={deletingAll}>
+              {deletingAll && <Spinner className="h-3.5 w-3.5" />}
+              Borrar historial
+            </Button>
+          </div>
+          {deleteAllError && <p className="mt-2 text-red-700" role="alert">{deleteAllError}</p>}
+        </div>
+      )}
       <div className="mt-3">
         {error ? (
           <Notice tone="error" title="No se pudo cargar el historial">
@@ -85,19 +167,74 @@ export function RunHistory() {
           <ul className="divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white">
             {runs.map((run) => (
               <li key={run.run_id}>
-                <Link
-                  href={`/runs/${encodeURIComponent(run.run_id)}`}
-                  className="grid gap-1.5 px-4 py-3 text-sm outline-none transition-colors hover:bg-zinc-50 focus-visible:bg-zinc-50 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-4"
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate font-medium text-zinc-900">{run.company_name ?? run.filename}</span>
-                    <span className="block truncate text-xs text-zinc-500">
-                      {run.filename} · <span className="font-mono">{run.run_id}</span>
+                <div className="flex items-stretch">
+                  <Link
+                    href={`/runs/${encodeURIComponent(run.run_id)}`}
+                    className="grid min-w-0 flex-1 gap-1.5 px-4 py-3 text-sm outline-none transition-colors hover:bg-zinc-50 focus-visible:bg-zinc-50 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] sm:items-center sm:gap-4"
+                  >
+                    <span className="min-w-0">
+                      <span className="block truncate font-medium text-zinc-900">{run.company_name ?? run.filename}</span>
+                      <span className="block truncate text-xs text-zinc-500">
+                        {run.filename} · <span className="font-mono">{run.run_id}</span>
+                      </span>
                     </span>
-                  </span>
-                  <Outcome run={run} />
-                  <span className="text-xs text-zinc-500 sm:text-right">{formatDateTime(run.created_at)}</span>
-                </Link>
+                    <Outcome run={run} />
+                    <span className="text-xs text-zinc-500 sm:text-right">{formatDateTime(run.created_at)}</span>
+                  </Link>
+                  {run.status !== "running" && (
+                    <div className="flex shrink-0 items-center px-3">
+                      <Button
+                        variant="ghost"
+                        className="px-2 py-1 text-xs"
+                        aria-label={`Eliminar corrida ${run.filename}`}
+                        onClick={() => {
+                          setConfirmingRunId(run.run_id);
+                          setRunDeleteErrors((current) => {
+                            const next = { ...current };
+                            delete next[run.run_id];
+                            return next;
+                          });
+                        }}
+                        disabled={deletingAll || deletingRunId !== null}
+                      >
+                        Eliminar
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                {confirmingRunId === run.run_id && (
+                  <div className="border-t border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
+                    <p className="text-zinc-700">¿Eliminar esta corrida? Se borra también el dataset subido.</p>
+                    <div className="mt-3 flex flex-wrap justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setConfirmingRunId(null);
+                          setRunDeleteErrors((current) => {
+                            const next = { ...current };
+                            delete next[run.run_id];
+                            return next;
+                          });
+                        }}
+                        disabled={deletingRunId === run.run_id}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => void handleDeleteRun(run.run_id)}
+                        disabled={deletingRunId !== null}
+                        aria-busy={deletingRunId === run.run_id}
+                      >
+                        {deletingRunId === run.run_id && <Spinner className="h-3.5 w-3.5" />}
+                        Eliminar
+                      </Button>
+                    </div>
+                    {runDeleteErrors[run.run_id] && (
+                      <p className="mt-2 text-red-700" role="alert">{runDeleteErrors[run.run_id]}</p>
+                    )}
+                  </div>
+                )}
               </li>
             ))}
           </ul>

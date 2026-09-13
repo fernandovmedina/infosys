@@ -36,14 +36,17 @@ import type {
   TableDiagnostic,
   TimelineLane,
   ValidationResult,
+  IgnoredFile,
 } from "./types";
 
 /** Factor de compresión del tiempo simulado (81 s de corrida ≈ 16 s reales). */
 const SPEED = 5;
-const VALIDATION_MS = 1800;
 const RUNS_KEY = "infosys.mock.runs.v1";
 const SCENARIO_KEY = "infosys.mock.scenario";
-const ACCEPTED_EXTENSIONS = [".zip", ".csv", ".xlsx", ".db", ".sqlite", ".sql"];
+const ACCEPTED_EXTENSIONS = [".zip", ".csv"] as const;
+const MAX_UPLOAD_BYTES = 200 * 1024 * 1024;
+
+type UploadFormat = ValidationResult["format"];
 
 interface MockRun {
   run_id: string;
@@ -51,6 +54,8 @@ interface MockRun {
   filename: string;
   created_at: number;
   started_at?: number;
+  format?: UploadFormat;
+  source_files?: string[];
 }
 
 const SEEDED_RUNS: MockRun[] = [
@@ -112,6 +117,16 @@ function findRun(runId: string): MockRun {
   return run;
 }
 
+function removeRun(runId: string) {
+  for (let index = memoryRuns.length - 1; index >= 0; index -= 1) {
+    if (memoryRuns[index].run_id === runId) memoryRuns.splice(index, 1);
+  }
+  for (let index = SEEDED_RUNS.length - 1; index >= 0; index -= 1) {
+    if (SEEDED_RUNS[index].run_id === runId) SEEDED_RUNS.splice(index, 1);
+  }
+  writeStored(readStored().filter((run) => run.run_id !== runId));
+}
+
 function delay(min = 120, max = 380) {
   return new Promise((resolve) => setTimeout(resolve, min + Math.random() * (max - min)));
 }
@@ -121,6 +136,33 @@ const round2 = (n: number) => Math.round(n * 100) / 100;
 
 function normalize(text: string) {
   return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+function formatForFilename(filename: string): UploadFormat {
+  return filename.toLowerCase().endsWith(".zip") ? "zip" : "csv";
+}
+
+function formatForRun(run: MockRun): UploadFormat {
+  return run.format ?? formatForFilename(run.filename);
+}
+
+const TABLE_FILE_ALIASES: Partial<Record<SourceTable, string[]>> = {
+  bank_txns: ["bank_txns", "bank_transactions"],
+  purchase_orders: ["purchase_orders", "purchase-orders", "pos"],
+  efos_list: ["efos_list", "efos"],
+};
+
+function sourceFileForTable(name: SourceTable, format: UploadFormat, sourceFiles?: string[]): string | null {
+  if (format === "zip") return `seed67/${name}.csv`;
+  const aliases = [name, ...(TABLE_FILE_ALIASES[name] ?? [])].map((alias) => normalize(alias).replace(/[\s-]+/g, "_"));
+  return sourceFiles?.find((filename) => {
+    const stem = normalize(filename.split("/").at(-1)?.replace(/\.csv$/i, "") ?? "").replace(/[\s-]+/g, "_");
+    return aliases.some((alias) => stem === alias || stem.startsWith(`${alias}_`));
+  }) ?? null;
+}
+
+function ignoredFilesFor(scenario: ScenarioDefinition, format: UploadFormat): IgnoredFile[] {
+  return format === "zip" ? scenario.ignored_files ?? [] : [];
 }
 
 // ---------------------------------------------------------------------
@@ -327,13 +369,20 @@ function recordViewOf(index: ScenarioIndex, table: SourceTable, recordId: string
 // Estado de la corrida y eventos
 // ---------------------------------------------------------------------
 
-function tableDiagnostics(scenario: ScenarioDefinition): TableDiagnostic[] {
+function tableDiagnostics(
+  scenario: ScenarioDefinition,
+  format: UploadFormat = formatForFilename(scenario.filename),
+  sourceFiles?: string[],
+): TableDiagnostic[] {
   return TABLE_ORDER.map((name) => {
     const rows = scenario.estate.tables[name].length;
     const override = scenario.table_overrides?.[name];
-    if (override) return { name, rows, ...override };
-    if (rows === 0) return { name, rows, status: "warning", warnings: ["Tabla vacía."] };
-    return { name, rows, status: "ok", warnings: [] };
+    const source_file = sourceFileForTable(name, format, sourceFiles);
+    if (override) {
+      return { name, rows, status: override.status, warnings: override.warnings, source_file, missing: override.missing ?? false };
+    }
+    if (rows === 0) return { name, rows, status: "warning", warnings: ["Tabla vacía."], source_file, missing: false };
+    return { name, rows, status: "ok", warnings: [], source_file, missing: false };
   });
 }
 
@@ -390,7 +439,7 @@ function stateOf(run: MockRun): RunState {
   const base = { run_id: run.run_id, filename: run.filename, created_at: iso(run.created_at) };
 
   if (!run.started_at) {
-    return { ...base, status: now - run.created_at < VALIDATION_MS ? "validating" : "ready" };
+    return { ...base, status: "ready" };
   }
 
   const events = eventsFor(run);
@@ -473,7 +522,11 @@ function buildReport(run: MockRun): Report {
       status: "completed",
       created_at: state.created_at,
       finished_at: state.finished_at,
-      dataset: { filename: run.filename, sha256: scenario.sha256, tables: tableDiagnostics(scenario) },
+      dataset: {
+        filename: run.filename,
+        sha256: scenario.sha256,
+        tables: tableDiagnostics(scenario, formatForRun(run), run.source_files),
+      },
     },
     case_header: {
       company_name: scenario.company_name,
@@ -692,30 +745,66 @@ export const mockApi: RunsApi = {
     if (files.length === 0) {
       throw new ApiError(422, { code: "no_files", message: "No se recibió ningún archivo." });
     }
-    const filename = files.length === 1 ? files[0].name : `${files.length} archivos CSV`;
     const unsupported = files.find((file) => !ACCEPTED_EXTENSIONS.some((ext) => file.name.toLowerCase().endsWith(ext)));
     if (unsupported) {
       throw new ApiError(415, {
         code: "unsupported_format",
         message: `El formato de ${unsupported.name} no está soportado.`,
-        details: { accepted: ACCEPTED_EXTENSIONS },
+        details: { filename: unsupported.name, accepted: [...ACCEPTED_EXTENSIONS] },
       });
     }
-    if (files.some((file) => file.name.toLowerCase().includes("corrupto"))) {
+    const archives = files.filter((file) => file.name.toLowerCase().endsWith(".zip"));
+    const csvFiles = files.filter((file) => file.name.toLowerCase().endsWith(".csv"));
+    if (archives.length > 0 && csvFiles.length > 0) {
       throw new ApiError(422, {
-        code: "unreadable_file",
-        message: "No se pudo leer el archivo: el ZIP está dañado o no contiene tablas reconocibles.",
+        code: "mixed_formats",
+        message: "No se puede mezclar un archivo ZIP con archivos CSV sueltos.",
+        details: { filenames: files.map((file) => file.name) },
       });
     }
+    if (archives.length > 1) {
+      throw new ApiError(422, {
+        code: "multiple_archives",
+        message: "Solo se puede subir un archivo ZIP por dataset.",
+        details: { filenames: archives.map((file) => file.name) },
+      });
+    }
+    const totalBytes = files.reduce((sum, file) => sum + file.size, 0);
+    if (totalBytes > MAX_UPLOAD_BYTES) {
+      throw new ApiError(413, {
+        code: "file_too_large",
+        message: "El dataset supera el tamaño máximo permitido de 200 MB.",
+        details: { max_bytes: MAX_UPLOAD_BYTES },
+      });
+    }
+    const corrupt = files.find((file) => file.name.toLowerCase().includes("corrupto"));
+    if (corrupt && archives.length > 0) {
+      throw new ApiError(422, {
+        code: "invalid_archive",
+        message: `No se pudo leer el archivo ZIP ${corrupt.name}.`,
+        details: { filename: corrupt.name },
+      });
+    }
+    if (corrupt) {
+      throw new ApiError(422, {
+        code: "invalid_csv",
+        message: `No se pudo leer el archivo CSV ${corrupt.name}.`,
+        details: { filename: corrupt.name, reason: "El archivo no se pudo decodificar o no contiene encabezados." },
+      });
+    }
+    const format: UploadFormat = archives.length === 1 ? "zip" : "csv";
+    const filename = files.length === 1 ? files[0].name : `${files.length} archivos CSV`;
     const scenario = files.map((file) => scenarioFromFilename(file.name)).find(Boolean) ?? getSelectedScenario();
     const run: MockRun = {
       run_id: `run_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
       scenario,
       filename,
       created_at: Date.now(),
+      format,
+      source_files: files.map((file) => file.name),
     };
     saveRun(run);
-    return { run_id: run.run_id, status: "validating" };
+    return { run_id: run.run_id, status: "ready" };
   },
 
   async getValidation(runId): Promise<ValidationResult> {
@@ -723,13 +812,16 @@ export const mockApi: RunsApi = {
     const run = findRun(runId);
     const scenario = SCENARIOS[run.scenario];
     const state = stateOf(run);
-    const validating = state.status === "validating";
+    const format = formatForRun(run);
     return {
       run_id: runId,
       status: state.status,
       filename: run.filename,
-      tables: validating ? [] : tableDiagnostics(scenario),
-      column_warnings: validating ? [] : scenario.column_warnings,
+      format,
+      sha256: scenario.sha256,
+      tables: tableDiagnostics(scenario, format, run.source_files),
+      column_warnings: scenario.column_warnings,
+      ignored_files: ignoredFilesFor(scenario, format),
     };
   },
 
@@ -983,5 +1075,24 @@ export const mockApi: RunsApi = {
             : {}),
         };
       });
+  },
+
+  async deleteRun(runId) {
+    await delay();
+    const run = findRun(runId);
+    if (stateOf(run).status === "running") {
+      throw new ApiError(409, {
+        code: "invalid_state",
+        message: "No se puede eliminar una corrida mientras está en ejecución.",
+      });
+    }
+    removeRun(runId);
+  },
+
+  async deleteAllRuns() {
+    await delay();
+    const deletable = allRuns().filter((run) => stateOf(run).status !== "running");
+    deletable.forEach((run) => removeRun(run.run_id));
+    return { deleted: deletable.length };
   },
 };

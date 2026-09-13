@@ -73,6 +73,8 @@ export interface RunsApi {
   search(runId: string, q: string): Promise<SearchResponse>;
   getExportUrl(runId: string, format: ExportFormat): string | null;
   listRuns(): Promise<RunSummary[]>;
+  deleteRun(runId: string): Promise<void>;
+  deleteAllRuns(): Promise<{ deleted: number }>;
 }
 
 // ---------------------------------------------------------------------
@@ -95,7 +97,7 @@ async function toApiError(response: Response): Promise<ApiError> {
   }
 }
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function send(path: string, init?: RequestInit): Promise<Response> {
   let response: Response;
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
@@ -110,7 +112,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   if (!response.ok) throw await toApiError(response);
-  return (await response.json()) as T;
+  return response;
+}
+
+async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  return (await (await send(path, init)).json()) as T;
 }
 
 function queryString(params: Record<string, string | number | boolean | null | undefined>) {
@@ -248,6 +254,12 @@ const httpApi: RunsApi = {
   },
 
   listRuns: () => request<RunSummary[]>("/runs"),
+
+  async deleteRun(runId) {
+    await send(runPath(runId), { method: "DELETE" });
+  },
+
+  deleteAllRuns: () => request<{ deleted: number }>("/runs", { method: "DELETE" }),
 };
 
 // ---------------------------------------------------------------------
@@ -343,6 +355,14 @@ export function getExportUrl(runId: string, format: ExportFormat): string | null
 
 export async function listRuns() {
   return (await impl()).listRuns();
+}
+
+export async function deleteRun(runId: string) {
+  return (await impl()).deleteRun(runId);
+}
+
+export async function deleteAllRuns() {
+  return (await impl()).deleteAllRuns();
 }
 
 // ---------------------------------------------------------------------

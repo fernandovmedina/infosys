@@ -42,6 +42,7 @@ export const partialScenario: ScenarioDefinition = {
     },
     efos_list: {
       status: "error",
+      missing: true,
       warnings: ["No encontrada: sin la lista EFOS no corre el detector de proveedores 69-B."],
     },
   },

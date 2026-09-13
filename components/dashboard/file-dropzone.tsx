@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type DragEvent } from "react";
+import { useEffect, useRef, useState, type DragEvent, type ReactNode } from "react";
 
 function formatSize(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -10,8 +10,9 @@ function formatSize(bytes: number) {
 
 export function FileDropzone({
   onFilesChange,
-  accept,
-  hint = "Se acepta cualquier tipo de archivo (.zip, .csv, .xlsx, .sql, …)",
+  accept = ".zip,.csv",
+  hint = "Solo se aceptan archivos .zip o .csv",
+  fileDescription,
   disabled = false,
 }: {
   onFilesChange?: (files: File[]) => void;
@@ -19,6 +20,8 @@ export function FileDropzone({
   accept?: string;
   /** Texto de ayuda bajo el título. */
   hint?: string;
+  /** Información compacta que se muestra debajo del nombre de cada archivo. */
+  fileDescription?: (file: File) => ReactNode;
   disabled?: boolean;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -128,7 +131,10 @@ export function FileDropzone({
               key={`${file.name}-${file.lastModified}-${index}`}
               className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
             >
-              <span className="truncate text-zinc-900">{file.name}</span>
+              <span className="min-w-0 truncate text-zinc-900">
+                <span className="block truncate">{file.name}</span>
+                {fileDescription && <span className="mt-0.5 block truncate text-xs text-zinc-500">{fileDescription(file)}</span>}
+              </span>
               <span className="flex shrink-0 items-center gap-4">
                 <span className="text-zinc-500">{formatSize(file.size)}</span>
                 <button

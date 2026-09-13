@@ -4,6 +4,7 @@ import type {
   ColumnWarning,
   Entity,
   FindingExtra,
+  IgnoredFile,
   LeadNotPursued,
   Report,
   RunEvent,
@@ -67,7 +68,8 @@ export interface ScenarioDefinition {
   company_name: string;
   estate: Estate;
   /** Diagnóstico de tablas distinto de "ok con N filas". */
-  table_overrides?: Partial<Record<SourceTable, Pick<TableDiagnostic, "status" | "warnings">>>;
+  table_overrides?: Partial<Record<SourceTable, Pick<TableDiagnostic, "status" | "warnings"> & Partial<Pick<TableDiagnostic, "missing">>>>;
+  ignored_files?: IgnoredFile[];
   column_warnings: ColumnWarning[];
   events: TimedEvent[];
   final_counters: { llm_calls: number; mxn_cost: number };

@@ -4,28 +4,23 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FileDropzone } from "@/components/dashboard/file-dropzone";
 import { formatFileSize } from "@/lib/format";
-import { ApiError, errorMessage, isNotAuthenticated } from "@/lib/runs/errors";
+import { ApiError, isNotAuthenticated } from "@/lib/runs/errors";
 import { createRun } from "@/lib/runs/api";
-import { Button, Notice, Spinner } from "./ui";
+import {
+  ACCEPTED_EXTENSIONS,
+  MAX_UPLOAD_BYTES,
+  tableForFilename,
+  uploadErrorMessage,
+  UPLOAD_TABLES,
+  validateSelection,
+} from "@/lib/runs/upload";
+import type { SourceTable } from "@/lib/runs/types";
+import { Button, Notice, Spinner, TableName } from "./ui";
 
-const ACCEPTED = [".zip", ".csv", ".xlsx", ".db", ".sqlite", ".sql"];
-const MAX_BYTES = 200 * 1024 * 1024;
+const REQUIRED_TABLES: SourceTable[] = ["invoices", "bank_txns"];
 
-/** El frontend solo valida extensión y tamaño; el contenido lo diagnostica el backend (EXAMPLE §4.1). */
-function validateFiles(files: File[]): string | null {
-  if (files.length === 0) return null;
-  const unsupported = files.find((file) => !ACCEPTED.some((ext) => file.name.toLowerCase().endsWith(ext)));
-  if (unsupported) {
-    return `${unsupported.name} no tiene un formato soportado. Usa ${ACCEPTED.join(", ")}.`;
-  }
-  if (files.length > 1 && files.some((file) => !file.name.toLowerCase().endsWith(".csv"))) {
-    return "Solo se pueden subir varios archivos a la vez si todos son .csv (uno por tabla). Para otros formatos sube un solo archivo.";
-  }
-  const total = files.reduce((sum, file) => sum + file.size, 0);
-  if (total > MAX_BYTES) {
-    return `El dataset pesa ${formatFileSize(total)}; el máximo es ${formatFileSize(MAX_BYTES)}.`;
-  }
-  return null;
+function isCsv(file: File): boolean {
+  return file.name.toLowerCase().endsWith(".csv");
 }
 
 export function DatasetUpload() {
@@ -34,7 +29,14 @@ export function DatasetUpload() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<{ code?: string; message: string } | null>(null);
 
-  const clientError = validateFiles(files);
+  const clientError = validateSelection(files);
+  const csvSelection = files.length > 0 && files.every(isCsv);
+  const selectedTables = new Set(
+    files
+      .map((file) => tableForFilename(file.name))
+      .filter((table): table is SourceTable => table !== null),
+  );
+  const missingTables = UPLOAD_TABLES.filter((table) => !selectedTables.has(table));
 
   async function handleSubmit() {
     if (files.length === 0 || clientError || submitting) return;
@@ -50,7 +52,7 @@ export function DatasetUpload() {
       }
       setSubmitError({
         code: error instanceof ApiError ? error.code : undefined,
-        message: errorMessage(error),
+        message: uploadErrorMessage(error),
       });
       setSubmitting(false);
     }
@@ -63,10 +65,34 @@ export function DatasetUpload() {
           setFiles(next);
           setSubmitError(null);
         }}
-        accept={ACCEPTED.join(",")}
-        hint={`Libros de la empresa: ${ACCEPTED.join(" · ")} (máx. ${formatFileSize(MAX_BYTES)})`}
+        accept={ACCEPTED_EXTENSIONS.join(",")}
+        hint={`Libros de la empresa: ${ACCEPTED_EXTENSIONS.join(" · ")} (máx. ${formatFileSize(MAX_UPLOAD_BYTES)})`}
+        fileDescription={(file) => {
+          if (!isCsv(file)) return "Las tablas se leen desde dentro del ZIP; las carpetas private/ se ignoran.";
+          const table = tableForFilename(file.name);
+          return table ? <TableName table={table} /> : "se identificará por columnas";
+        }}
         disabled={submitting}
       />
+
+      {csvSelection && (
+        <div className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-xs text-zinc-600">
+          <p>
+            Se enviarán {files.length === 1 ? "1 archivo CSV" : `${files.length} archivos CSV`}. Las tablas sin nombre reconocible se identificarán por sus columnas.
+          </p>
+          <p className="mt-2">
+            No están en la selección: {missingTables.length > 0 ? missingTables.map((table, index) => (
+              <span key={table}>
+                {index > 0 && ", "}
+                <TableName table={table} className="text-xs" />
+              </span>
+            )) : "ninguna"}.
+            <span className="ml-1">
+              Las tablas <TableName table={REQUIRED_TABLES[0]} className="text-xs" /> y <TableName table={REQUIRED_TABLES[1]} className="text-xs" /> son obligatorias.
+            </span>
+          </p>
+        </div>
+      )}
 
       {clientError && (
         <Notice tone="error" className="mt-4">

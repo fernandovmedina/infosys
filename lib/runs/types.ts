@@ -57,8 +57,15 @@ export type EntityKind = 'company' | 'vendor' | 'employee' | 'account' | 'unknow
 export type Verdict = 'fraud_proven' | 'fraud_probable' | 'clean_with_leads' | 'clean';
 export type RunStatus = 'validating' | 'ready' | 'running' | 'completed' | 'failed';
 
+export interface IgnoredFile {
+  filename: string;
+  reason: string;
+}
+
 export interface TableDiagnostic {
   name: SourceTable; rows: number; status: 'ok' | 'warning' | 'error'; warnings: string[];
+  source_file: string | null;
+  missing: boolean;
 }
 
 export interface Entity {
@@ -123,10 +130,10 @@ export interface ApiErrorBody {
   details?: unknown;
 }
 
-/** `POST /runs` → 202. */
+/** `POST /runs` → 201. */
 export interface CreateRunResponse {
   run_id: string;
-  status: 'validating';
+  status: RunStatus;
 }
 
 /** Advertencia de columna del diagnóstico (§4.3). */
@@ -141,8 +148,11 @@ export interface ValidationResult {
   run_id: string;
   status: RunStatus;
   filename: string;
+  format: 'zip' | 'csv';
+  sha256: string;
   tables: TableDiagnostic[];
   column_warnings: ColumnWarning[];
+  ignored_files: IgnoredFile[];
 }
 
 /** Contadores en vivo de una corrida. */

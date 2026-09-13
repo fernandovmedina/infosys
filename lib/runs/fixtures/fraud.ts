@@ -274,6 +274,10 @@ export const fraudScenario: ScenarioDefinition = {
   sha256: "9f2c4b7e1d0a8c3f5e6b2a9d7c1e4f8a0b3d6c9e2f5a8b1c4d7e0f3a6b9ca71b",
   company_name: COMPANY.name,
   estate,
+  ignored_files: [
+    { filename: "private/seed67_20260912_221551.ground_truth.json", reason: "Archivo privado ignorado." },
+    { filename: "private/seed67_20260912_221551.provenance.json", reason: "Archivo privado ignorado." },
+  ],
   column_warnings: [],
   final_counters: { llm_calls: 42, mxn_cost: 3.1 },
   disconnect_after_seq: 12,
