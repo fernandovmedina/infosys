@@ -54,7 +54,7 @@ export function EntityTimeline({
           width={width}
           height={height}
           role="group"
-          aria-label={`Línea de tiempo de ${timeline.entity.name}: ${total} registros`}
+          aria-label={`Timeline for ${timeline.entity.name}: ${total} records`}
           className="max-w-none text-zinc-900"
         >
           {months.map((month) => {
@@ -131,7 +131,7 @@ export function EntityTimeline({
         </svg>
       </div>
       <figcaption className="mt-1 text-xs text-zinc-500">
-        {formatDate(timeline.range.from)} – {formatDate(timeline.range.to)} · ▮ registro (clic para abrirlo) · ◆ alta o publicación · línea roja: anotación del backend
+        {formatDate(timeline.range.from)} – {formatDate(timeline.range.to)} · ▮ record (click to open) · ◆ registration or publication · red line: backend annotation
       </figcaption>
     </figure>
   );

@@ -144,13 +144,13 @@ export function ZoomControls() {
     "flex h-7 w-7 items-center justify-center rounded border border-zinc-200 bg-white text-zinc-600 shadow-sm outline-none hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-zinc-900";
   return (
     <Panel position="top-right" className="!m-2 flex flex-col gap-1">
-      <button type="button" className={buttonClass} onClick={() => flow.zoomIn()} aria-label="Acercar">
+      <button type="button" className={buttonClass} onClick={() => flow.zoomIn()} aria-label="Zoom in">
         <Icon name="plus" className="h-3.5 w-3.5" />
       </button>
-      <button type="button" className={buttonClass} onClick={() => flow.zoomOut()} aria-label="Alejar">
+      <button type="button" className={buttonClass} onClick={() => flow.zoomOut()} aria-label="Zoom out">
         <Icon name="minus" className="h-3.5 w-3.5" />
       </button>
-      <button type="button" className={buttonClass} onClick={() => flow.fitView({ padding: 0.15 })} aria-label="Ajustar a pantalla">
+      <button type="button" className={buttonClass} onClick={() => flow.fitView({ padding: 0.15 })} aria-label="Fit to screen">
         <Icon name="fit" className="h-3.5 w-3.5" />
       </button>
     </Panel>

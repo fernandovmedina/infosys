@@ -6,13 +6,13 @@ import type { ColumnWarning, IgnoredFile, TableDiagnostic } from "@/lib/runs/typ
 import { ColumnName, Icon, TableName, type IconName } from "./ui";
 
 const STATUS: Record<TableDiagnostic["status"], { icon: IconName; color: string; label: string }> = {
-  ok: { icon: "checkCircle", color: "text-emerald-600", label: "Correcta" },
-  warning: { icon: "alert", color: "text-amber-600", label: "Advertencia" },
+  ok: { icon: "checkCircle", color: "text-emerald-600", label: "OK" },
+  warning: { icon: "alert", color: "text-amber-600", label: "Warning" },
   error: { icon: "xCircle", color: "text-red-600", label: "Error" },
 };
 
 /** El backend antepone "no encontrada → " a la pérdida de capacidad; la columna de filas ya lo dice. */
-const MISSING_PREFIX = /^no encontrada\s*→\s*/i;
+const MISSING_PREFIX = /^(no encontrada|not found)\s*→\s*/i;
 
 /** Diagnóstico de tablas del dataset (EXAMPLE §4.2). */
 export function TableDiagnostics({
@@ -44,7 +44,7 @@ export function TableDiagnostics({
                 </span>
                 <TableName table={table.name} />
                 <span className={`ml-auto tabular-nums sm:ml-auto ${missing ? "text-red-700" : "text-zinc-500"}`}>
-                  {missing ? "no encontrada" : `${formatNumber(table.rows)} filas`}
+                  {missing ? "not found" : `${formatNumber(table.rows)} rows`}
                 </span>
               </span>
               {table.source_file && (
@@ -70,7 +70,7 @@ export function TableDiagnostics({
       {columnWarnings.length > 0 && (
         <div className="mt-3 text-sm">
           <p className="text-zinc-600">
-            Columnas: {columnWarnings.length} {columnWarnings.length === 1 ? "advertencia" : "advertencias"}{" "}
+            Columns: {columnWarnings.length} {columnWarnings.length === 1 ? "warning" : "warnings"}{" "}
             <button
               type="button"
               aria-expanded={showColumns}
@@ -78,7 +78,7 @@ export function TableDiagnostics({
               onClick={() => setShowColumns((value) => !value)}
               className="font-medium text-zinc-900 underline underline-offset-4"
             >
-              {showColumns ? "ocultar detalle" : "ver detalle"}
+              {showColumns ? "hide details" : "show details"}
             </button>
           </p>
           {showColumns && (
@@ -105,7 +105,7 @@ export function TableDiagnostics({
             onClick={() => setShowIgnored((value) => !value)}
             className="font-medium text-zinc-700 underline underline-offset-4"
           >
-            Archivos ignorados ({ignoredFiles.length})
+            Ignored files ({ignoredFiles.length})
           </button>
           {showIgnored && (
             <ul id={ignoredPanelId} className="mt-2 space-y-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2">

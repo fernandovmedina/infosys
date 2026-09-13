@@ -53,12 +53,12 @@ function EntityBody({ entityId }: { entityId: string }) {
 
       {(data.finding_indexes.length > 0 || lead) && (
         <div>
-          <SectionLabel>Dónde aparece</SectionLabel>
+          <SectionLabel>Where it appears</SectionLabel>
           <ul className="mt-2 space-y-2 text-sm">
             {data.finding_indexes.map((index) => (
               <li key={index}>
                 <button type="button" onClick={() => openFinding(index)} className="inline-flex items-center gap-1 font-medium text-red-700 underline underline-offset-4">
-                  Hallazgo #{index + 1} · {SCHEME_LABELS[report.submission.findings[index].scheme_type].label}
+                  Finding #{index + 1} · {SCHEME_LABELS[report.submission.findings[index].scheme_type].label}
                   <Icon name="arrowRight" className="h-3.5 w-3.5" />
                 </button>
               </li>
@@ -66,12 +66,12 @@ function EntityBody({ entityId }: { entityId: string }) {
             {lead && data.lead_index !== null && (
               <li className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2">
                 <button type="button" onClick={() => openLead(data.lead_index!)} className="inline-flex items-center gap-1 font-medium text-amber-900 underline underline-offset-4">
-                  Lead descartado <Icon name="arrowRight" className="h-3.5 w-3.5" />
+                  Dismissed lead <Icon name="arrowRight" className="h-3.5 w-3.5" />
                 </button>
                 <p className="mt-1 text-amber-950">
-                  <span className="font-medium">Por qué se descartó:</span> {lead.reason}
+                  <span className="font-medium">Why it was dismissed:</span> {lead.reason}
                 </p>
-                {lead.closed_by && <p className="mt-1 text-xs text-amber-900">Cerrado por {CLOSED_BY_LABELS[lead.closed_by].label}</p>}
+                {lead.closed_by && <p className="mt-1 text-xs text-amber-900">Closed by {CLOSED_BY_LABELS[lead.closed_by].label}</p>}
               </li>
             )}
           </ul>
@@ -79,7 +79,7 @@ function EntityBody({ entityId }: { entityId: string }) {
       )}
 
       <div>
-        <SectionLabel>Detectores que dispararon</SectionLabel>
+        <SectionLabel>Detectors that fired</SectionLabel>
         {data.signals.length > 0 ? (
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {data.signals.map((signal) => (
@@ -89,27 +89,27 @@ function EntityBody({ entityId }: { entityId: string }) {
             ))}
           </ul>
         ) : (
-          <p className="mt-2 text-sm text-zinc-600">Ningún detector señaló a esta entidad.</p>
+          <p className="mt-2 text-sm text-zinc-600">No detector flagged this entity.</p>
         )}
       </div>
 
       {error ? (
         isNotFound(error) ? (
-          <Notice tone="warning" title="Sin datos adicionales">El backend no tiene registros de esta entidad en el estate.</Notice>
+          <Notice tone="warning" title="No additional data">The backend has no records for this entity in the estate.</Notice>
         ) : (
-          <Notice tone="error" title="No se pudo cargar la entidad">{errorMessage(error)}</Notice>
+          <Notice tone="error" title="Could not load the entity">{errorMessage(error)}</Notice>
         )
       ) : !timeline ? (
-        <LoadingBlock label="Cargando registros de la entidad…" />
+        <LoadingBlock label="Loading the entity's records…" />
       ) : (
         <>
           <div>
-            <SectionLabel>Totales en el periodo</SectionLabel>
+            <SectionLabel>Totals for the period</SectionLabel>
             <dl className="mt-2 grid grid-cols-3 gap-2 text-sm">
               {[
-                { label: "Facturado", value: timeline.totals.invoiced },
-                { label: "Pagado", value: timeline.totals.paid },
-                { label: "Recibido de", value: timeline.totals.received },
+                { label: "Invoiced", value: timeline.totals.invoiced },
+                { label: "Paid", value: timeline.totals.paid },
+                { label: "Received from", value: timeline.totals.received },
               ].map((item) => (
                 <div key={item.label} className="rounded-md border border-zinc-200 px-2 py-2">
                   <dt className="text-xs text-zinc-500">{item.label}</dt>
@@ -120,7 +120,7 @@ function EntityBody({ entityId }: { entityId: string }) {
           </div>
 
           <div>
-            <SectionLabel>Línea de tiempo</SectionLabel>
+            <SectionLabel>Timeline</SectionLabel>
             <div className="mt-2">
               <EntityTimeline timeline={timeline} onOpenRecord={openRecord} compact />
             </div>
@@ -129,13 +129,13 @@ function EntityBody({ entityId }: { entityId: string }) {
           {timeline.profile && (
             <div>
               <div className="flex items-center justify-between">
-                <SectionLabel>Datos de {timeline.profile.source_table}</SectionLabel>
+                <SectionLabel>{timeline.profile.source_table} data</SectionLabel>
                 <button
                   type="button"
                   onClick={() => openRecord(timeline.profile!.source_table, timeline.profile!.record_id)}
                   className="text-xs font-medium text-zinc-700 underline underline-offset-4"
                 >
-                  Abrir registro
+                  Open record
                 </button>
               </div>
               <dl className="mt-2 divide-y divide-zinc-100 rounded-md border border-zinc-200 text-sm">
@@ -156,7 +156,7 @@ function EntityBody({ entityId }: { entityId: string }) {
             onClick={() => navigate({ section: "transactions", tx_entity: entityId, entity: null })}
             className="inline-flex items-center gap-1 text-sm font-medium text-zinc-900 underline underline-offset-4"
           >
-            Ver sus transacciones <Icon name="arrowRight" className="h-3.5 w-3.5" />
+            View its transactions <Icon name="arrowRight" className="h-3.5 w-3.5" />
           </button>
         </>
       )}
@@ -179,7 +179,7 @@ export function EntityDrawer() {
         entityId && (
           <span className="inline-flex items-center font-mono text-xs">
             {displayEntityId(entityId)}
-            <CopyButton value={entityId} label="Copiar id" />
+            <CopyButton value={entityId} label="Copy ID" />
           </span>
         )
       }

@@ -78,24 +78,24 @@ export function RunScreen({ runId }: { runId: string }) {
       ) : error ? (
         isNotFound(error) ? (
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">No encontramos esta corrida</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">We couldn’t find this run</h1>
             <p className="mt-2 text-sm text-zinc-600">
-              El enlace puede estar mal escrito o la corrida pertenece a otra cuenta.
+              The link may be mistyped, or the run belongs to another account.
             </p>
             <Link href="/dashboard" className="mt-6 inline-block text-sm font-medium text-zinc-900 underline underline-offset-4">
-              Volver al dashboard
+              Back to dashboard
             </Link>
           </div>
         ) : (
-          <Notice tone="error" title="No se pudo cargar la corrida">
+          <Notice tone="error" title="Could not load the run">
             <p>{errorMessage(error)}</p>
             <Button className="mt-3" onClick={() => window.location.reload()}>
-              Reintentar
+              Retry
             </Button>
           </Notice>
         )
       ) : !run ? (
-        <LoadingBlock label="Cargando corrida…" />
+        <LoadingBlock label="Loading run…" />
       ) : run.status === "validating" || run.status === "ready" ? (
         <ValidationView key={run.run_id} runId={run.run_id} onStarted={setRun} onError={handleError} />
       ) : run.status === "running" ? (

@@ -24,15 +24,15 @@ export function ExhibitsTable({
   return (
     <div className="relative overflow-x-auto rounded-md border border-zinc-200">
       <table className="w-full min-w-[640px] text-left text-sm">
-        <caption className="sr-only">Evidencia del hallazgo #{findingIndex + 1}</caption>
+        <caption className="sr-only">Evidence for finding #{findingIndex + 1}</caption>
         <thead className="bg-zinc-50 text-xs text-zinc-500">
           <tr>
             <th scope="col" className="px-3 py-2 font-medium">Exhibit</th>
-            <th scope="col" className="px-3 py-2 font-medium">Fuente</th>
-            <th scope="col" className="px-3 py-2 font-medium">Registro</th>
-            <th scope="col" className="px-3 py-2 font-medium">Qué prueba</th>
-            <th scope="col" className="px-3 py-2 text-right font-medium">Monto</th>
-            <th scope="col" className="px-3 py-2"><span className="sr-only">Abrir</span></th>
+            <th scope="col" className="px-3 py-2 font-medium">Source</th>
+            <th scope="col" className="px-3 py-2 font-medium">Record</th>
+            <th scope="col" className="px-3 py-2 font-medium">What it proves</th>
+            <th scope="col" className="px-3 py-2 text-right font-medium">Amount</th>
+            <th scope="col" className="px-3 py-2"><span className="sr-only">Open</span></th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100">
@@ -57,7 +57,7 @@ export function ExhibitsTable({
                 <td className="whitespace-nowrap px-3 py-2">
                   <span className="inline-flex items-center font-mono text-xs text-zinc-800">
                     {exhibit.record_id}
-                    <CopyButton value={exhibit.record_id} label="Copiar registro" />
+                    <CopyButton value={exhibit.record_id} label="Copy record" />
                   </span>
                 </td>
                 <td className="px-3 py-2 text-zinc-700">{exhibit.note}</td>
@@ -68,7 +68,7 @@ export function ExhibitsTable({
                   <button
                     type="button"
                     onClick={() => openExhibit(findingIndex, exhibit.exhibit_id)}
-                    aria-label={`Abrir ${exhibit.exhibit_id}: ${TABLES[exhibit.source_table].label} ${exhibit.record_id}`}
+                    aria-label={`Open ${exhibit.exhibit_id}: ${TABLES[exhibit.source_table].label} ${exhibit.record_id}`}
                     className="rounded p-1 text-zinc-500 outline-none hover:bg-zinc-100 hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-zinc-900"
                   >
                     <Icon name="external" />

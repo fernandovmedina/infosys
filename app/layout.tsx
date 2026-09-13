@@ -11,12 +11,12 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Infosys",
-  description: "Detección de fraudes en el SAT",
+  description: "SAT fraud detection",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${roboto.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${roboto.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
         />

@@ -20,12 +20,12 @@ export function FindingsSection() {
             <Icon name="shield" className="mt-0.5 h-7 w-7 text-emerald-600" />
             <div>
               <h3 className="text-lg font-semibold text-emerald-900">
-                {leads.length > 0 ? "No se encontró fraude comprobable" : "No se detectaron señales de fraude"}
+                {leads.length > 0 ? "No provable fraud was found" : "No signs of fraud were detected"}
               </h3>
               <p className="mt-1 max-w-2xl text-sm leading-relaxed text-emerald-900">
                 {leads.length > 0
-                  ? `Ningún caso sospechoso resistió la investigación. Es un resultado limpio: los ${formatNumber(leads.length)} casos que se revisaron y descartaron están documentados, con la razón y las herramientas usadas.`
-                  : "Ningún detector se activó con estos libros, así que no hubo casos que investigar ni acusaciones. Abajo está qué se revisó y qué no se puede detectar, para que el alcance quede claro."}
+                  ? `No suspicious lead survived the investigation. This is a clean result: the ${formatNumber(leads.length)} leads that were reviewed and dismissed are documented, with the reason and the tools used.`
+                  : "No detector fired on these books, so there were no leads to investigate and no accusations. Below is what was reviewed and what can't be detected, so the scope is clear."}
               </p>
             </div>
           </div>
@@ -40,10 +40,10 @@ export function FindingsSection() {
             <span>
               <span className="flex items-center gap-2 text-base font-semibold text-zinc-900">
                 <Icon name="minusCircle" className="h-5 w-5 text-amber-600" />
-                Revisa los {formatNumber(leads.length)} casos descartados
+                Review the {formatNumber(leads.length)} dismissed leads
               </span>
               <span className="mt-1 block text-sm text-zinc-600">
-                La prueba de que sí se investigó: qué señaló a cada entidad y por qué no se acusó.
+                Proof that it was investigated: what flagged each entity and why it wasn’t accused.
               </span>
             </span>
             <Icon name="arrowRight" className="h-5 w-5 text-zinc-500" />
@@ -58,7 +58,7 @@ export function FindingsSection() {
   return (
     <div className="space-y-6">
       {findings.length > 1 && (
-        <nav aria-label="Índice de hallazgos" className="rounded-lg border border-zinc-200 bg-white px-3 py-2">
+        <nav aria-label="Findings index" className="rounded-lg border border-zinc-200 bg-white px-3 py-2">
           <ol className="flex flex-col gap-1 text-sm sm:flex-row sm:flex-wrap sm:gap-x-4">
             {findings.map((finding, index) => (
               <li key={index}>

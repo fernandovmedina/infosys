@@ -48,7 +48,7 @@ export function EventRow({
   pendingResolved?: boolean;
 }) {
   const role = ROLE_LABELS[event.role];
-  const resolved = pendingResolved && event.result_status === "pending" ? { ...event, result_status: "ok" as const, result: event.result === "…" ? "hecho" : event.result } : event;
+  const resolved = pendingResolved && event.result_status === "pending" ? { ...event, result_status: "ok" as const, result: event.result === "…" ? "done" : event.result } : event;
 
   return (
     <li

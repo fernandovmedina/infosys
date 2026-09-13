@@ -57,7 +57,7 @@ export function SiteHeader() {
                 onClick={handleSignOut}
                 className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
               >
-                Cerrar sesión
+                Sign out
               </button>
             </>
           ) : (
@@ -66,13 +66,13 @@ export function SiteHeader() {
                 href="/auth/login"
                 className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
               >
-                Iniciar sesión
+                Sign in
               </Link>
               <Link
                 href="/auth/register"
                 className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
               >
-                Crear cuenta
+                Create account
               </Link>
             </>
           )}

@@ -22,7 +22,7 @@ export type CurrentUser = {
   email: string;
 };
 
-const GENERIC_ERROR = "Algo salió mal. Intenta de nuevo.";
+const GENERIC_ERROR = "Something went wrong. Please try again.";
 
 type ErrorEnvelope = { error?: { message?: string } };
 
@@ -45,7 +45,7 @@ async function postJson(path: string, body: unknown): Promise<AuthResult> {
       body: JSON.stringify(body),
     });
   } catch {
-    return { error: "No se pudo conectar con el servidor." };
+    return { error: "Could not connect to the server." };
   }
 
   if (!response.ok) {

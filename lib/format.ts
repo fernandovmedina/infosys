@@ -1,20 +1,22 @@
 /**
- * Formato de moneda, fechas y cantidades en `es-MX`.
+ * Formato de moneda, fechas y cantidades en `en-US` (montos en MXN).
  *
  * Solo presenta valores que ya vienen calculados del backend: aquí no se
  * suma ni se redondea nada que afecte a un veredicto.
  */
 
-const LOCALE = "es-MX";
+const LOCALE = "en-US";
 
 const currency = new Intl.NumberFormat(LOCALE, {
   style: "currency",
   currency: "MXN",
+  currencyDisplay: "narrowSymbol",
 });
 
 const currencyNoCents = new Intl.NumberFormat(LOCALE, {
   style: "currency",
   currency: "MXN",
+  currencyDisplay: "narrowSymbol",
   maximumFractionDigits: 0,
 });
 
@@ -86,8 +88,8 @@ export function formatNumber(value: number): string {
 /** Porcentaje que ya viene en puntos porcentuales: `-0.40` → `−0.40 %`. */
 export function formatPercent(value: number): string {
   const abs = percent.format(Math.abs(value));
-  if (value === 0) return `${abs} %`;
-  return `${value < 0 ? "−" : ""}${abs} %`;
+  if (value === 0) return `${abs}%`;
+  return `${value < 0 ? "−" : ""}${abs}%`;
 }
 
 /** `81 s` o `2 min 14 s`. */

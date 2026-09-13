@@ -55,7 +55,7 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
         onClick={() => openFinding(item.other_finding_index)}
         className="inline-flex items-center gap-0.5 rounded-full bg-violet-50 px-2 py-0.5 text-xs font-medium text-violet-800 ring-1 ring-inset ring-violet-200 hover:bg-violet-100"
       >
-        También en hallazgo #{item.other_finding_index + 1} <Icon name="arrowRight" className="h-3 w-3" />
+        Also in finding #{item.other_finding_index + 1} <Icon name="arrowRight" className="h-3 w-3" />
       </button>
     ));
 
@@ -80,7 +80,7 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
             <p className="mt-0.5 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center font-mono text-xs text-zinc-600">
                 {primaryId}
-                <CopyButton value={primaryId} label="Copiar id" />
+                <CopyButton value={primaryId} label="Copy ID" />
               </span>
               {primary.known && <EntityStatusBadge status={primary.status} size="sm" />}
               {sharedChips(primaryId)}
@@ -91,7 +91,7 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls={bodyId}
-            aria-label={open ? `Retraer hallazgo #${findingIndex + 1}` : `Expandir hallazgo #${findingIndex + 1}`}
+            aria-label={open ? `Collapse finding #${findingIndex + 1}` : `Expand finding #${findingIndex + 1}`}
             className="-mr-1 shrink-0 rounded-md p-1.5 text-zinc-500 outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-zinc-900"
           >
             <svg aria-hidden viewBox="0 0 24 24" className={`h-4 w-4 transition-transform ${open ? "rotate-90" : ""}`}>
@@ -101,7 +101,7 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
         </div>
         {otherIds.length > 0 && (
           <div className="mt-2 flex flex-wrap items-center gap-2 pl-8 text-xs text-zinc-500">
-            <span>También involucra:</span>
+            <span>Also involves:</span>
             {otherIds.map((id) => (
               <span key={id} className="inline-flex flex-wrap items-center gap-1.5">
                 <CaseEntityChip id={id} />
@@ -123,11 +123,11 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
 
       {open && (
         <div id={bodyId} className="divide-y divide-zinc-100 border-t border-zinc-100">
-          <CardBlock label="Regla violada">
+          <CardBlock label="Rule broken">
             <p className="border-l-4 border-red-500 pl-3 text-base font-medium text-zinc-900">{finding.rule_broken}</p>
           </CardBlock>
 
-          <CardBlock label="Monto y confianza">
+          <CardBlock label="Amount and confidence">
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-2xl font-semibold tabular-nums tracking-tight text-zinc-900">{formatMoneyMXN(finding.peso_amount)}</span>
               <Tooltip content={confidence.tooltip}>
@@ -144,12 +144,12 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
             </div>
             {finding.confidence === "probable" && (
               <p className="mt-2 text-sm text-orange-900">
-                <span className="font-medium">Por qué es probable y no comprobado:</span> {confidence.tooltip} El eslabón que falta se describe en “Qué pasó”.
+                <span className="font-medium">Why it’s probable and not proven:</span> {confidence.tooltip} The missing link is described in “What happened”.
               </p>
             )}
           </CardBlock>
 
-          <CardBlock label="Qué pasó">
+          <CardBlock label="What happened">
             <p className="max-w-3xl text-[0.9375rem] leading-relaxed text-zinc-800">
               <RichText
                 text={finding.narrative}
@@ -159,19 +159,19 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
             </p>
           </CardBlock>
 
-          <CardBlock label="Rastro del dinero">
+          <CardBlock label="Money trail">
             <MoneyTrailDiagram findingIndex={findingIndex} finding={finding} hoveredExhibit={hoveredExhibit} onHoverExhibit={setHoveredExhibit} />
           </CardBlock>
 
-          <CardBlock label={`Evidencia (${finding.exhibits.length})`}>
+          <CardBlock label={`Evidence (${finding.exhibits.length})`}>
             <ExhibitsTable findingIndex={findingIndex} finding={finding} hoveredExhibit={hoveredExhibit} onHoverExhibit={setHoveredExhibit} />
           </CardBlock>
 
-          <CardBlock label="Reconciliación">
+          <CardBlock label="Reconciliation">
             {extra ? (
               <Reconciliation findingIndex={findingIndex} data={extra.reconciliation} />
             ) : (
-              <Notice tone="error">El backend no mandó la reconciliación de este hallazgo.</Notice>
+              <Notice tone="error">The backend didn’t send the reconciliation for this finding.</Notice>
             )}
           </CardBlock>
 

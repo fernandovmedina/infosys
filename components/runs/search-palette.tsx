@@ -16,7 +16,7 @@ import { Icon, Modal, Spinner } from "./ui";
  */
 export function SearchPalette({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
-    <Modal open={open} onClose={onClose} label="Buscar en el case file">
+    <Modal open={open} onClose={onClose} label="Search the case file">
       {open && <PaletteBody onClose={onClose} />}
     </Modal>
   );
@@ -80,7 +80,7 @@ function PaletteBody({ onClose }: { onClose: () => void }) {
     <>
       <div className="flex items-center gap-2 border-b border-zinc-200 px-4">
         <Icon name="search" className="h-5 w-5 text-zinc-400" />
-        <label htmlFor={inputId} className="sr-only">Buscar RFC, nombre o EX-xx</label>
+        <label htmlFor={inputId} className="sr-only">Search RFC, name, or EX-xx</label>
         <input
           id={inputId}
           type="search"
@@ -104,7 +104,7 @@ function PaletteBody({ onClose }: { onClose: () => void }) {
               openHit(visibleHits[active]);
             }
           }}
-          placeholder="¿Por qué no marcaste a…? Escribe un RFC, un nombre o EX-03"
+          placeholder="Why didn't you flag…? Type an RFC, a name, or EX-03"
           className="h-12 min-w-0 flex-1 bg-transparent text-base text-zinc-900 outline-none placeholder:text-zinc-400"
         />
         {loading && <Spinner className="h-4 w-4 text-zinc-400" />}
@@ -116,12 +116,12 @@ function PaletteBody({ onClose }: { onClose: () => void }) {
           <p className="px-4 py-6 text-sm text-red-700">{error}</p>
         ) : !visibleHits ? (
           <p className="px-4 py-6 text-sm text-zinc-500">
-            Ejemplos: <span className="font-mono">PEL790312XY1</span>, “Consultores”, <span className="font-mono">EX-05</span>, <span className="font-mono">EMP:0031</span>.
+            Examples: <span className="font-mono">PEL790312XY1</span>, “Consultores”, <span className="font-mono">EX-05</span>, <span className="font-mono">EMP:0031</span>.
           </p>
         ) : visibleHits.length === 0 ? (
-          <p className="px-4 py-6 text-sm text-zinc-500">Sin resultados para “{query}”. Si es una entidad del dataset sin señales, búscala en Transacciones.</p>
+          <p className="px-4 py-6 text-sm text-zinc-500">No results for “{query}”. If it’s a dataset entity with no signals, look for it in Transactions.</p>
         ) : (
-          <ul id={listId} role="listbox" aria-label="Resultados" className="divide-y divide-zinc-100">
+          <ul id={listId} role="listbox" aria-label="Results" className="divide-y divide-zinc-100">
             {visibleHits.map((hit, index) => (
               <li
                 key={`${hit.kind}:${hit.id}:${index}`}
@@ -139,8 +139,8 @@ function PaletteBody({ onClose }: { onClose: () => void }) {
 
                 {hit.lead_reason && (
                   <p className="mt-2 rounded-md bg-amber-50 px-2 py-1.5 text-sm text-amber-950">
-                    <span className="font-medium">Por qué no se acusó:</span> {hit.lead_reason}
-                    {hit.closed_by && <span className="block text-xs text-amber-900">Cerrado por {CLOSED_BY_LABELS[hit.closed_by].label}</span>}
+                    <span className="font-medium">Why it wasn’t accused:</span> {hit.lead_reason}
+                    {hit.closed_by && <span className="block text-xs text-amber-900">Closed by {CLOSED_BY_LABELS[hit.closed_by].label}</span>}
                   </p>
                 )}
 
@@ -160,7 +160,7 @@ function PaletteBody({ onClose }: { onClose: () => void }) {
                     ))}
                   </div>
                 ) : (
-                  hit.kind === "entity" && <p className="mt-1 text-xs text-zinc-500">No aparece en hallazgos ni en leads: ningún detector la señaló.</p>
+                  hit.kind === "entity" && <p className="mt-1 text-xs text-zinc-500">Doesn’t appear in findings or leads: no detector flagged it.</p>
                 )}
 
                 {hit.log.length > 0 && (

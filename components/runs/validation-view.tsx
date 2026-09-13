@@ -83,9 +83,9 @@ export function ValidationView({
 
   return (
     <section aria-labelledby="validation-title">
-      <p className="text-sm text-zinc-500">Paso 1 de 3 · Diagnóstico del dataset</p>
+      <p className="text-sm text-zinc-500">Step 1 of 3 · Dataset diagnostics</p>
       <h1 id="validation-title" className="mt-1 text-2xl font-semibold tracking-tight text-zinc-900">
-        {validating ? "Revisando las tablas…" : "Tablas detectadas"}
+        {validating ? "Checking the tables…" : "Detected tables"}
       </h1>
       {validation && (
         <div className="mt-1 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600">
@@ -102,7 +102,7 @@ export function ValidationView({
       <div className="mt-6">
         {validating ? (
           <div className="rounded-lg border border-zinc-200 bg-white p-4">
-            <LoadingBlock label="Leyendo el archivo y buscando las 8 tablas del estate…" />
+            <LoadingBlock label="Reading the file and looking for the 8 estate tables…" />
           </div>
         ) : (
           <TableDiagnostics
@@ -114,18 +114,18 @@ export function ValidationView({
       </div>
 
       {!validating && errors.length > 0 && (
-        <Notice tone="error" title="No se puede iniciar la investigación" className="mt-4">
-          Falta información imprescindible. Corrige {errors.length === 1 ? "la tabla marcada" : "las tablas marcadas"} en rojo y vuelve a subir el archivo.
+        <Notice tone="error" title="The investigation can't start" className="mt-4">
+          Essential information is missing. Fix the {errors.length === 1 ? "table" : "tables"} marked in red and upload the file again.
         </Notice>
       )}
       {!validating && errors.length === 0 && warnings.length > 0 && (
-        <Notice tone="warning" title="Se puede investigar, con un análisis parcial" className="mt-4">
-          Las advertencias aparecerán en la sección Método y límites del case file.
+        <Notice tone="warning" title="Investigation is possible, with a partial analysis" className="mt-4">
+          Warnings will appear in the Method and limits section of the case file.
         </Notice>
       )}
       {startError?.code === "investigation_unavailable" && (
-        <Notice tone="info" title="Dataset validado y guardado" className="mt-4">
-          La investigación automática aún no está disponible.
+        <Notice tone="info" title="Dataset validated and saved" className="mt-4">
+          Automatic investigation isn’t available yet.
         </Notice>
       )}
       {startError && startError.code !== "investigation_unavailable" && (
@@ -136,7 +136,7 @@ export function ValidationView({
 
       {discardError && (
         <Notice tone="error" className="mt-4">
-          No se pudo descartar la corrida: {discardError}
+          Could not discard the run: {discardError}
         </Notice>
       )}
 
@@ -144,14 +144,14 @@ export function ValidationView({
         {!validating && errors.length > 0 ? (
           <Button onClick={() => void handleDiscard()} disabled={discarding} aria-busy={discarding}>
             {discarding && <Spinner className="h-3.5 w-3.5" />}
-            Descartar y subir otro
+            Discard and upload another
           </Button>
         ) : (
           <Link
             href="/dashboard"
             className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
           >
-            Cancelar
+            Cancel
           </Link>
         )}
         <Button
@@ -160,7 +160,7 @@ export function ValidationView({
           disabled={validating || errors.length > 0 || starting}
         >
           {starting && <Spinner className="h-3.5 w-3.5" />}
-          {starting ? "Iniciando…" : "Iniciar investigación"}
+          {starting ? "Starting…" : "Start investigation"}
         </Button>
       </div>
     </section>

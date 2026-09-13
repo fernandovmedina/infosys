@@ -10,7 +10,7 @@ export default function DashboardPage() {
   if (!user) {
     return (
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-12">
-        <p className="text-sm text-zinc-500">Cargando…</p>
+        <p className="text-sm text-zinc-500">Loading…</p>
       </main>
     );
   }
@@ -18,10 +18,10 @@ export default function DashboardPage() {
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-12">
       <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-        Hola, {user.name}
+        Hello, {user.name}
       </h1>
       <p className="mt-1 text-sm text-zinc-600">
-        Sube los libros de una empresa para investigar si hay fraude.
+        Upload a company’s books to investigate whether there is fraud.
       </p>
       <div className="mt-8 space-y-4">
         <DatasetUpload />

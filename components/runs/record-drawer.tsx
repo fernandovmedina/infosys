@@ -71,11 +71,11 @@ function FieldValue({ column, value }: { column: string; value: string | number 
         <Tooltip content={text}>
           <span className="font-mono text-xs">{text}</span>
         </Tooltip>
-        <CopyButton value={text} label="Copiar CLABE" />
+        <CopyButton value={text} label="Copy CLABE" />
         {owners.map(([id]) => (
           <CaseEntityChip key={id} id={id} />
         ))}
-        {owners.length > 1 && <span className="text-xs font-medium text-red-700">misma CLABE en {owners.length} entidades</span>}
+        {owners.length > 1 && <span className="text-xs font-medium text-red-700">same CLABE across {owners.length} entities</span>}
       </span>
     );
   }
@@ -131,16 +131,16 @@ function RecordBody({ target }: { target: Target }) {
 
   if (error) {
     return isNotFound(error) ? (
-      <Notice tone="error" title="Registro citado no encontrado">
-        El backend no tiene <code className="font-mono">{target.table}/{target.recordId}</code>. La cita existe en el hallazgo pero el registro no se pudo recuperar.
+      <Notice tone="error" title="Cited record not found">
+        The backend doesn’t have <code className="font-mono">{target.table}/{target.recordId}</code>. The citation exists in the finding, but the record couldn’t be retrieved.
       </Notice>
     ) : (
-      <Notice tone="error" title="No se pudo cargar el registro">
+      <Notice tone="error" title="Could not load the record">
         {errorMessage(error)}
       </Notice>
     );
   }
-  if (!record) return <LoadingBlock label="Cargando registro…" />;
+  if (!record) return <LoadingBlock label="Loading record…" />;
 
   const meta = TABLES[record.source_table];
   const columns = [...meta.columns, ...Object.keys(record.data).filter((column) => !meta.columns.includes(column))];
@@ -163,7 +163,7 @@ function RecordBody({ target }: { target: Target }) {
                 <FieldValue column={column} value={record.data[column] ?? null} />
                 {highlighted && (
                   <span className="shrink-0 text-xs font-medium text-amber-800">
-                    <span aria-hidden>◀ </span>citado
+                    <span aria-hidden>◀ </span>cited
                   </span>
                 )}
               </dd>
@@ -174,12 +174,12 @@ function RecordBody({ target }: { target: Target }) {
 
       {otherCitations.length > 0 && (
         <div>
-          <SectionLabel>{target.exhibit ? "Aparece también en" : "Citado en"}</SectionLabel>
+          <SectionLabel>{target.exhibit ? "Also appears in" : "Cited in"}</SectionLabel>
           <ul className="mt-2 space-y-1 text-sm">
             {otherCitations.map((cite) => (
               <li key={`${cite.finding_index}-${cite.exhibit_id}`}>
                 <button type="button" onClick={() => openExhibit(cite.finding_index, cite.exhibit_id)} className="text-left font-medium text-zinc-900 underline underline-offset-4">
-                  Hallazgo #{cite.finding_index + 1} ({cite.exhibit_id})
+                  Finding #{cite.finding_index + 1} ({cite.exhibit_id})
                 </button>{" "}
                 <span className="text-zinc-500">· {SCHEME_LABELS[report.submission.findings[cite.finding_index]?.scheme_type]?.label}</span>
               </li>
@@ -190,7 +190,7 @@ function RecordBody({ target }: { target: Target }) {
 
       {record.related.length > 0 && (
         <div>
-          <SectionLabel>Registros relacionados</SectionLabel>
+          <SectionLabel>Related records</SectionLabel>
           <ul className="mt-2 divide-y divide-zinc-100 rounded-md border border-zinc-200 text-sm">
             {record.related.map((related) => {
               const relatedRecord = report.records[recordKey(related.source_table, related.record_id)];
@@ -247,12 +247,12 @@ export function RecordDrawer() {
           <span className="block space-y-1">
             {target.exhibit && (
               <span className="block">
-                <span className="font-medium text-zinc-900">Qué prueba:</span> {target.exhibit.note}
+                <span className="font-medium text-zinc-900">What it proves:</span> {target.exhibit.note}
               </span>
             )}
             <span className="flex flex-wrap items-center gap-1.5 text-xs">
-              Tabla <TableName table={target.table} className="text-xs" />
-              {target.exhibit && <span>· Hallazgo #{target.exhibit.findingIndex + 1}</span>}
+              Table <TableName table={target.table} className="text-xs" />
+              {target.exhibit && <span>· Finding #{target.exhibit.findingIndex + 1}</span>}
               {entityValue && entity(entityValue).known && <EntityStatusBadge status={report.entities[entityValue].status} size="sm" />}
             </span>
           </span>

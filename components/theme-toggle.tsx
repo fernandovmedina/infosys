@@ -44,7 +44,7 @@ const isDark = () => document.documentElement.classList.contains("dark");
 
 export function ThemeToggle() {
   const dark = useSyncExternalStore(subscribe, isDark, () => false);
-  const label = dark ? "Cambiar a tema claro" : "Cambiar a tema oscuro";
+  const label = dark ? "Switch to light theme" : "Switch to dark theme";
 
   function toggle() {
     const next: Theme = dark ? "light" : "dark";

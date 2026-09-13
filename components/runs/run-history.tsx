@@ -29,7 +29,7 @@ function Outcome({ run, blocked }: { run: RunSummary; blocked: boolean }) {
     return (
       <span className="inline-flex items-center gap-1 justify-self-start rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
         <Icon name="xCircle" className="h-3.5 w-3.5" />
-        Dataset incompleto
+        Incomplete dataset
       </span>
     );
   }
@@ -131,7 +131,7 @@ export function RunHistory() {
     <section aria-labelledby="history-title">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 id="history-title" className="text-lg font-semibold tracking-tight text-zinc-900">
-          Historial de corridas
+          Run history
         </h2>
         {deletableCount > 0 && !confirmingDeleteAll && (
           <Button
@@ -143,16 +143,16 @@ export function RunHistory() {
             }}
             disabled={deletingAll || deletingRunId !== null}
           >
-            Borrar historial
+            Clear history
           </Button>
         )}
       </div>
       {confirmingDeleteAll && runs && deletableCount > 0 && (
         <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           <p>
-            {deletableCount === 1 ? "Se eliminará 1 corrida y su dataset." : `Se eliminarán ${deletableCount} corridas y sus datasets.`}{" "}
-            {deletableCount < runs.length && "Las corridas en curso se conservan. "}
-            Esta acción no se puede deshacer.
+            {deletableCount === 1 ? "1 run and its dataset will be deleted." : `${deletableCount} runs and their datasets will be deleted.`}{" "}
+            {deletableCount < runs.length && "Runs in progress are kept. "}
+            This action can’t be undone.
           </p>
           <div className="mt-3 flex flex-wrap justify-end gap-2">
             <Button
@@ -163,11 +163,11 @@ export function RunHistory() {
               }}
               disabled={deletingAll}
             >
-              Cancelar
+              Cancel
             </Button>
             <Button variant="primary" onClick={() => void handleDeleteAll()} disabled={deletingAll} aria-busy={deletingAll}>
               {deletingAll && <Spinner className="h-3.5 w-3.5" />}
-              Borrar historial
+              Clear history
             </Button>
           </div>
           {deleteAllError && <p className="mt-2 text-red-700" role="alert">{deleteAllError}</p>}
@@ -175,14 +175,14 @@ export function RunHistory() {
       )}
       <div className="mt-3">
         {error ? (
-          <Notice tone="error" title="No se pudo cargar el historial">
+          <Notice tone="error" title="Could not load the history">
             {error}
           </Notice>
         ) : runs === null ? (
           <LoadingBlock />
         ) : runs.length === 0 ? (
           <p className="rounded-lg border border-dashed border-zinc-300 px-4 py-6 text-center text-sm text-zinc-500">
-            Todavía no hay corridas. Sube los libros de una empresa para iniciar la primera investigación.
+            No runs yet. Upload a company’s books to start the first investigation.
           </p>
         ) : (
           <ul className="divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white">
@@ -207,7 +207,7 @@ export function RunHistory() {
                       <Button
                         variant="ghost"
                         className="px-2 py-1 text-xs"
-                        aria-label={`Eliminar corrida ${run.filename}`}
+                        aria-label={`Delete run ${run.filename}`}
                         onClick={() => {
                           setConfirmingRunId(run.run_id);
                           setRunDeleteErrors((current) => {
@@ -218,14 +218,14 @@ export function RunHistory() {
                         }}
                         disabled={deletingAll || deletingRunId !== null}
                       >
-                        Eliminar
+                        Delete
                       </Button>
                     </div>
                   )}
                 </div>
                 {confirmingRunId === run.run_id && (
                   <div className="border-t border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
-                    <p className="text-zinc-700">¿Eliminar esta corrida? Se borra también el dataset subido.</p>
+                    <p className="text-zinc-700">Delete this run? The uploaded dataset is deleted too.</p>
                     <div className="mt-3 flex flex-wrap justify-end gap-2">
                       <Button
                         variant="ghost"
@@ -239,7 +239,7 @@ export function RunHistory() {
                         }}
                         disabled={deletingRunId === run.run_id}
                       >
-                        Cancelar
+                        Cancel
                       </Button>
                       <Button
                         variant="primary"
@@ -248,7 +248,7 @@ export function RunHistory() {
                         aria-busy={deletingRunId === run.run_id}
                       >
                         {deletingRunId === run.run_id && <Spinner className="h-3.5 w-3.5" />}
-                        Eliminar
+                        Delete
                       </Button>
                     </div>
                     {runDeleteErrors[run.run_id] && (

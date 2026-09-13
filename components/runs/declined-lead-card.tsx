@@ -37,25 +37,25 @@ export function DeclinedLeadCard({ leadIndex, lead }: { leadIndex: number; lead:
         <p className="mt-0.5 flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center font-mono text-xs text-zinc-600">
             {lead.entity}
-            <CopyButton value={lead.entity} label="Copiar id" />
+            <CopyButton value={lead.entity} label="Copy ID" />
           </span>
           <EntityStatusBadge status={data.known ? data.status : "declined"} size="sm" />
         </p>
         <p className="mt-2 text-sm text-zinc-600">
-          Cerrado por:{" "}
+          Closed by:{" "}
           {closedBy ? (
             <span className="font-medium text-zinc-900">
               <span aria-hidden>{closedBy.icon} </span>
               {closedBy.label}
             </span>
           ) : (
-            <span className="text-zinc-500">no registrado</span>
+            <span className="text-zinc-500">not recorded</span>
           )}
         </p>
       </header>
 
       <div className="divide-y divide-zinc-100 border-t border-zinc-100">
-        <CardBlock label="¿Qué lo señaló?">
+        <CardBlock label="What flagged it?">
           <ul className="space-y-1 text-[0.9375rem] text-zinc-800">
             {splitSignals(lead.signal).map((key) => (
               <li key={key}>
@@ -70,12 +70,12 @@ export function DeclinedLeadCard({ leadIndex, lead }: { leadIndex: number; lead:
             ))}
           </ul>
         </CardBlock>
-        <CardBlock label="¿Por qué se descartó?">
+        <CardBlock label="Why was it dismissed?">
           <p className="max-w-3xl text-[0.9375rem] leading-relaxed text-zinc-800">
             <RichText text={lead.reason} renderEntity={(id) => <CaseEntityChip id={id} />} />
           </p>
         </CardBlock>
-        <CardBlock label="Herramientas usadas">
+        <CardBlock label="Tools used">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             {tools.length > 0 ? (
               <ul className="flex flex-wrap gap-1.5">
@@ -88,7 +88,7 @@ export function DeclinedLeadCard({ leadIndex, lead }: { leadIndex: number; lead:
             ) : (
               <p className="inline-flex items-start gap-1.5 rounded-md bg-amber-50 px-2 py-1 text-sm text-amber-900">
                 <Icon name="alert" className="mt-0.5 h-4 w-4" />
-                Sin herramientas registradas: no se registraron consultas para este lead, así que no hay prueba de que se haya investigado.
+                No tools recorded: no queries were logged for this lead, so there’s no proof it was investigated.
               </p>
             )}
             <a
@@ -99,7 +99,7 @@ export function DeclinedLeadCard({ leadIndex, lead }: { leadIndex: number; lead:
               }}
               className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-zinc-900 underline underline-offset-4"
             >
-              Ver en el log <Icon name="external" className="h-3.5 w-3.5" />
+              View in log <Icon name="external" className="h-3.5 w-3.5" />
             </a>
           </div>
         </CardBlock>
