@@ -25,11 +25,6 @@ chroma_db/
 *.log
 logs/
 
-# Node (frontend)
-node_modules/
-.next/
-dist/
-
 # OS
 .DS_Store
 Thumbs.db
@@ -43,4 +38,5 @@ Thumbs.db
 # Ollama / model files
 *.gguf
 *.bin
-models/
+# Anchored so it doesn't swallow app/models/ (the Pydantic schemas).
+/models/

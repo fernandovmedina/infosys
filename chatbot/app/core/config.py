@@ -16,8 +16,8 @@ class Settings(BaseSettings):
 
     # Server
     backend_host: str = "0.0.0.0"
-    backend_port: int = 8000
-    frontend_url: str = "http://localhost:5173"
+    backend_port: int = 8001
+    frontend_url: str = "http://localhost:3000"
 
     # Conversation memory
     max_history_turns: int = 10
