@@ -32,7 +32,7 @@ import type {
   ValidationResult,
 } from "./types";
 
-const GENERIC_ERROR = "Algo salió mal. Intenta de nuevo.";
+const GENERIC_ERROR = "Something went wrong. Please try again.";
 
 export { ApiError, isNotAuthenticated, isNotFound } from "./errors";
 
@@ -62,7 +62,7 @@ async function send(path: string, init?: RequestInit): Promise<Response> {
   } catch {
     throw new ApiError(0, {
       code: "network_error",
-      message: "No se pudo conectar con el servidor.",
+      message: "Could not connect to the server.",
     });
   }
 

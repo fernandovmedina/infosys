@@ -36,10 +36,10 @@ function LogList({ role, entityFilter }: { role: AgentRole | null; entityFilter:
     document.getElementById(`log-${highlightSeq}`)?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [events, highlightSeq]);
 
-  if (error) return <Notice tone="error" title="No se pudo cargar el log">{error}</Notice>;
+  if (error) return <Notice tone="error" title="Could not load the log">{error}</Notice>;
   if (!events) return <LoadingBlock />;
   if (events.length === 0) {
-    return <p className="rounded-md border border-dashed border-zinc-300 px-4 py-6 text-center text-sm text-zinc-600">No hay eventos con estos filtros.</p>;
+    return <p className="rounded-md border border-dashed border-zinc-300 px-4 py-6 text-center text-sm text-zinc-600">No events match these filters.</p>;
   }
   return (
     <ol className="divide-y divide-zinc-100 rounded-lg border border-zinc-200 bg-white">
@@ -75,28 +75,28 @@ export function InvestigationLog() {
     <div className="space-y-3">
       <div className="grid gap-3 rounded-lg border border-zinc-200 bg-white p-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
         <div>
-          <label htmlFor={roleId} className="mb-1 block text-xs font-medium text-zinc-600">Rol</label>
+          <label htmlFor={roleId} className="mb-1 block text-xs font-medium text-zinc-600">Role</label>
           <select
             id={roleId}
             value={role ?? ""}
             onChange={(event) => navigate({ role: event.target.value || null, seq: null }, { replace: true })}
             className="w-full rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm"
           >
-            <option value="">Todos</option>
+            <option value="">All</option>
             {ROLES.map((item) => (
               <option key={item} value={item}>{ROLE_LABELS[item].icon} {ROLE_LABELS[item].label}</option>
             ))}
           </select>
         </div>
         <div>
-          <label htmlFor={entityId} className="mb-1 block text-xs font-medium text-zinc-600">Entidad</label>
+          <label htmlFor={entityId} className="mb-1 block text-xs font-medium text-zinc-600">Entity</label>
           <select
             id={entityId}
             value={entityFilter ?? ""}
             onChange={(event) => navigate({ log_entity: event.target.value || null, seq: null }, { replace: true })}
             className="w-full rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm"
           >
-            <option value="">Todas</option>
+            <option value="">All</option>
             {entityFilter && !entityOptions.includes(entityFilter) && <option value={entityFilter}>{entityFilter}</option>}
             {entityOptions.map((id) => (
               <option key={id} value={id}>{entity(id).name} ({id})</option>
@@ -105,7 +105,7 @@ export function InvestigationLog() {
         </div>
         {(role || entityFilter) && (
           <Button variant="ghost" onClick={() => navigate({ role: null, log_entity: null, seq: null }, { replace: true })}>
-            <Icon name="close" className="h-3.5 w-3.5" /> Quitar filtros
+            <Icon name="close" className="h-3.5 w-3.5" /> Clear filters
           </Button>
         )}
       </div>

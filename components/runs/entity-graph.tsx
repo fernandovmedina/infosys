@@ -64,13 +64,13 @@ export function EntityGraph() {
           status: node.status,
           height: position.height,
           onOpen: () => openEntity(node.id),
-          chips: multi(node.id) ? [{ label: `Conecta ${node.finding_indexes.length} hallazgos` }] : [],
+          chips: multi(node.id) ? [{ label: `Links ${node.finding_indexes.length} findings` }] : [],
         },
       };
     });
 
     const edges: FlowEdgeType[] = graph.edges.map((edge) => {
-      const color = edge.in_cycle ? "#dc2626" : edge.kind === "relation" ? "#a1a1aa" : "#71717a";
+      const color = edge.in_cycle ? "var(--color-red-600)" : edge.kind === "relation" ? "var(--color-zinc-400)" : "var(--color-zinc-500)";
       return {
         id: edge.id,
         source: edge.from,
@@ -87,12 +87,12 @@ export function EntityGraph() {
               {edge.amount !== null ? (
                 <>
                   <span className="font-semibold tabular-nums text-zinc-900">{formatMoneyShort(edge.amount)}</span>
-                  <span className="text-zinc-500"> · {edge.count} {edge.count === 1 ? "pago" : "pagos"}</span>
+                  <span className="text-zinc-500"> · {edge.count} {edge.count === 1 ? "payment" : "payments"}</span>
                 </>
               ) : (
                 <span className="text-zinc-600">{edge.label}</span>
               )}
-              {edge.in_cycle && <span className="block font-medium text-red-700">↺ ciclo</span>}
+              {edge.in_cycle && <span className="block font-medium text-red-700">↺ cycle</span>}
             </span>
           ),
         },
@@ -106,25 +106,25 @@ export function EntityGraph() {
     <div>
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
         <p className="text-sm text-zinc-600">
-          {scope === "flagged" ? "Entidades acusadas y descartadas con sus vecinos directos." : "Todos los proveedores con pagos agregados."}
+          {scope === "flagged" ? "Accused and dismissed entities with their direct neighbors." : "All vendors with aggregated payments."}
         </p>
         <Button onClick={() => setScope((value) => (value === "flagged" ? "all" : "flagged"))} aria-pressed={scope === "all"}>
-          {scope === "flagged" ? `Mostrar todo${graph?.hidden_count ? ` (${formatNumber(graph.hidden_count)} más)` : ""}` : "Solo señaladas"}
+          {scope === "flagged" ? `Show all${graph?.hidden_count ? ` (${formatNumber(graph.hidden_count)} more)` : ""}` : "Flagged only"}
         </Button>
       </div>
 
       {error ? (
-        <Notice tone="error" title="No se pudo cargar el grafo">{error}</Notice>
+        <Notice tone="error" title="Could not load the graph">{error}</Notice>
       ) : !graph || !flow ? (
         <div className="flex h-[420px] items-center justify-center rounded-md border border-zinc-200 bg-zinc-50">
-          <LoadingBlock label="Calculando relaciones…" />
+          <LoadingBlock label="Computing relationships…" />
         </div>
       ) : graph.nodes.length <= 1 ? (
         <div className="rounded-md border border-dashed border-zinc-300 px-4 py-8 text-center text-sm text-zinc-600">
-          <p>No hay entidades señaladas: no hay relaciones sospechosas que dibujar.</p>
+          <p>No flagged entities: there are no suspicious relationships to draw.</p>
           {scope === "flagged" && (
             <Button className="mt-3" onClick={() => setScope("all")}>
-              Ver la red completa de proveedores
+              View the full vendor network
             </Button>
           )}
         </div>
@@ -145,32 +145,32 @@ export function EntityGraph() {
                 elementsSelectable={false}
                 zoomOnScroll={false}
                 preventScrolling={false}
-                aria-label="Grafo de relaciones entre entidades"
+                aria-label="Entity relationship graph"
               >
                 <ZoomControls />
               </ReactFlow>
             </ReactFlowProvider>
           </div>
           <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-zinc-500">
-            <span>Borde del nodo = semáforo</span>
-            <span><span className="font-medium text-red-700">Rojo</span>: arista de un ciclo de dinero</span>
-            <span>Punteada: relación sin dinero (misma CLABE, mismo representante)</span>
-            <span>Arrastra para desplazarte; clic en un nodo para ver la entidad</span>
+            <span>Node border = status light</span>
+            <span><span className="font-medium text-red-700">Red</span>: edge in a money cycle</span>
+            <span>Dashed: relationship without money (same CLABE, same representative)</span>
+            <span>Drag to pan; click a node to view the entity</span>
           </p>
 
           <details className="group mt-2 rounded-md border border-zinc-200 bg-white">
             <summary className="flex cursor-pointer items-center gap-1 px-3 py-2 text-xs font-medium text-zinc-600 marker:content-none">
               <Icon name="chevronRight" className="h-3.5 w-3.5 transition-transform group-open:rotate-90" />
-              Ver las relaciones como tabla
+              View relationships as a table
             </summary>
             <div className="relative overflow-x-auto border-t border-zinc-200">
               <table className="w-full min-w-[560px] text-left text-sm">
                 <thead className="bg-zinc-50 text-xs text-zinc-500">
                   <tr>
-                    <th scope="col" className="px-3 py-2 font-medium">De</th>
-                    <th scope="col" className="px-3 py-2 font-medium">A</th>
-                    <th scope="col" className="px-3 py-2 font-medium">Relación</th>
-                    <th scope="col" className="px-3 py-2 text-right font-medium">Monto</th>
+                    <th scope="col" className="px-3 py-2 font-medium">From</th>
+                    <th scope="col" className="px-3 py-2 font-medium">To</th>
+                    <th scope="col" className="px-3 py-2 font-medium">Relationship</th>
+                    <th scope="col" className="px-3 py-2 text-right font-medium">Amount</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-100">
@@ -181,8 +181,8 @@ export function EntityGraph() {
                         <td className="px-3 py-2">{name(edge.from)}</td>
                         <td className="px-3 py-2">{name(edge.to)}</td>
                         <td className="px-3 py-2 text-zinc-600">
-                          {edge.label ?? `${edge.count} ${edge.count === 1 ? "pago" : "pagos"}`}
-                          {edge.in_cycle && " · ciclo"}
+                          {edge.label ?? `${edge.count} ${edge.count === 1 ? "payment" : "payments"}`}
+                          {edge.in_cycle && " · cycle"}
                         </td>
                         <td className="px-3 py-2 text-right tabular-nums">{edge.amount !== null ? formatMoney(edge.amount) : "—"}</td>
                       </tr>

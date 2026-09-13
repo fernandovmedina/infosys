@@ -13,7 +13,7 @@ import { EntityStatusBadge } from "./entity-status-badge";
 import { Button, LoadingBlock, Notice, Spinner } from "./ui";
 
 const FILTERS: { value: EntityStatus | null; label: string }[] = [
-  { value: null, label: "Todas" },
+  { value: null, label: "All" },
   { value: "accused", label: STATUS_LABELS.accused.label },
   { value: "declined", label: STATUS_LABELS.declined.label },
   { value: "clear", label: STATUS_LABELS.clear.label },
@@ -52,10 +52,10 @@ function EntityList({ status }: { status: EntityStatus | null }) {
     }
   }
 
-  if (error) return <Notice tone="error" title="No se pudieron cargar las entidades">{error}</Notice>;
+  if (error) return <Notice tone="error" title="Could not load the entities">{error}</Notice>;
   if (!page) return <LoadingBlock />;
   if (page.items.length === 0) {
-    return <p className="rounded-md border border-dashed border-zinc-300 px-4 py-6 text-center text-sm text-zinc-600">No hay entidades con este estado.</p>;
+    return <p className="rounded-md border border-dashed border-zinc-300 px-4 py-6 text-center text-sm text-zinc-600">No entities with this status.</p>;
   }
 
   return (
@@ -77,7 +77,7 @@ function EntityList({ status }: { status: EntityStatus | null }) {
                 </span>
               </span>
               <span className="truncate text-xs text-zinc-600">
-                {item.signals.length > 0 ? item.signals.map((signal) => SIGNAL_LABELS[signal] ?? signal).join(" · ") : "Sin señales de detectores"}
+                {item.signals.length > 0 ? item.signals.map((signal) => SIGNAL_LABELS[signal] ?? signal).join(" · ") : "No detector signals"}
               </span>
             </button>
           </li>
@@ -85,11 +85,11 @@ function EntityList({ status }: { status: EntityStatus | null }) {
       </ul>
       <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">
         <span>
-          {formatNumber(page.items.length)} de {formatNumber(page.total)}
+          {formatNumber(page.items.length)} of {formatNumber(page.total)}
         </span>
         {page.next_cursor && (
           <Button onClick={loadMore} disabled={loadingMore}>
-            {loadingMore && <Spinner className="h-3.5 w-3.5" />} Cargar más
+            {loadingMore && <Spinner className="h-3.5 w-3.5" />} Load more
           </Button>
         )}
       </div>
@@ -108,8 +108,8 @@ export function EntitiesSection() {
     <div className="space-y-8">
       <EntityGraph />
       <div>
-        <h3 className="text-base font-semibold text-zinc-900">Estado de cada entidad</h3>
-        <div role="group" aria-label="Filtrar por estado" className="mt-2 flex flex-wrap gap-2">
+        <h3 className="text-base font-semibold text-zinc-900">Status of each entity</h3>
+        <div role="group" aria-label="Filter by status" className="mt-2 flex flex-wrap gap-2">
           {FILTERS.map((filter) => {
             const active = status === filter.value;
             const count = filter.value ? counts[filter.value] : counts.accused + counts.declined + counts.clear;

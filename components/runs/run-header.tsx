@@ -8,9 +8,9 @@ import type { AgentRole, ExportFormat, Report } from "@/lib/runs/types";
 import { Button, CopyButton, Icon, Modal, Tooltip } from "./ui";
 
 const EXPORT_OPTIONS: { format: ExportFormat; label: string }[] = [
-  { format: "html", label: "Case file HTML (sin red)" },
-  { format: "md", label: "Markdown con diagramas" },
-  { format: "submission", label: "Submission JSON oficial" },
+  { format: "html", label: "Case file HTML (offline)" },
+  { format: "md", label: "Markdown with diagrams" },
+  { format: "submission", label: "Official submission JSON" },
 ];
 
 function ExportMenu({ runId }: { runId: string }) {
@@ -30,7 +30,7 @@ function ExportMenu({ runId }: { runId: string }) {
       }}
     >
       <Button aria-haspopup="menu" aria-expanded={open} aria-controls={menuId} onClick={() => setOpen((value) => !value)}>
-        <Icon name="download" /> Exportar <Icon name="chevronDown" className="h-3.5 w-3.5" />
+        <Icon name="download" /> Export <Icon name="chevronDown" className="h-3.5 w-3.5" />
       </Button>
       {open && (
         <div id={menuId} role="menu" className="absolute right-0 z-30 mt-1 w-60 rounded-md border border-zinc-200 bg-white py-1 shadow-lg">
@@ -59,13 +59,13 @@ function GlossaryButton() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button variant="ghost" onClick={() => setOpen(true)} aria-label="Abrir glosario de términos">
-        <Icon name="info" /> <span className="hidden sm:inline">Glosario</span>
+      <Button variant="ghost" onClick={() => setOpen(true)} aria-label="Open glossary of terms">
+        <Icon name="info" /> <span className="hidden sm:inline">Glossary</span>
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)} label="Glosario">
+      <Modal open={open} onClose={() => setOpen(false)} label="Glossary">
         <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-3">
-          <h2 className="text-base font-semibold text-zinc-900">Glosario</h2>
-          <button type="button" onClick={() => setOpen(false)} aria-label="Cerrar" className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100">
+          <h2 className="text-base font-semibold text-zinc-900">Glossary</h2>
+          <button type="button" onClick={() => setOpen(false)} aria-label="Close" className="rounded-md p-1 text-zinc-500 hover:bg-zinc-100">
             <Icon name="close" className="h-5 w-5" />
           </button>
         </div>
@@ -96,7 +96,7 @@ export function RunHeader({ report, onOpenSearch }: { report: Report; onOpenSear
         <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-600">
           <span className="inline-flex items-center font-mono text-xs">
             RFC {rfc}
-            <CopyButton value={rfc} label="Copiar RFC" />
+            <CopyButton value={rfc} label="Copy RFC" />
           </span>
           <span aria-hidden>·</span>
           <span>{formatPeriod(header.audit_period.from, header.audit_period.to)}</span>
@@ -104,13 +104,13 @@ export function RunHeader({ report, onOpenSearch }: { report: Report; onOpenSear
           <span>Seed {submission.seed}</span>
         </p>
         <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm text-zinc-600">
-          <span className="tabular-nums">{formatNumber(metadata.llm_calls)} llamadas LLM</span>
+          <span className="tabular-nums">{formatNumber(metadata.llm_calls)} LLM calls</span>
           <span aria-hidden>·</span>
           {costByRole.length > 0 ? (
             <Tooltip
               content={
                 <span className="block">
-                  <span className="mb-1 block font-medium">Costo por rol</span>
+                  <span className="mb-1 block font-medium">Cost by role</span>
                   {costByRole.map(([role, cost]) => (
                     <span key={role} className="flex justify-between gap-6 tabular-nums">
                       <span>{ROLE_LABELS[role as AgentRole]?.label ?? role}</span>
@@ -132,12 +132,12 @@ export function RunHeader({ report, onOpenSearch }: { report: Report; onOpenSear
           <span aria-hidden>·</span>
           {metadata.deterministic ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
-              <Icon name="checkCircle" className="h-3.5 w-3.5" /> Determinista: la misma seed produce el mismo resultado
+              <Icon name="checkCircle" className="h-3.5 w-3.5" /> Deterministic: the same seed produces the same result
             </span>
           ) : (
-            <Tooltip content="Esta corrida puede dar un resultado distinto aunque se repita con la misma seed (por ejemplo, porque el modelo no se fijó a temperatura cero). Repite la corrida para confirmar." focusable>
+            <Tooltip content="This run may produce a different result even when repeated with the same seed (for example, because the model wasn't pinned to temperature zero). Repeat the run to confirm." focusable>
               <span className="inline-flex cursor-help items-center gap-1 rounded-full bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200">
-                <Icon name="info" className="h-3.5 w-3.5" /> No determinista
+                <Icon name="info" className="h-3.5 w-3.5" /> Non-deterministic
               </span>
             </Tooltip>
           )}
@@ -145,7 +145,7 @@ export function RunHeader({ report, onOpenSearch }: { report: Report; onOpenSear
       </div>
       <div className="flex shrink-0 flex-wrap items-center gap-2">
         <Button onClick={onOpenSearch} aria-keyshortcuts="Meta+K Control+K">
-          <Icon name="search" /> Buscar
+          <Icon name="search" /> Search
           <kbd className="hidden rounded border border-zinc-200 px-1 font-sans text-[0.6875rem] text-zinc-500 sm:inline">⌘K</kbd>
         </Button>
         <GlossaryButton />

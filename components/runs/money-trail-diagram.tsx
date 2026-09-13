@@ -107,7 +107,7 @@ export function MoneyTrailDiagram({
               ? () => openEntity(resolved.entityId!)
               : undefined,
             chips: (model.shared.get(resolved.entityId ?? "") ?? []).map((other) => ({
-              label: `También en hallazgo #${other + 1}`,
+              label: `Also in finding #${other + 1}`,
               onClick: () => openFinding(other),
             })),
           },
@@ -126,16 +126,16 @@ export function MoneyTrailDiagram({
           source: step.from,
           target: step.to,
           type: "flow",
-          markerEnd: { type: MarkerType.ArrowClosed, width: 18, height: 18, markerUnits: "userSpaceOnUse", color: highlighted ? "#18181b" : "#71717a" },
+          markerEnd: { type: MarkerType.ArrowClosed, width: 18, height: 18, markerUnits: "userSpaceOnUse", color: highlighted ? "var(--color-zinc-900)" : "var(--color-zinc-500)" },
           data: {
             offset: model.offsets.get(`step-${index}`) ?? 0,
             strokeWidth: strokeWidthFor(step.amount, model.maxAmount),
-            color: "#71717a",
+            color: "var(--color-zinc-500)",
             highlighted,
             label: (
               <span onMouseEnter={() => onHoverExhibit(step.exhibit_id)} onMouseLeave={() => onHoverExhibit(null)} className="block">
                 <span className="flex items-center justify-center gap-1">
-                  <span aria-label={`Paso ${index + 1}`} className="text-sm leading-none text-zinc-500">{circled(index)}</span>
+                  <span aria-label={`Step ${index + 1}`} className="text-sm leading-none text-zinc-500">{circled(index)}</span>
                   <span className="text-xs font-semibold tabular-nums text-zinc-900">{formatMoneyShort(step.amount)}</span>
                 </span>
                 <span className="mt-0.5 flex items-center justify-center gap-1 whitespace-nowrap text-zinc-500">
@@ -151,8 +151,8 @@ export function MoneyTrailDiagram({
 
   if (steps.length === 0) {
     return (
-      <Notice tone="error" title="Rastro del dinero no disponible">
-        El backend no mandó el money trail de este hallazgo. La evidencia y la reconciliación de abajo siguen siendo válidas, pero el flujo no se puede dibujar.
+      <Notice tone="error" title="Money trail unavailable">
+        The backend didn’t send the money trail for this finding. The evidence and reconciliation below are still valid, but the flow can’t be drawn.
       </Notice>
     );
   }
@@ -179,16 +179,16 @@ export function MoneyTrailDiagram({
         strokeWidth: strokeWidthFor(step.amount, model.maxAmount),
         lines: [`${circled(index)} ${formatMoneyShort(step.amount)}`, `${formatDate(step.date)} · ${step.exhibit_id}`],
       })),
-      `Hallazgo #${findingIndex + 1} · Rastro del dinero`,
+      `Finding #${findingIndex + 1} · Money trail`,
     );
   }
 
-  const filename = `hallazgo-${findingIndex + 1}-rastro-del-dinero`;
+  const filename = `finding-${findingIndex + 1}-money-trail`;
 
   return (
     <div>
       {isMobile ? (
-        <ol className="space-y-0" aria-label="Pasos del rastro del dinero">
+        <ol className="space-y-0" aria-label="Money trail steps">
           {steps.map((step, index) => {
             const from = resolveEntityEndpoint(step.from, report.entities);
             const to = resolveEntityEndpoint(step.to, report.entities);
@@ -202,7 +202,7 @@ export function MoneyTrailDiagram({
                   </span>
                   <span className={`flex-1 rounded-md border bg-white px-3 py-2 text-sm ${hoveredExhibit === step.exhibit_id ? "border-zinc-900" : "border-zinc-200"}`}>
                     <span className="sr-only">
-                      Paso {index + 1}: de {from.name} a {to.name}.
+                      Step {index + 1}: from {from.name} to {to.name}.
                     </span>
                     <span className="flex items-center gap-1.5">
                       <span aria-hidden className="text-zinc-500">{circled(index)}</span>
@@ -237,7 +237,7 @@ export function MoneyTrailDiagram({
               preventScrolling={false}
               onEdgeMouseEnter={(_, edge) => onHoverExhibit(steps[Number(edge.id.replace("step-", ""))]?.exhibit_id ?? null)}
               onEdgeMouseLeave={() => onHoverExhibit(null)}
-              aria-label={`Diagrama del rastro del dinero del hallazgo #${findingIndex + 1}`}
+              aria-label={`Money trail diagram for finding #${findingIndex + 1}`}
             >
               <ZoomControls />
             </ReactFlow>
@@ -247,8 +247,8 @@ export function MoneyTrailDiagram({
 
       <div className="mt-2 flex flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
         <p>
-          {circled(0)} orden de los pasos · el grosor es proporcional al monto
-          {!isMobile && steps.some((step, index) => index > 0 && step.to === steps[0].from) && " · el arco inferior es el dinero que regresa"}
+          {circled(0)} step order · thickness is proportional to the amount
+          {!isMobile && steps.some((step, index) => index > 0 && step.to === steps[0].from) && " · the lower arc is the money coming back"}
         </p>
         {!isMobile && (
           <span className="flex gap-2">
@@ -265,19 +265,19 @@ export function MoneyTrailDiagram({
       <details className="group mt-2 rounded-md border border-zinc-200 bg-white">
         <summary className="flex cursor-pointer items-center gap-1 px-3 py-2 text-xs font-medium text-zinc-600 marker:content-none">
           <Icon name="chevronRight" className="h-3.5 w-3.5 transition-transform group-open:rotate-90" />
-          Ver los pasos como tabla
+          View steps as a table
         </summary>
         <div className="relative overflow-x-auto border-t border-zinc-200">
           <table className="w-full min-w-[560px] text-left text-sm">
-            <caption className="sr-only">Pasos del rastro del dinero del hallazgo #{findingIndex + 1}</caption>
+            <caption className="sr-only">Money trail steps for finding #{findingIndex + 1}</caption>
             <thead className="bg-zinc-50 text-xs text-zinc-500">
               <tr>
                 <th scope="col" className="px-3 py-2 font-medium">#</th>
-                <th scope="col" className="px-3 py-2 font-medium">De</th>
-                <th scope="col" className="px-3 py-2 font-medium">A</th>
-                <th scope="col" className="px-3 py-2 text-right font-medium">Monto</th>
-                <th scope="col" className="px-3 py-2 font-medium">Fecha</th>
-                <th scope="col" className="px-3 py-2 font-medium">Evidencia</th>
+                <th scope="col" className="px-3 py-2 font-medium">From</th>
+                <th scope="col" className="px-3 py-2 font-medium">To</th>
+                <th scope="col" className="px-3 py-2 text-right font-medium">Amount</th>
+                <th scope="col" className="px-3 py-2 font-medium">Date</th>
+                <th scope="col" className="px-3 py-2 font-medium">Evidence</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
@@ -319,7 +319,7 @@ function TrailNodeCard({ id, findingIndex, returning = false }: { id: string; fi
         <span className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
           <span className="font-mono">{displayEntityId(id)}</span>
           {data && !data.is_audited_company && <EntityStatusBadge status={data.status} size="sm" />}
-          {returning && <span className="font-medium text-violet-700">↺ el dinero regresa al inicio</span>}
+          {returning && <span className="font-medium text-violet-700">↺ the money returns to the start</span>}
         </span>
       </button>
       {shared.map((item) => (
@@ -329,7 +329,7 @@ function TrailNodeCard({ id, findingIndex, returning = false }: { id: string; fi
           onClick={() => openFinding(item.other_finding_index)}
           className="mt-1.5 inline-flex items-center gap-0.5 rounded-full bg-violet-50 px-2 py-0.5 text-xs font-medium text-violet-800 ring-1 ring-inset ring-violet-200"
         >
-          También en hallazgo #{item.other_finding_index + 1} <Icon name="arrowRight" className="h-3 w-3" />
+          Also in finding #{item.other_finding_index + 1} <Icon name="arrowRight" className="h-3 w-3" />
         </button>
       ))}
     </li>

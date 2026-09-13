@@ -28,5 +28,5 @@ export function isNotFound(error: unknown): boolean {
 
 export function errorMessage(error: unknown): string {
   if (error instanceof Error && error.message) return error.message;
-  return "Algo salió mal. Intenta de nuevo.";
+  return "Something went wrong. Please try again.";
 }

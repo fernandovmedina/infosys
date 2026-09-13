@@ -73,12 +73,12 @@ function ExplorerResults({ query }: { query: Filters }) {
     return [
       helper.display({
         id: "risk",
-        header: () => "Riesgo",
+        header: () => "Risk",
         cell: ({ row }) => (row.original.risk ? <EntityStatusBadge status={row.original.risk} size="sm" /> : <span className="text-zinc-400">—</span>),
       }),
       helper.display({
         id: "cited",
-        header: () => "Citado en",
+        header: () => "Cited in",
         cell: ({ row }) =>
           row.original.cited_in.length > 0 ? (
             <span className="flex flex-wrap gap-1">
@@ -135,10 +135,10 @@ function ExplorerResults({ query }: { query: Filters }) {
     }
   });
 
-  if (error) return <Notice tone="error" title="No se pudieron cargar los registros">{error}</Notice>;
-  if (!items) return <LoadingBlock label="Cargando registros…" />;
+  if (error) return <Notice tone="error" title="Could not load the records">{error}</Notice>;
+  if (!items) return <LoadingBlock label="Loading records…" />;
   if (items.length === 0) {
-    return <p className="rounded-md border border-dashed border-zinc-300 px-4 py-8 text-center text-sm text-zinc-600">Ningún registro coincide con los filtros.</p>;
+    return <p className="rounded-md border border-dashed border-zinc-300 px-4 py-8 text-center text-sm text-zinc-600">No records match the filters.</p>;
   }
 
   const minWidth = table.getAllLeafColumns().reduce((sum, column) => sum + columnWidth(column.id), 0);
@@ -148,7 +148,7 @@ function ExplorerResults({ query }: { query: Filters }) {
       <div
         ref={scrollRef}
         role="table"
-        aria-label={`${TABLES[query.table].plural}: ${formatNumber(total)} registros`}
+        aria-label={`${TABLES[query.table].plural}: ${formatNumber(total)} records`}
         aria-rowcount={total + 1}
         className="h-[520px] overflow-auto rounded-md border border-zinc-200 bg-white text-sm"
       >
@@ -194,9 +194,9 @@ function ExplorerResults({ query }: { query: Filters }) {
         </div>
       </div>
       <p className="mt-2 flex items-center gap-2 text-xs text-zinc-500" aria-live="polite">
-        {formatNumber(items.length)} cargados de {formatNumber(total)}
+        {formatNumber(items.length)} of {formatNumber(total)} loaded
         {loadingMore && <Spinner className="h-3 w-3" />}
-        {cursor && !loadingMore && <span>· desplázate para cargar más</span>}
+        {cursor && !loadingMore && <span>· scroll to load more</span>}
       </p>
     </div>
   );
@@ -249,7 +249,7 @@ export function TransactionsExplorer() {
 
   return (
     <div className="space-y-3">
-      <div role="tablist" aria-label="Tabla" className="-mx-4 flex gap-1 relative overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
+      <div role="tablist" aria-label="Table" className="-mx-4 flex gap-1 relative overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
         {TABLE_ORDER.map((name) => (
           <button
             key={name}
@@ -270,19 +270,19 @@ export function TransactionsExplorer() {
         ))}
       </div>
       <p className="flex items-center gap-1.5 text-xs text-zinc-500">
-        Tabla <TableName table={table} className="text-xs" /> · {meta.description}
+        Table <TableName table={table} className="text-xs" /> · {meta.description}
       </p>
 
       <fieldset className="grid grid-cols-2 gap-3 rounded-lg border border-zinc-200 bg-white p-3 md:grid-cols-4">
-        <legend className="sr-only">Filtros</legend>
+        <legend className="sr-only">Filters</legend>
         <div className="col-span-2">
-          <label htmlFor={ids.entity} className={labelClass}>Entidad (RFC, EMP o nombre)</label>
+          <label htmlFor={ids.entity} className={labelClass}>Entity (RFC, EMP, or name)</label>
           <input id={ids.entity} type="search" value={entity} onChange={(event) => setEntity(event.target.value)} className={inputClass} placeholder="RFC:CAM190305K41, Consultores…" />
         </div>
         <div>
-          <label htmlFor={ids.risk} className={labelClass}>Estado de riesgo</label>
+          <label htmlFor={ids.risk} className={labelClass}>Risk status</label>
           <select id={ids.risk} value={risk} onChange={(event) => setRisk(event.target.value as EntityStatus | "")} className={inputClass}>
-            <option value="">Todos</option>
+            <option value="">All</option>
             {(["accused", "declined", "clear"] as EntityStatus[]).map((value) => (
               <option key={value} value={value}>{STATUS_LABELS[value].label}</option>
             ))}
@@ -290,24 +290,24 @@ export function TransactionsExplorer() {
         </div>
         <label htmlFor={ids.cited} className="flex items-end gap-2 pb-1.5 text-sm text-zinc-700">
           <input id={ids.cited} type="checkbox" checked={cited} onChange={(event) => setCited(event.target.checked)} className="h-4 w-4 rounded border-zinc-300" />
-          Solo evidencia
+          Evidence only
         </label>
         <div>
-          <label htmlFor={ids.from} className={labelClass}>Desde</label>
+          <label htmlFor={ids.from} className={labelClass}>From</label>
           <input id={ids.from} type="date" value={from} onChange={(event) => setFrom(event.target.value)} className={inputClass} />
         </div>
         <div>
-          <label htmlFor={ids.to} className={labelClass}>Hasta</label>
+          <label htmlFor={ids.to} className={labelClass}>To</label>
           <input id={ids.to} type="date" value={to} onChange={(event) => setTo(event.target.value)} className={inputClass} />
         </div>
         {meta.amountField && (
           <>
             <div>
-              <label htmlFor={ids.min} className={labelClass}>Monto mínimo</label>
+              <label htmlFor={ids.min} className={labelClass}>Minimum amount</label>
               <input id={ids.min} type="number" inputMode="decimal" min={0} value={amountMin} onChange={(event) => setAmountMin(event.target.value)} className={inputClass} />
             </div>
             <div>
-              <label htmlFor={ids.max} className={labelClass}>Monto máximo</label>
+              <label htmlFor={ids.max} className={labelClass}>Maximum amount</label>
               <input id={ids.max} type="number" inputMode="decimal" min={0} value={amountMax} onChange={(event) => setAmountMax(event.target.value)} className={inputClass} />
             </div>
           </>
@@ -316,7 +316,7 @@ export function TransactionsExplorer() {
           <div>
             <label htmlFor={ids.status} className={labelClass}>status</label>
             <select id={ids.status} value={status} onChange={(event) => setStatus(event.target.value)} className={inputClass}>
-              <option value="">Todos</option>
+              <option value="">All</option>
               {statusOptions.map((value) => (
                 <option key={value} value={value}>{value}</option>
               ))}
@@ -327,7 +327,7 @@ export function TransactionsExplorer() {
           <div>
             <label htmlFor={ids.channel} className={labelClass}>channel</label>
             <select id={ids.channel} value={channel} onChange={(event) => setChannel(event.target.value)} className={inputClass}>
-              <option value="">Todos</option>
+              <option value="">All</option>
               <option value="SPEI">SPEI</option>
               <option value="cheque">cheque</option>
               <option value="efectivo">efectivo</option>
@@ -349,7 +349,7 @@ export function TransactionsExplorer() {
               setChannel("");
             }}
           >
-            <Icon name="close" className="h-3.5 w-3.5" /> Limpiar filtros
+            <Icon name="close" className="h-3.5 w-3.5" /> Clear filters
           </Button>
         </div>
       </fieldset>

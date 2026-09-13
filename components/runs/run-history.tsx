@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { formatDateTime, formatMoneyMXN } from "@/lib/format";
 import { errorMessage } from "@/lib/runs/errors";
 import { RUN_STATUS_LABELS, VERDICT_LABELS } from "@/lib/runs/labels";
-import { deleteAllRuns, deleteRun, listRuns } from "@/lib/runs/api";
+import { deleteAllRuns, deleteRun, getValidation, listRuns } from "@/lib/runs/api";
 import type { RunStatus, RunSummary, Verdict } from "@/lib/runs/types";
 import { Button, Icon, LoadingBlock, Notice, Spinner, type IconName } from "./ui";
 
@@ -24,10 +24,18 @@ const RUN_STATUS_STYLES: Record<RunStatus, string> = {
   failed: "bg-red-50 text-red-700",
 };
 
-function Outcome({ run }: { run: RunSummary }) {
+function Outcome({ run, blocked }: { run: RunSummary; blocked: boolean }) {
+  if (blocked) {
+    return (
+      <span className="inline-flex items-center gap-1 justify-self-start rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
+        <Icon name="xCircle" className="h-3.5 w-3.5" />
+        Incomplete dataset
+      </span>
+    );
+  }
   if (run.status !== "completed" || !run.verdict) {
     return (
-      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${RUN_STATUS_STYLES[run.status]}`}>
+      <span className={`inline-flex justify-self-start rounded-full px-2 py-0.5 text-xs font-medium ${RUN_STATUS_STYLES[run.status]}`}>
         {RUN_STATUS_LABELS[run.status]}
       </span>
     );
@@ -49,6 +57,7 @@ function Outcome({ run }: { run: RunSummary }) {
 /** Historial de corridas del usuario (`GET /runs`). */
 export function RunHistory() {
   const [runs, setRuns] = useState<RunSummary[] | null>(null);
+  const [blockedRunIds, setBlockedRunIds] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [confirmingRunId, setConfirmingRunId] = useState<string | null>(null);
   const [deletingRunId, setDeletingRunId] = useState<string | null>(null);
@@ -62,7 +71,19 @@ export function RunHistory() {
     let cancelled = false;
     listRuns()
       .then((result) => {
-        if (!cancelled) setRuns(result);
+        if (cancelled) return;
+        setRuns(result);
+        // `GET /runs` no dice si una corrida lista quedó bloqueada por su validación: se consulta aparte.
+        const ready = result.filter((run) => run.status === "ready");
+        return Promise.all(
+          ready.map((run) =>
+            getValidation(run.run_id)
+              .then((validation) => (validation.tables.some((table) => table.status === "error") ? run.run_id : null))
+              .catch(() => null),
+          ),
+        ).then((ids) => {
+          if (!cancelled) setBlockedRunIds(new Set(ids.filter((id): id is string => id !== null)));
+        });
       })
       .catch((cause) => {
         if (!cancelled) setError(errorMessage(cause));
@@ -110,7 +131,7 @@ export function RunHistory() {
     <section aria-labelledby="history-title">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 id="history-title" className="text-lg font-semibold tracking-tight text-zinc-900">
-          Historial de corridas
+          Run history
         </h2>
         {deletableCount > 0 && !confirmingDeleteAll && (
           <Button
@@ -122,16 +143,16 @@ export function RunHistory() {
             }}
             disabled={deletingAll || deletingRunId !== null}
           >
-            Borrar historial
+            Clear history
           </Button>
         )}
       </div>
       {confirmingDeleteAll && runs && deletableCount > 0 && (
         <div className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           <p>
-            {deletableCount === 1 ? "Se eliminará 1 corrida y su dataset." : `Se eliminarán ${deletableCount} corridas y sus datasets.`}{" "}
-            {deletableCount < runs.length && "Las corridas en curso se conservan. "}
-            Esta acción no se puede deshacer.
+            {deletableCount === 1 ? "1 run and its dataset will be deleted." : `${deletableCount} runs and their datasets will be deleted.`}{" "}
+            {deletableCount < runs.length && "Runs in progress are kept. "}
+            This action can’t be undone.
           </p>
           <div className="mt-3 flex flex-wrap justify-end gap-2">
             <Button
@@ -142,11 +163,11 @@ export function RunHistory() {
               }}
               disabled={deletingAll}
             >
-              Cancelar
+              Cancel
             </Button>
             <Button variant="primary" onClick={() => void handleDeleteAll()} disabled={deletingAll} aria-busy={deletingAll}>
               {deletingAll && <Spinner className="h-3.5 w-3.5" />}
-              Borrar historial
+              Clear history
             </Button>
           </div>
           {deleteAllError && <p className="mt-2 text-red-700" role="alert">{deleteAllError}</p>}
@@ -154,14 +175,14 @@ export function RunHistory() {
       )}
       <div className="mt-3">
         {error ? (
-          <Notice tone="error" title="No se pudo cargar el historial">
+          <Notice tone="error" title="Could not load the history">
             {error}
           </Notice>
         ) : runs === null ? (
           <LoadingBlock />
         ) : runs.length === 0 ? (
           <p className="rounded-lg border border-dashed border-zinc-300 px-4 py-6 text-center text-sm text-zinc-500">
-            Todavía no hay corridas. Sube los libros de una empresa para iniciar la primera investigación.
+            No runs yet. Upload a company’s books to start the first investigation.
           </p>
         ) : (
           <ul className="divide-y divide-zinc-200 rounded-lg border border-zinc-200 bg-white">
@@ -178,7 +199,7 @@ export function RunHistory() {
                         {run.filename} · <span className="font-mono">{run.run_id}</span>
                       </span>
                     </span>
-                    <Outcome run={run} />
+                    <Outcome run={run} blocked={run.status === "ready" && blockedRunIds.has(run.run_id)} />
                     <span className="text-xs text-zinc-500 sm:text-right">{formatDateTime(run.created_at)}</span>
                   </Link>
                   {run.status !== "running" && (
@@ -186,7 +207,7 @@ export function RunHistory() {
                       <Button
                         variant="ghost"
                         className="px-2 py-1 text-xs"
-                        aria-label={`Eliminar corrida ${run.filename}`}
+                        aria-label={`Delete run ${run.filename}`}
                         onClick={() => {
                           setConfirmingRunId(run.run_id);
                           setRunDeleteErrors((current) => {
@@ -197,14 +218,14 @@ export function RunHistory() {
                         }}
                         disabled={deletingAll || deletingRunId !== null}
                       >
-                        Eliminar
+                        Delete
                       </Button>
                     </div>
                   )}
                 </div>
                 {confirmingRunId === run.run_id && (
                   <div className="border-t border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
-                    <p className="text-zinc-700">¿Eliminar esta corrida? Se borra también el dataset subido.</p>
+                    <p className="text-zinc-700">Delete this run? The uploaded dataset is deleted too.</p>
                     <div className="mt-3 flex flex-wrap justify-end gap-2">
                       <Button
                         variant="ghost"
@@ -218,7 +239,7 @@ export function RunHistory() {
                         }}
                         disabled={deletingRunId === run.run_id}
                       >
-                        Cancelar
+                        Cancel
                       </Button>
                       <Button
                         variant="primary"
@@ -227,7 +248,7 @@ export function RunHistory() {
                         aria-busy={deletingRunId === run.run_id}
                       >
                         {deletingRunId === run.run_id && <Spinner className="h-3.5 w-3.5" />}
-                        Eliminar
+                        Delete
                       </Button>
                     </div>
                     {runDeleteErrors[run.run_id] && (

@@ -14,134 +14,139 @@ import type {
 
 export const SCHEME_LABELS: Record<SchemeType, { label: string; tooltip: string }> = {
   phantom_vendor: {
-    label: "Proveedor fantasma",
-    tooltip: "Un proveedor que cobra por trabajos o productos que nunca se entregaron.",
+    label: "Phantom vendor",
+    tooltip: "A vendor that bills for work or goods that were never delivered.",
   },
   kickback: {
-    label: "Moche / soborno",
+    label: "Kickback / bribe",
     tooltip:
-      "Un pago inflado a un proveedor, que regresa parte del dinero a alguien de la empresa, normalmente por una empresa fachada.",
+      "An inflated payment to a vendor that sends part of the money back to someone inside the company, usually through a shell company.",
   },
   round_tripping: {
-    label: "Dinero en círculo",
-    tooltip: "El dinero sale de la empresa, pasa por terceros y regresa, para simular operaciones.",
+    label: "Round-tripping",
+    tooltip: "Money leaves the company, passes through third parties, and comes back to simulate transactions.",
   },
   threshold_splitting: {
-    label: "Fraccionamiento",
-    tooltip: "Una compra grande partida en varias pequeñas para no pasar el límite de aprobación.",
+    label: "Threshold splitting",
+    tooltip: "A large purchase split into several small ones to stay under the approval limit.",
   },
   revenue_inflation: {
-    label: "Ventas infladas",
-    tooltip: "Ventas registradas que no ocurrieron, para aparentar más ingresos.",
+    label: "Revenue inflation",
+    tooltip: "Recorded sales that never happened, to make revenue look higher.",
   },
 };
 
 export const CONFIDENCE_LABELS: Record<Confidence, { label: string; tooltip: string }> = {
   proven: {
-    label: "Comprobado",
-    tooltip: "La evidencia demuestra el esquema y el monto cuadra con los registros.",
+    label: "Proven",
+    tooltip: "The evidence demonstrates the scheme and the amount reconciles with the records.",
   },
   probable: {
     label: "Probable",
     tooltip:
-      "La evidencia apunta con fuerza al esquema, pero falta un eslabón (por ejemplo, un movimiento bancario de un tercero no visible).",
+      "The evidence strongly points to the scheme, but a link is missing (for example, a bank transaction from a third party that isn't visible).",
   },
 };
 
 export const CLOSED_BY_LABELS: Record<ClosedBy, { icon: string; label: string }> = {
-  investigator: { icon: "🕵️", label: "Investigador" },
-  challenger: { icon: "⚔️", label: "Revisor adversarial" },
-  validator: { icon: "✅", label: "Validador (la evidencia no cuadró)" },
+  investigator: { icon: "🕵️", label: "Investigator" },
+  challenger: { icon: "⚔️", label: "Adversarial reviewer" },
+  validator: { icon: "✅", label: "Validator (the evidence didn't reconcile)" },
 };
 
 export const ROLE_LABELS: Record<AgentRole, { icon: string; label: string }> = {
-  system: { icon: "●", label: "Sistema" },
+  system: { icon: "●", label: "System" },
   detector: { icon: "🔎", label: "Detector" },
-  investigator: { icon: "🕵️", label: "Investigador" },
+  investigator: { icon: "🕵️", label: "Investigator" },
   challenger: { icon: "⚔️", label: "Challenger" },
   validator: { icon: "✅", label: "Validator" },
 };
 
 export const STATUS_LABELS: Record<EntityStatus, { label: string; description: string }> = {
-  accused: { label: "Acusado", description: "Aparece en al menos un hallazgo: hay prueba." },
-  declined: { label: "Descartado", description: "Se investigó y no se sostuvo." },
-  clear: { label: "Sin señales", description: "Ningún detector la señaló." },
+  accused: { label: "Accused", description: "Appears in at least one finding: there is proof." },
+  declined: { label: "Dismissed", description: "It was investigated and didn't hold up." },
+  clear: { label: "No signals", description: "No detector flagged it." },
 };
 
 export const KIND_LABELS: Record<EntityKind, { icon: string; label: string }> = {
-  company: { icon: "🏢", label: "Empresa auditada" },
-  vendor: { icon: "🏭", label: "Proveedor" },
-  employee: { icon: "👤", label: "Empleado" },
-  account: { icon: "🏦", label: "Cuenta bancaria" },
-  unknown: { icon: "❔", label: "Tercero desconocido" },
+  company: { icon: "🏢", label: "Audited company" },
+  vendor: { icon: "🏭", label: "Vendor" },
+  employee: { icon: "👤", label: "Employee" },
+  account: { icon: "🏦", label: "Bank account" },
+  unknown: { icon: "❔", label: "Unknown third party" },
 };
 
 export const RUN_STATUS_LABELS: Record<RunStatus, string> = {
-  validating: "Validando",
-  ready: "Lista para iniciar",
-  running: "Investigando",
-  completed: "Terminada",
-  failed: "Falló",
+  validating: "Validating",
+  ready: "Ready to start",
+  running: "Investigating",
+  completed: "Completed",
+  failed: "Failed",
 };
 
 export const VERDICT_LABELS: Record<Verdict, string> = {
-  fraud_proven: "Fraude comprobado",
-  fraud_probable: "Indicios de fraude",
-  clean_with_leads: "Sin fraude (casos descartados)",
-  clean: "Sin señales de fraude",
+  fraud_proven: "Fraud proven",
+  fraud_probable: "Signs of fraud",
+  clean_with_leads: "No fraud (leads dismissed)",
+  clean: "No signs of fraud",
 };
 
 /** Señales de detectores (`Entity.signals`). Si llega una desconocida se muestra la clave. */
 export const SIGNAL_LABELS: Record<string, string> = {
-  EFOS_DIRECT_MATCH: "Proveedor confirmado como EFOS definitivo",
-  EFOS_PRESUNTO_MATCH: "Proveedor investigado como posible EFOS",
-  EFOS_POST_DATED: "Factura anterior a la publicación del EFOS",
-  VENDOR_SHORT_LIFECYCLE: "Proveedor facturó poco después de su alta",
-  INVOICE_NO_PO_NO_CONTRACT: "Factura sin orden de compra ni contrato",
-  SHARED_CLABE_MULTI_RFC: "Varios proveedores comparten la misma CLABE",
-  OUTBOUND_TO_SUSPECT_ENTITY: "Pago a un EFOS o una CLABE compartida",
-  PAYMENT_TO_EMPLOYEE_ACCOUNT: "Pago directo a la cuenta de un empleado",
-  APPROVER_VENDOR_CONCENTRATION: "Aprobador concentrado en un proveedor",
-  NO_SEGREGATION_OF_DUTIES: "La misma persona solicitó y aprobó la compra",
-  PRICE_OUTLIER_BY_CATEGORY: "Precio atípico para la categoría del proveedor",
-  BANK_CYCLE_2NODE: "El dinero regresó desde una segunda cuenta",
-  BANK_CYCLE_NNODE: "El dinero regresó tras pasar por varias cuentas",
-  CYCLE_LEAKAGE_RATE: "Ciclos repetidos con una comisión pequeña",
-  INVOICE_BIDIRECTIONAL: "Empresas con facturas recíprocas similares",
-  BANK_TXN_NOT_IN_LEDGER: "Movimiento bancario sin asiento contable",
-  PO_NEAR_THRESHOLD: "Orden de compra justo debajo del límite",
-  PO_WINDOW_SUM_SPLIT: "Órdenes cercanas que juntas superan el límite",
-  BANK_TXN_WINDOW_SPLIT: "Pagos cercanos fraccionados para evadir el límite",
-  SAME_APPROVER_SPLIT: "Un aprobador fraccionó órdenes al mismo proveedor",
-  CONTRACT_SPLIT_INTO_POS: "Contrato dividido en varias órdenes de compra",
-  BENFORD_DEVIATION_TOTAL: "Totales de facturas se desvían de la ley de Benford",
-  BENFORD_DEVIATION_BANK: "Montos bancarios se desvían de la ley de Benford",
-  INVOICE_NO_COLLECTION: "Factura de venta sin cobro",
-  AR_AGING_EXCESSIVE: "Cuenta por cobrar vencida sin cobro",
-  PERIOD_END_SPIKE: "Pico de facturación al cierre del periodo",
-  RECEIVER_NO_PAYMENT_HISTORY: "Receptor sin historial de pagos",
-  INFLATE_AND_CANCEL: "Factura cancelada sin reversión contable",
-  RECEIVER_IN_EFOS: "Receptor de la factura aparece en la lista EFOS",
-  LEDGER_UNBALANCED_ENTRY: "Póliza con cargos y abonos descuadrados",
-  ORPHAN_INVOICE_UUID: "Póliza vinculada a una factura inexistente",
-  MALFORMED_RFC: "RFC con formato inválido",
-  CLABE_INVALID_LENGTH: "CLABE que no tiene 18 dígitos",
+  EFOS_DIRECT_MATCH: "Vendor confirmed as a definitive EFOS",
+  EFOS_PRESUNTO_MATCH: "Vendor under investigation as a possible EFOS",
+  EFOS_POST_DATED: "Invoice predates the EFOS publication",
+  VENDOR_SHORT_LIFECYCLE: "Vendor invoiced shortly after registration",
+  INVOICE_NO_PO_NO_CONTRACT: "Invoice with no purchase order or contract",
+  SHARED_CLABE_MULTI_RFC: "Several vendors share the same CLABE",
+  OUTBOUND_TO_SUSPECT_ENTITY: "Payment to an EFOS or a shared CLABE",
+  PAYMENT_TO_EMPLOYEE_ACCOUNT: "Direct payment to an employee's account",
+  APPROVER_VENDOR_CONCENTRATION: "Approver concentrated on one vendor",
+  NO_SEGREGATION_OF_DUTIES: "The same person requested and approved the purchase",
+  PRICE_OUTLIER_BY_CATEGORY: "Unusual price for the vendor's category",
+  BANK_CYCLE_2NODE: "Money came back from a second account",
+  BANK_CYCLE_NNODE: "Money came back after passing through several accounts",
+  CYCLE_LEAKAGE_RATE: "Repeated cycles with a small fee",
+  INVOICE_BIDIRECTIONAL: "Companies with similar reciprocal invoices",
+  BANK_TXN_NOT_IN_LEDGER: "Bank transaction with no ledger entry",
+  PO_NEAR_THRESHOLD: "Purchase order just below the limit",
+  PO_WINDOW_SUM_SPLIT: "Nearby orders that together exceed the limit",
+  BANK_TXN_WINDOW_SPLIT: "Nearby payments split to evade the limit",
+  SAME_APPROVER_SPLIT: "An approver split orders to the same vendor",
+  CONTRACT_SPLIT_INTO_POS: "Contract split into several purchase orders",
+  BENFORD_DEVIATION_TOTAL: "Invoice totals deviate from Benford's law",
+  BENFORD_DEVIATION_BANK: "Bank amounts deviate from Benford's law",
+  INVOICE_NO_COLLECTION: "Sales invoice never collected",
+  AR_AGING_EXCESSIVE: "Overdue receivable never collected",
+  PERIOD_END_SPIKE: "Invoicing spike at period end",
+  RECEIVER_NO_PAYMENT_HISTORY: "Receiver with no payment history",
+  INFLATE_AND_CANCEL: "Canceled invoice with no accounting reversal",
+  RECEIVER_IN_EFOS: "Invoice receiver appears on the EFOS list",
+  LEDGER_UNBALANCED_ENTRY: "Journal entry with unbalanced debits and credits",
+  ORPHAN_INVOICE_UUID: "Journal entry linked to a nonexistent invoice",
+  MALFORMED_RFC: "RFC with an invalid format",
+  CLABE_INVALID_LENGTH: "CLABE that isn't 18 digits long",
 };
+
+/** Claves de una lista de señales separada por comas (`LeadNotPursued.signal`). */
+export function splitSignals(signal: string): string[] {
+  return signal.split(",").map((key) => key.trim()).filter(Boolean);
+}
 
 /** Glosario del header (EXAMPLE §12). */
 export const GLOSSARY: { term: string; definition: string }[] = [
-  { term: "SAT", definition: "Servicio de Administración Tributaria: la autoridad fiscal de México." },
-  { term: "69-B", definition: "Artículo del Código Fiscal de la Federación sobre empresas que facturan operaciones que no existen." },
-  { term: "EFOS", definition: "Empresas que Facturan Operaciones Simuladas. Estar en la lista no siempre es culpa: Desvirtuado y Sentencia Favorable significan que ya limpiaron su situación." },
-  { term: "CFDI", definition: "Comprobante Fiscal Digital por Internet: la factura electrónica." },
-  { term: "RFC", definition: "Registro Federal de Contribuyentes: la clave fiscal de una persona o empresa." },
-  { term: "CLABE", definition: "Clave Bancaria Estandarizada de 18 dígitos que identifica una cuenta." },
-  { term: "SPEI", definition: "Sistema de Pagos Electrónicos Interbancarios: transferencias entre bancos." },
-  { term: "PUE / PPD", definition: "Método de pago de una factura: en una sola exhibición (PUE) o en parcialidades (PPD)." },
-  { term: "IVA", definition: "Impuesto al Valor Agregado, normalmente 16 %." },
-  { term: "Moche", definition: "Parte de un pago que regresa en secreto a alguien de la empresa." },
-  { term: "Exhibit", definition: "Registro citado como evidencia (EX-01, EX-02…)." },
-  { term: "Money trail", definition: "Rastro del dinero: de dónde salió, por dónde pasó y a dónde llegó." },
+  { term: "SAT", definition: "Servicio de Administración Tributaria: Mexico's tax authority." },
+  { term: "69-B", definition: "Article of the Federal Tax Code about companies that invoice transactions that don't exist." },
+  { term: "EFOS", definition: "Empresas que Facturan Operaciones Simuladas (companies that invoice simulated transactions). Being on the list doesn't always mean guilt: Desvirtuado and Sentencia Favorable mean they have cleared their status." },
+  { term: "CFDI", definition: "Comprobante Fiscal Digital por Internet: the electronic invoice." },
+  { term: "RFC", definition: "Registro Federal de Contribuyentes: the tax ID of a person or company." },
+  { term: "CLABE", definition: "Clave Bancaria Estandarizada: an 18-digit code that identifies a bank account." },
+  { term: "SPEI", definition: "Sistema de Pagos Electrónicos Interbancarios: transfers between banks." },
+  { term: "PUE / PPD", definition: "An invoice's payment method: single payment (PUE) or installments (PPD)." },
+  { term: "IVA", definition: "Impuesto al Valor Agregado: value added tax, usually 16%." },
+  { term: "Kickback", definition: "Part of a payment secretly returned to someone inside the company." },
+  { term: "Exhibit", definition: "A record cited as evidence (EX-01, EX-02…)." },
+  { term: "Money trail", definition: "Where the money came from, where it passed through, and where it ended up." },
 ];
 
 export function entityKindFromId(id: string): EntityKind {

@@ -74,7 +74,7 @@ function fileNames(files: File[]): string {
 }
 
 function duplicateSelectionMessage(table: SourceTable, files: File[]): string {
-  return `Los archivos ${fileNames(files)} parecen corresponder a la tabla «${table}». Selecciona solo un CSV por tabla.`;
+  return `The files ${fileNames(files)} appear to belong to the «${table}» table. Select only one CSV per table.`;
 }
 
 /** Valida las reglas de formato, combinación, tamaño y tablas reconocibles. */
@@ -83,21 +83,21 @@ export function validateSelection(files: File[]): string | null {
 
   const unsupported = files.find((file) => !ACCEPTED_EXTENSIONS.includes(extension(file.name) as ".zip" | ".csv"));
   if (unsupported) {
-    return `El archivo «${unsupported.name}» no tiene un formato soportado. Usa únicamente .zip o .csv.`;
+    return `The file «${unsupported.name}» is not a supported format. Use only .zip or .csv.`;
   }
 
   const archives = files.filter(isZip);
   const csvFiles = files.filter(isCsv);
   if (archives.length > 1) {
-    return `Seleccionaste más de un ZIP (${fileNames(archives)}). Sube exactamente un ZIP o uno o más CSV.`;
+    return `You selected more than one ZIP (${fileNames(archives)}). Upload exactly one ZIP or one or more CSVs.`;
   }
   if (archives.length === 1 && csvFiles.length > 0) {
-    return `No puedes mezclar el ZIP ${fileNames(archives)} con archivos CSV (${fileNames(csvFiles)}). Sube exactamente un ZIP o uno o más CSV.`;
+    return `You can't mix the ZIP ${fileNames(archives)} with CSV files (${fileNames(csvFiles)}). Upload exactly one ZIP or one or more CSVs.`;
   }
 
   const total = files.reduce((sum, file) => sum + file.size, 0);
   if (total > MAX_UPLOAD_BYTES) {
-    return `El dataset pesa ${formatFileSize(total)}; el máximo es ${formatFileSize(MAX_UPLOAD_BYTES)}.`;
+    return `The dataset is ${formatFileSize(total)}; the maximum is ${formatFileSize(MAX_UPLOAD_BYTES)}.`;
   }
 
   const filesByTable = new Map<SourceTable, File[]>();
@@ -141,7 +141,7 @@ function detailFilenames(details: ErrorDetails | null): string[] {
 }
 
 function quotedDetails(files: string[]): string {
-  return files.length > 0 ? files.map((file) => `«${file}»`).join(", ") : "los archivos seleccionados";
+  return files.length > 0 ? files.map((file) => `«${file}»`).join(", ") : "the selected files";
 }
 
 function ignoredFiles(details: ErrorDetails | null): string {
@@ -153,7 +153,7 @@ function ignoredFiles(details: ErrorDetails | null): string {
       return typeof record.reason === "string" ? `«${record.filename}» (${record.reason})` : `«${record.filename}»`;
     })
     .filter((item): item is string => item !== null);
-  return ignored.length > 0 ? ` Archivos ignorados: ${ignored.join(", ")}.` : "";
+  return ignored.length > 0 ? ` Ignored files: ${ignored.join(", ")}.` : "";
 }
 
 /** Traduce los errores de carga del backend a mensajes accionables para la UI. */
@@ -165,25 +165,25 @@ export function uploadErrorMessage(error: unknown): string {
 
   switch (code) {
     case "not_authenticated":
-      return "Tu sesión expiró. Inicia sesión de nuevo para subir el dataset.";
+      return "Your session expired. Sign in again to upload the dataset.";
     case "no_files":
-      return "Selecciona al menos un archivo CSV o un ZIP.";
+      return "Select at least one CSV file or a ZIP.";
     case "unsupported_format":
-      return `El archivo ${filename ? `«${filename}»` : "seleccionado"} no tiene un formato soportado. Usa únicamente .zip o .csv.`;
+      return `The ${filename ? `file «${filename}»` : "selected file"} is not a supported format. Use only .zip or .csv.`;
     case "mixed_formats":
-      return `No puedes mezclar ZIP y CSV en una misma carga (${quotedDetails(filenames)}).`;
+      return `You can't mix ZIP and CSV files in the same upload (${quotedDetails(filenames)}).`;
     case "multiple_archives":
-      return `Seleccionaste más de un ZIP (${quotedDetails(filenames)}). Sube exactamente un ZIP o uno o más CSV.`;
+      return `You selected more than one ZIP (${quotedDetails(filenames)}). Upload exactly one ZIP or one or more CSVs.`;
     case "invalid_archive":
-      return `No se pudo leer el ZIP ${filename ? `«${filename}»` : "seleccionado"}. Verifica que no esté dañado, anidado o comprimido de forma insegura.`;
+      return `Could not read the ${filename ? `ZIP «${filename}»` : "selected ZIP"}. Make sure it isn't corrupted, nested, or unsafely compressed.`;
     case "invalid_csv":
-      return `No se pudo leer el CSV ${filename ? `«${filename}»` : "seleccionado"}${reason ? `: ${reason}` : ". Verifica que tenga encabezados y esté guardado como texto UTF-8."}`;
+      return `Could not read the ${filename ? `CSV «${filename}»` : "selected CSV"}${reason ? `: ${reason}` : ". Make sure it has headers and is saved as UTF-8 text."}`;
     case "no_tables_found":
-      return `No se encontraron tablas CSV reconocibles en la carga.${ignoredFiles(details)}`;
+      return `No recognizable CSV tables were found in the upload.${ignoredFiles(details)}`;
     case "duplicate_table":
-      return `La tabla «${typeof details?.table === "string" ? details.table : "seleccionada"}» aparece más de una vez (${quotedDetails(filenames)}). Sube solo un archivo por tabla.`;
+      return `The ${typeof details?.table === "string" ? `«${details.table}» table` : "selected table"} appears more than once (${quotedDetails(filenames)}). Upload only one file per table.`;
     case "file_too_large":
-      return `La carga supera el límite permitido${typeof details?.max_bytes === "number" ? ` de ${Math.round(details.max_bytes / (1024 * 1024))} MB` : " de 200 MB"}. Selecciona archivos más pequeños.`;
+      return `The upload exceeds the ${typeof details?.max_bytes === "number" ? `${Math.round(details.max_bytes / (1024 * 1024))} MB` : "200 MB"} limit. Select smaller files.`;
     default:
       return errorMessage(error);
   }

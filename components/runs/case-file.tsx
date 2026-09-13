@@ -22,12 +22,12 @@ import { VERDICT_STYLES } from "./run-history";
 import { Button, Icon, LoadingBlock, Notice, type IconName } from "./ui";
 
 const SECTION_META: Record<CaseSection, { label: string; icon: IconName; iconClass: string; description: string }> = {
-  findings: { label: "Hallazgos", icon: "xCircle", iconClass: "text-red-600", description: "Qué pasó y cómo lo sabemos" },
-  leads: { label: "Descartados", icon: "minusCircle", iconClass: "text-amber-600", description: "Por qué no se acusó a cada entidad" },
-  entities: { label: "Entidades", icon: "shield", iconClass: "text-zinc-500", description: "Cómo se relaciona todo" },
-  transactions: { label: "Transacciones", icon: "copy", iconClass: "text-zinc-500", description: "Todos los registros del dataset" },
-  log: { label: "Log", icon: "refresh", iconClass: "text-zinc-500", description: "Qué hizo el agente paso a paso" },
-  method: { label: "Método y límites", icon: "info", iconClass: "text-zinc-500", description: "Qué no puede detectar y cómo reproducirlo" },
+  findings: { label: "Findings", icon: "xCircle", iconClass: "text-red-600", description: "What happened and how we know" },
+  leads: { label: "Dismissed", icon: "minusCircle", iconClass: "text-amber-600", description: "Why each entity wasn't accused" },
+  entities: { label: "Entities", icon: "shield", iconClass: "text-zinc-500", description: "How everything is connected" },
+  transactions: { label: "Transactions", icon: "copy", iconClass: "text-zinc-500", description: "Every record in the dataset" },
+  log: { label: "Log", icon: "refresh", iconClass: "text-zinc-500", description: "What the agent did, step by step" },
+  method: { label: "Method and limits", icon: "info", iconClass: "text-zinc-500", description: "What it can't detect and how to reproduce it" },
 };
 
 const ORDER: CaseSection[] = ["findings", "leads", "entities", "transactions", "log", "method"];
@@ -41,7 +41,7 @@ function SectionNav() {
   const spotlightLeads = counts.findings === 0 && (counts.leads ?? 0) > 0;
 
   return (
-    <nav aria-label="Secciones del case file" className="-mx-4 relative overflow-x-auto px-4 lg:mx-0 lg:overflow-visible lg:px-0">
+    <nav aria-label="Case file sections" className="-mx-4 relative overflow-x-auto px-4 lg:mx-0 lg:overflow-visible lg:px-0">
       <ul className="flex gap-1 lg:flex-col">
         {ORDER.map((key) => {
           const meta = SECTION_META[key];
@@ -81,19 +81,19 @@ function CompactBar({ visible, onOpenSearch }: { visible: boolean; onOpenSearch:
         <span className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${style.badge}`}>
           <Icon name={style.icon} className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">{verdictText(report)}</span>
-          <span className="sm:hidden">{report.summary.findings_count} hallazgos</span>
+          <span className="sm:hidden">{report.summary.findings_count} findings</span>
         </span>
         <span className="hidden min-w-0 truncate font-medium text-zinc-900 md:inline">{report.case_header.company_name}</span>
         <span className="ml-auto hidden items-center gap-3 text-xs tabular-nums text-zinc-600 lg:flex">
           <button type="button" onClick={() => navigate({ section: "findings" })} className="hover:underline">
-            {formatNumber(report.summary.findings_count)} hallazgos
+            {formatNumber(report.summary.findings_count)} findings
           </button>
           <span>{formatMoneyMXN(report.summary.total_exposure)}</span>
           <button type="button" onClick={() => navigate({ section: "leads" })} className="hover:underline">
-            {formatNumber(report.summary.leads_closed_count)} descartados
+            {formatNumber(report.summary.leads_closed_count)} dismissed
           </button>
         </span>
-        <Button className="ml-auto !py-1 lg:ml-0" onClick={onOpenSearch} aria-label="Buscar (⌘K)">
+        <Button className="ml-auto !py-1 lg:ml-0" onClick={onOpenSearch} aria-label="Search (⌘K)">
           <Icon name="search" className="h-3.5 w-3.5" />
         </Button>
       </div>
@@ -154,10 +154,10 @@ function CaseFileLayout({ justFinished }: { justFinished: boolean }) {
       {showFinished && (
         <div role="status" className="mb-6 flex flex-col gap-2 rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm text-zinc-700 sm:flex-row sm:items-center">
           <Icon name="checkCircle" className="h-4 w-4 text-emerald-600" />
-          <span className="flex-1">La investigación terminó. Este es el case file; el razonamiento completo queda en el log.</span>
+          <span className="flex-1">The investigation is complete. This is the case file; the full reasoning is in the log.</span>
           <span className="flex gap-2">
-            <Button onClick={() => navigate({ section: "log" })}>Ver log completo</Button>
-            <Button variant="ghost" onClick={() => setShowFinished(false)} aria-label="Cerrar aviso">
+            <Button onClick={() => navigate({ section: "log" })}>View full log</Button>
+            <Button variant="ghost" onClick={() => setShowFinished(false)} aria-label="Dismiss notice">
               <Icon name="close" className="h-4 w-4" />
             </Button>
           </span>
@@ -220,7 +220,7 @@ export function CaseFile({ runId, justFinished }: { runId: string; justFinished:
 
   if (error) {
     return (
-      <Notice tone="error" title="No se pudo cargar el case file">
+      <Notice tone="error" title="Could not load the case file">
         <p>{error}</p>
         <Button
           className="mt-3"
@@ -229,12 +229,12 @@ export function CaseFile({ runId, justFinished }: { runId: string; justFinished:
             setAttempt((value) => value + 1);
           }}
         >
-          Reintentar
+          Retry
         </Button>
       </Notice>
     );
   }
-  if (!report) return <LoadingBlock label="Cargando case file…" />;
+  if (!report) return <LoadingBlock label="Loading case file…" />;
 
   return (
     <CaseFileProvider runId={runId} report={report}>

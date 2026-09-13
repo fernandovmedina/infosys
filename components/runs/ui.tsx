@@ -137,7 +137,7 @@ export function Tooltip({
 }
 
 /** Icono ⓘ con explicación. */
-export function InfoTip({ content, label = "Más información" }: { content: ReactNode; label?: string }) {
+export function InfoTip({ content, label = "More information" }: { content: ReactNode; label?: string }) {
   return (
     <Tooltip content={content}>
       <button type="button" aria-label={label} className="rounded-full text-zinc-400 outline-none hover:text-zinc-700 focus-visible:ring-2 focus-visible:ring-zinc-900">
@@ -177,7 +177,7 @@ export function ColumnName({ column, className = "" }: { column: string; classNa
 // Botones y bloques
 // ---------------------------------------------------------------------
 
-export function CopyButton({ value, label = "Copiar", className = "" }: { value: string; label?: string; className?: string }) {
+export function CopyButton({ value, label = "Copy", className = "" }: { value: string; label?: string; className?: string }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -197,11 +197,11 @@ export function CopyButton({ value, label = "Copiar", className = "" }: { value:
           // El portapapeles puede estar bloqueado; no hay nada que hacer.
         }
       }}
-      aria-label={copied ? "Copiado" : `${label}: ${value}`}
+      aria-label={copied ? "Copied" : `${label}: ${value}`}
       className={`inline-flex items-center gap-1 rounded px-1 text-zinc-400 outline-none transition-colors hover:text-zinc-800 focus-visible:ring-2 focus-visible:ring-zinc-900 ${className}`}
     >
       <Icon name={copied ? "check" : "copy"} className="h-3.5 w-3.5" />
-      <span className="sr-only" aria-live="polite">{copied ? "Copiado" : ""}</span>
+      <span className="sr-only" aria-live="polite">{copied ? "Copied" : ""}</span>
     </button>
   );
 }
@@ -262,7 +262,7 @@ export function Notice({
   );
 }
 
-export function LoadingBlock({ label = "Cargando…" }: { label?: string }) {
+export function LoadingBlock({ label = "Loading…" }: { label?: string }) {
   return (
     <p className="flex items-center gap-2 text-sm text-zinc-500" role="status">
       <Spinner /> {label}
@@ -366,7 +366,7 @@ export function Drawer({
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div aria-hidden className="absolute inset-0 bg-zinc-900/30" onClick={onClose} />
+      <div aria-hidden className="absolute inset-0 bg-zinc-900/30 dark:bg-black/60" onClick={onClose} />
       <div
         ref={panelRef}
         role="dialog"
@@ -383,7 +383,7 @@ export function Drawer({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar"
+            aria-label="Close"
             className="rounded-md p-1 text-zinc-500 outline-none hover:bg-zinc-100 hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-zinc-900"
           >
             <Icon name="close" className="h-5 w-5" />
@@ -415,7 +415,7 @@ export function Modal({
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[10vh]">
-      <div aria-hidden className="absolute inset-0 bg-zinc-900/30" onClick={onClose} />
+      <div aria-hidden className="absolute inset-0 bg-zinc-900/30 dark:bg-black/60" onClick={onClose} />
       <div
         ref={panelRef}
         role="dialog"

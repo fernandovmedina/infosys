@@ -34,7 +34,7 @@ export function ExhibitChip({
       onMouseLeave={() => onHover?.(null)}
       onFocus={() => onHover?.(exhibitId)}
       onBlur={() => onHover?.(null)}
-      aria-label={`Abrir evidencia ${exhibitId}${exhibit ? `: ${exhibit.note}` : ""}`}
+      aria-label={`Open evidence ${exhibitId}${exhibit ? `: ${exhibit.note}` : ""}`}
       className={`inline-flex items-center rounded bg-zinc-900 px-1.5 py-0.5 align-middle font-mono text-[0.6875rem] font-medium text-white outline-none transition-colors hover:bg-zinc-700 focus-visible:ring-2 focus-visible:ring-zinc-400 ${className}`}
     >
       {exhibitId}

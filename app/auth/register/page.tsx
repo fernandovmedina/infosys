@@ -34,49 +34,49 @@ export default function RegisterPage() {
 
   return (
     <AuthCard
-      title="Crear cuenta"
-      subtitle="Empieza a detectar fraudes con Infosys."
+      title="Create account"
+      subtitle="Start detecting fraud with Infosys."
       footer={
         <>
-          ¿Ya tienes cuenta?{" "}
+          Already have an account?{" "}
           <Link
             href="/auth/login"
             className="font-medium text-zinc-900 underline underline-offset-4"
           >
-            Iniciar sesión
+            Sign in
           </Link>
         </>
       }
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <Field
-          label="Nombre"
+          label="Name"
           type="text"
           name="name"
           autoComplete="name"
-          placeholder="Tu nombre"
+          placeholder="Your name"
           required
           value={name}
           onChange={(event) => setName(event.target.value)}
         />
 
         <Field
-          label="Correo electrónico"
+          label="Email"
           type="email"
           name="email"
           autoComplete="email"
-          placeholder="tu@correo.com"
+          placeholder="you@example.com"
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
 
         <Field
-          label="Contraseña"
+          label="Password"
           type="password"
           name="password"
           autoComplete="new-password"
-          placeholder="Mínimo 8 caracteres"
+          placeholder="At least 8 characters"
           required
           minLength={8}
           value={password}
@@ -86,7 +86,7 @@ export default function RegisterPage() {
         <FormError message={error} />
 
         <SubmitButton disabled={submitting}>
-          {submitting ? "Creando cuenta…" : "Crear cuenta"}
+          {submitting ? "Creating account…" : "Create account"}
         </SubmitButton>
       </form>
     </AuthCard>

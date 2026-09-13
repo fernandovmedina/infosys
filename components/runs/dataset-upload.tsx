@@ -37,9 +37,13 @@ export function DatasetUpload() {
       .filter((table): table is SourceTable => table !== null),
   );
   const missingTables = UPLOAD_TABLES.filter((table) => !selectedTables.has(table));
+  // Los CSV sin nombre reconocible se identifican por columnas en el backend y aún podrían cubrirlas.
+  const unrecognizedCount = files.filter((file) => tableForFilename(file.name) === null).length;
+  const missingRequired = REQUIRED_TABLES.filter((table) => !selectedTables.has(table));
+  const requiredError = csvSelection && !clientError && missingRequired.length > unrecognizedCount;
 
   async function handleSubmit() {
-    if (files.length === 0 || clientError || submitting) return;
+    if (files.length === 0 || clientError || requiredError || submitting) return;
     setSubmitting(true);
     setSubmitError(null);
     try {
@@ -66,11 +70,11 @@ export function DatasetUpload() {
           setSubmitError(null);
         }}
         accept={ACCEPTED_EXTENSIONS.join(",")}
-        hint={`Libros de la empresa: ${ACCEPTED_EXTENSIONS.join(" · ")} (máx. ${formatFileSize(MAX_UPLOAD_BYTES)})`}
+        hint={`Company books: ${ACCEPTED_EXTENSIONS.join(" · ")} (max. ${formatFileSize(MAX_UPLOAD_BYTES)})`}
         fileDescription={(file) => {
-          if (!isCsv(file)) return "Las tablas se leen desde dentro del ZIP; las carpetas private/ se ignoran.";
+          if (!isCsv(file)) return "Tables are read from inside the ZIP; private/ folders are ignored.";
           const table = tableForFilename(file.name);
-          return table ? <TableName table={table} /> : "se identificará por columnas";
+          return table ? <TableName table={table} /> : "will be identified by its columns";
         }}
         disabled={submitting}
       />
@@ -78,17 +82,17 @@ export function DatasetUpload() {
       {csvSelection && (
         <div className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-xs text-zinc-600">
           <p>
-            Se enviarán {files.length === 1 ? "1 archivo CSV" : `${files.length} archivos CSV`}. Las tablas sin nombre reconocible se identificarán por sus columnas.
+            {files.length === 1 ? "1 CSV file" : `${files.length} CSV files`} will be sent. Tables without a recognizable name will be identified by their columns.
           </p>
           <p className="mt-2">
-            No están en la selección: {missingTables.length > 0 ? missingTables.map((table, index) => (
+            Not in the selection: {missingTables.length > 0 ? missingTables.map((table, index) => (
               <span key={table}>
                 {index > 0 && ", "}
                 <TableName table={table} className="text-xs" />
               </span>
-            )) : "ninguna"}.
+            )) : "none"}.
             <span className="ml-1">
-              Las tablas <TableName table={REQUIRED_TABLES[0]} className="text-xs" /> y <TableName table={REQUIRED_TABLES[1]} className="text-xs" /> son obligatorias.
+              The <TableName table={REQUIRED_TABLES[0]} className="text-xs" /> and <TableName table={REQUIRED_TABLES[1]} className="text-xs" /> tables are required.
             </span>
           </p>
         </div>
@@ -99,21 +103,33 @@ export function DatasetUpload() {
           {clientError}
         </Notice>
       )}
+      {requiredError && (
+        <Notice tone="error" className="mt-4">
+          {missingRequired.length === 1 ? "Missing table" : "Missing tables"}{" "}
+          {missingRequired.map((table, index) => (
+            <span key={table}>
+              {index > 0 && " and "}
+              <TableName table={table} className="text-xs" />
+            </span>
+          ))}
+          . The investigation can’t start without {missingRequired.length === 1 ? "it" : "them"}; add {missingRequired.length === 1 ? "it" : "them"} to the selection.
+        </Notice>
+      )}
       {submitError && (
-        <Notice tone="error" title="No se pudo subir el dataset" className="mt-4">
+        <Notice tone="error" title="Could not upload the dataset" className="mt-4">
           <p>{submitError.message}</p>
           {submitError.code && (
             <p className="mt-1 text-xs">
-              Código: <code className="font-mono">{submitError.code}</code>
+              Code: <code className="font-mono">{submitError.code}</code>
             </p>
           )}
         </Notice>
       )}
 
       <div className="mt-4 flex justify-end">
-        <Button variant="primary" onClick={handleSubmit} disabled={files.length === 0 || Boolean(clientError) || submitting}>
+        <Button variant="primary" onClick={handleSubmit} disabled={files.length === 0 || Boolean(clientError) || requiredError || submitting}>
           {submitting && <Spinner className="h-3.5 w-3.5" />}
-          {submitting ? "Subiendo…" : "Subir y validar"}
+          {submitting ? "Uploading…" : "Upload and validate"}
         </Button>
       </div>
     </div>

@@ -96,14 +96,14 @@ export function LiveProgress({
         <div className="min-w-0">
           <h1 id="live-title" className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-zinc-900">
             {!finished && <Spinner className="h-5 w-5 text-zinc-400" />}
-            {finished ? "Investigación terminada" : "Investigando…"}
+            {finished ? "Investigation complete" : "Investigating…"}
           </h1>
           <p className="mt-1 truncate text-sm text-zinc-500">{filename}</p>
         </div>
         <p className="flex flex-wrap items-center gap-x-2 text-sm tabular-nums text-zinc-600" aria-live="off">
           <span className="font-medium text-zinc-900">{formatClock(counters.elapsed_seconds + (finished ? 0 : sinceLast))}</span>
           <span aria-hidden>·</span>
-          <span>{formatNumber(counters.llm_calls)} llamadas LLM</span>
+          <span>{formatNumber(counters.llm_calls)} LLM calls</span>
           <span aria-hidden>·</span>
           <span>{formatCost(counters.mxn_cost)}</span>
         </p>
@@ -111,12 +111,12 @@ export function LiveProgress({
 
       {connection === "reconnecting" && (
         <p role="status" className="mt-3 inline-flex items-center gap-2 rounded-md bg-zinc-100 px-2.5 py-1 text-xs text-zinc-600">
-          <Spinner className="h-3 w-3" /> Reconectando… se reanudará desde el último evento recibido.
+          <Spinner className="h-3 w-3" /> Reconnecting… will resume from the last event received.
         </p>
       )}
 
       {loadError && (
-        <Notice tone="error" title="No se pudo cargar el progreso" className="mt-4">
+        <Notice tone="error" title="Could not load progress" className="mt-4">
           {loadError}
         </Notice>
       )}
@@ -132,10 +132,10 @@ export function LiveProgress({
         >
           {events === null ? (
             <div className="p-4">
-              <LoadingBlock label="Conectando con la investigación…" />
+              <LoadingBlock label="Connecting to the investigation…" />
             </div>
           ) : events.length === 0 ? (
-            <p className="p-4 text-sm text-zinc-500">Esperando el primer evento…</p>
+            <p className="p-4 text-sm text-zinc-500">Waiting for the first event…</p>
           ) : (
             <ol aria-live="polite" aria-relevant="additions" className="divide-y divide-zinc-100">
               {events.map((event, index) => (
@@ -150,13 +150,13 @@ export function LiveProgress({
             onClick={() => setPaused(false)}
             className="absolute bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white shadow-md"
           >
-            <Icon name="arrowDown" className="h-3.5 w-3.5" /> Ir al evento más reciente
+            <Icon name="arrowDown" className="h-3.5 w-3.5" /> Jump to latest event
           </button>
         )}
       </div>
 
       <p className="mt-3 text-xs text-zinc-500">
-        Puedes cerrar esta pestaña: la investigación sigue en el servidor y al volver a este enlace verás el progreso o el resultado.
+        You can close this tab: the investigation keeps running on the server, and when you come back to this link you’ll see the progress or the result.
       </p>
     </section>
   );

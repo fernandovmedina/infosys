@@ -18,15 +18,15 @@ export function verdictText(report: Report): string {
   const { summary } = report;
   switch (summary.verdict) {
     case "fraud_proven":
-      return "Se encontró fraude comprobado.";
+      return "Proven fraud was found.";
     case "fraud_probable":
-      return "Hay indicios fuertes de fraude que requieren confirmación.";
+      return "There are strong signs of fraud that need confirmation.";
     case "clean_with_leads":
-      return `No se encontró fraude comprobable. Se revisaron ${formatNumber(summary.leads_closed_count)} ${
-        summary.leads_closed_count === 1 ? "caso sospechoso y se descartó" : "casos sospechosos y todos se descartaron"
+      return `No provable fraud was found. ${formatNumber(summary.leads_closed_count)} ${
+        summary.leads_closed_count === 1 ? "suspicious lead was reviewed and dismissed" : "suspicious leads were reviewed and all were dismissed"
       }.`;
     case "clean":
-      return "No se detectaron señales de fraude en los datos analizados.";
+      return "No signs of fraud were detected in the analyzed data.";
   }
 }
 
@@ -38,10 +38,10 @@ export function PartialAnalysisNote({ report }: { report: Report }) {
     <span className="mt-1 flex items-start gap-1.5 text-sm">
       <Icon name="alert" className="mt-0.5 h-4 w-4 text-amber-600" />
       <span>
-        Análisis parcial: {incomplete.length === 1 ? "faltó la tabla" : "faltaron datos en las tablas"}{" "}
+        Partial analysis: {incomplete.length === 1 ? "data was missing from table" : "data was missing from tables"}{" "}
         {incomplete.map((table, index) => (
           <span key={table.name}>
-            {index > 0 && (index === incomplete.length - 1 ? " y " : ", ")}
+            {index > 0 && (index === incomplete.length - 1 ? " and " : ", ")}
             <code className="rounded bg-white/70 px-1 font-mono text-xs">{table.name}</code>
           </span>
         ))}
@@ -101,7 +101,7 @@ export function ExecutiveSummary({ report }: { report: Report }) {
 
   return (
     <section aria-labelledby="summary-title">
-      <h2 id="summary-title" className="sr-only">Resumen ejecutivo</h2>
+      <h2 id="summary-title" className="sr-only">Executive summary</h2>
       <div className={`flex items-start gap-3 rounded-lg border px-4 py-3 ${banner.box}`}>
         <Icon name={banner.icon} className={`mt-0.5 h-6 w-6 ${banner.iconColor}`} />
         <div className="min-w-0">
@@ -115,35 +115,35 @@ export function ExecutiveSummary({ report }: { report: Report }) {
           icon={summary.findings_count > 0 ? "xCircle" : "checkCircle"}
           tone={summary.findings_count > 0 ? "text-red-700" : "text-emerald-700"}
           value={formatNumber(summary.findings_count)}
-          label={summary.findings_count === 1 ? "hallazgo" : "hallazgos"}
-          detail={summary.findings_count > 0 ? `${proven} comprobado${proven === 1 ? "" : "s"} · ${probable} probable${probable === 1 ? "" : "s"}` : "ninguna acusación"}
+          label={summary.findings_count === 1 ? "finding" : "findings"}
+          detail={summary.findings_count > 0 ? `${proven} proven · ${probable} probable` : "no accusations"}
           onClick={() => navigate({ section: "findings", finding: null, lead: null })}
-          actionLabel="Ir a hallazgos"
+          actionLabel="Go to findings"
         />
         <Kpi
           icon="alert"
           tone="text-zinc-700"
           value={formatMoneyMXN(summary.total_exposure)}
-          label="exposición total"
-          detail="suma de los montos de los hallazgos"
+          label="total exposure"
+          detail="sum of the findings' amounts"
         />
         <Kpi
           icon="minusCircle"
           tone="text-amber-700"
           value={formatNumber(summary.leads_closed_count)}
-          label={summary.leads_closed_count === 1 ? "lead cerrado" : "leads cerrados"}
-          detail="investigados sin acusación"
+          label={summary.leads_closed_count === 1 ? "closed lead" : "closed leads"}
+          detail="investigated without accusation"
           onClick={() => navigate({ section: "leads", finding: null, lead: null })}
-          actionLabel="Ir a leads descartados"
+          actionLabel="Go to dismissed leads"
         />
         <Kpi
           icon="checkCircle"
           tone="text-emerald-700"
           value={formatNumber(summary.entities_by_status.clear)}
-          label="sin señales"
-          detail="proveedores y empleados"
+          label="no signals"
+          detail="vendors and employees"
           onClick={() => navigate({ section: "entities", status: "clear", finding: null, lead: null })}
-          actionLabel="Ver entidades sin señales"
+          actionLabel="View entities with no signals"
         />
       </div>
 

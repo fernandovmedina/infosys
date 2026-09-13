@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCurrentUser, signOut, type CurrentUser } from "@/lib/auth";
+import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
   const router = useRouter();
@@ -38,13 +39,14 @@ export function SiteHeader() {
     <header className="border-b border-zinc-200">
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
         <Link
-          href="/"
+          href={user ? "/dashboard" : "/"}
           className="text-base font-semibold tracking-tight text-zinc-900"
         >
           Infosys
         </Link>
 
         <nav className="flex items-center gap-2">
+          <ThemeToggle />
           {loading ? null : user ? (
             <>
               <span className="px-3 py-1.5 text-sm text-zinc-500">
@@ -55,7 +57,7 @@ export function SiteHeader() {
                 onClick={handleSignOut}
                 className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
               >
-                Cerrar sesión
+                Sign out
               </button>
             </>
           ) : (
@@ -64,13 +66,13 @@ export function SiteHeader() {
                 href="/auth/login"
                 className="rounded-md px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:text-zinc-900"
               >
-                Iniciar sesión
+                Sign in
               </Link>
               <Link
                 href="/auth/register"
                 className="rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
               >
-                Crear cuenta
+                Create account
               </Link>
             </>
           )}

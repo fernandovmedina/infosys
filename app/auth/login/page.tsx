@@ -33,34 +33,34 @@ export default function LoginPage() {
 
   return (
     <AuthCard
-      title="Iniciar sesión"
-      subtitle="Accede a tu panel de Infosys."
+      title="Sign in"
+      subtitle="Access your Infosys dashboard."
       footer={
         <>
-          ¿No tienes cuenta?{" "}
+          Don’t have an account?{" "}
           <Link
             href="/auth/register"
             className="font-medium text-zinc-900 underline underline-offset-4"
           >
-            Crear cuenta
+            Create account
           </Link>
         </>
       }
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <Field
-          label="Correo electrónico"
+          label="Email"
           type="email"
           name="email"
           autoComplete="email"
-          placeholder="tu@correo.com"
+          placeholder="you@example.com"
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
 
         <Field
-          label="Contraseña"
+          label="Password"
           type="password"
           name="password"
           autoComplete="current-password"
@@ -73,7 +73,7 @@ export default function LoginPage() {
         <FormError message={error} />
 
         <SubmitButton disabled={submitting}>
-          {submitting ? "Entrando…" : "Entrar"}
+          {submitting ? "Signing in…" : "Sign in"}
         </SubmitButton>
       </form>
     </AuthCard>

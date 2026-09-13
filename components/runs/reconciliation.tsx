@@ -16,7 +16,7 @@ export function Reconciliation({ findingIndex, data }: { findingIndex: number; d
   return (
     <div className="rounded-md border border-zinc-200 bg-white px-3 py-3 sm:px-4">
       <p className="flex flex-wrap items-center gap-1.5 text-sm text-zinc-600">
-        Tabla usada para reconciliar: <TableName table={data.table_used} />
+        Table used to reconcile: <TableName table={data.table_used} />
         {amountField && (
           <>
             (<ColumnName column={amountField} />)
@@ -25,7 +25,7 @@ export function Reconciliation({ findingIndex, data }: { findingIndex: number; d
       </p>
 
       <table className="mt-3 w-full max-w-lg text-sm tabular-nums">
-        <caption className="sr-only">Reconciliación del hallazgo #{findingIndex + 1}</caption>
+        <caption className="sr-only">Reconciliation for finding #{findingIndex + 1}</caption>
         <tbody>
           {data.lines.map((line, index) => (
             <tr key={line.exhibit_id}>
@@ -39,17 +39,17 @@ export function Reconciliation({ findingIndex, data }: { findingIndex: number; d
           ))}
           <tr className="border-t border-zinc-300">
             <td className="py-1.5 text-zinc-400" aria-hidden>=</td>
-            <td colSpan={2} className="py-1.5 text-zinc-700">Suma de evidencia</td>
+            <td colSpan={2} className="py-1.5 text-zinc-700">Evidence total</td>
             <td className="py-1.5 text-right font-semibold text-zinc-900">{formatMoney(data.sum)}</td>
           </tr>
           <tr>
             <td />
-            <td colSpan={2} className="py-1 text-zinc-700">Monto reclamado</td>
+            <td colSpan={2} className="py-1 text-zinc-700">Claimed amount</td>
             <td className="py-1 text-right text-zinc-900">{formatMoney(data.claimed)}</td>
           </tr>
           <tr>
             <td />
-            <td colSpan={2} className="py-1 text-zinc-700">Diferencia</td>
+            <td colSpan={2} className="py-1 text-zinc-700">Difference</td>
             <td className="py-1 text-right text-zinc-900">
               {formatSignedMoney(data.diff)} ({formatPercent(data.diff_pct)})
             </td>
@@ -59,11 +59,11 @@ export function Reconciliation({ findingIndex, data }: { findingIndex: number; d
 
       {data.within_tolerance ? (
         <p className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-1 text-sm font-medium text-emerald-800">
-          <Icon name="checkCircle" className="h-4 w-4" /> Dentro de la tolerancia de 2 %
+          <Icon name="checkCircle" className="h-4 w-4" /> Within the 2% tolerance
         </p>
       ) : (
         <p role="alert" className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-red-50 px-2 py-1 text-sm font-medium text-red-800">
-          <Icon name="xCircle" className="h-4 w-4" /> Fuera de la tolerancia de 2 %: la evidencia no cuadra con el monto reclamado
+          <Icon name="xCircle" className="h-4 w-4" /> Outside the 2% tolerance: the evidence doesn’t reconcile with the claimed amount
         </p>
       )}
 
@@ -71,7 +71,7 @@ export function Reconciliation({ findingIndex, data }: { findingIndex: number; d
         <details className="group mt-3">
           <summary className="flex cursor-pointer items-center gap-1 text-sm text-zinc-700 marker:content-none">
             <Icon name="chevronRight" className="h-3.5 w-3.5 transition-transform group-open:rotate-90" />
-            Otras tablas citadas (no se suman dos veces)
+            Other cited tables (not counted twice)
           </summary>
           <ul className="mt-2 space-y-1 pl-5 text-sm">
             {data.other_tables.map((other) => (
@@ -85,7 +85,7 @@ export function Reconciliation({ findingIndex, data }: { findingIndex: number; d
             ))}
           </ul>
           <p className="mt-2 pl-5 text-xs text-zinc-500">
-            Una factura y el pago que la liquida son el mismo dinero; se reconcilia contra una sola tabla.
+            An invoice and the payment that settles it are the same money; reconciliation uses a single table.
           </p>
         </details>
       )}

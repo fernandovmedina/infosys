@@ -11,7 +11,7 @@ function formatSize(bytes: number) {
 export function FileDropzone({
   onFilesChange,
   accept = ".zip,.csv",
-  hint = "Solo se aceptan archivos .zip o .csv",
+  hint = "Only .zip or .csv files are accepted",
   fileDescription,
   disabled = false,
 }: {
@@ -108,7 +108,7 @@ export function FileDropzone({
           />
         </svg>
         <p className="mt-4 text-sm font-medium text-zinc-900">
-          Arrastra tu archivo aquí, pégalo o haz clic para subirlo
+          Drag your file here, paste it, or click to upload
         </p>
         <p className="mt-1 text-xs text-zinc-500">{hint}</p>
         <input
@@ -143,7 +143,7 @@ export function FileDropzone({
                   onClick={() => removeFile(index)}
                   className="text-zinc-500 transition-colors hover:text-zinc-900"
                 >
-                  Quitar
+                  Remove
                 </button>
               </span>
             </li>
