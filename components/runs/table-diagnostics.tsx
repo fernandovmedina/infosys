@@ -11,6 +11,9 @@ const STATUS: Record<TableDiagnostic["status"], { icon: IconName; color: string;
   error: { icon: "xCircle", color: "text-red-600", label: "Error" },
 };
 
+/** El backend antepone "no encontrada → " a la pérdida de capacidad; la columna de filas ya lo dice. */
+const MISSING_PREFIX = /^no encontrada\s*→\s*/i;
+
 /** Diagnóstico de tablas del dataset (EXAMPLE §4.2). */
 export function TableDiagnostics({
   tables,
@@ -54,7 +57,7 @@ export function TableDiagnostics({
                   {table.warnings.map((warning) => (
                     <span key={warning} className="block">
                       <span aria-hidden>→ </span>
-                      {warning}
+                      {missing ? warning.replace(MISSING_PREFIX, "") : warning}
                     </span>
                   ))}
                 </span>

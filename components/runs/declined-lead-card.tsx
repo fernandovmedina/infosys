@@ -1,6 +1,6 @@
 "use client";
 
-import { CLOSED_BY_LABELS } from "@/lib/runs/labels";
+import { CLOSED_BY_LABELS, SIGNAL_LABELS, splitSignals } from "@/lib/runs/labels";
 import type { LeadNotPursued } from "@/lib/runs/types";
 import { CaseEntityChip } from "./case-chips";
 import { useCaseFile } from "./case-file-context";
@@ -56,7 +56,19 @@ export function DeclinedLeadCard({ leadIndex, lead }: { leadIndex: number; lead:
 
       <div className="divide-y divide-zinc-100 border-t border-zinc-100">
         <CardBlock label="¿Qué lo señaló?">
-          <p className="text-[0.9375rem] text-zinc-800">{lead.signal}</p>
+          <ul className="space-y-1 text-[0.9375rem] text-zinc-800">
+            {splitSignals(lead.signal).map((key) => (
+              <li key={key}>
+                {SIGNAL_LABELS[key] ? (
+                  <>
+                    {SIGNAL_LABELS[key]} <code className="font-mono text-xs text-zinc-500">{key}</code>
+                  </>
+                ) : (
+                  <code className="font-mono text-sm">{key}</code>
+                )}
+              </li>
+            ))}
+          </ul>
         </CardBlock>
         <CardBlock label="¿Por qué se descartó?">
           <p className="max-w-3xl text-[0.9375rem] leading-relaxed text-zinc-800">

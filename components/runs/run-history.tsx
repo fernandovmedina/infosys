@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { formatDateTime, formatMoneyMXN } from "@/lib/format";
 import { errorMessage } from "@/lib/runs/errors";
 import { RUN_STATUS_LABELS, VERDICT_LABELS } from "@/lib/runs/labels";
-import { deleteAllRuns, deleteRun, listRuns } from "@/lib/runs/api";
+import { deleteAllRuns, deleteRun, getValidation, listRuns } from "@/lib/runs/api";
 import type { RunStatus, RunSummary, Verdict } from "@/lib/runs/types";
 import { Button, Icon, LoadingBlock, Notice, Spinner, type IconName } from "./ui";
 
@@ -24,10 +24,18 @@ const RUN_STATUS_STYLES: Record<RunStatus, string> = {
   failed: "bg-red-50 text-red-700",
 };
 
-function Outcome({ run }: { run: RunSummary }) {
+function Outcome({ run, blocked }: { run: RunSummary; blocked: boolean }) {
+  if (blocked) {
+    return (
+      <span className="inline-flex items-center gap-1 justify-self-start rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
+        <Icon name="xCircle" className="h-3.5 w-3.5" />
+        Dataset incompleto
+      </span>
+    );
+  }
   if (run.status !== "completed" || !run.verdict) {
     return (
-      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${RUN_STATUS_STYLES[run.status]}`}>
+      <span className={`inline-flex justify-self-start rounded-full px-2 py-0.5 text-xs font-medium ${RUN_STATUS_STYLES[run.status]}`}>
         {RUN_STATUS_LABELS[run.status]}
       </span>
     );
@@ -49,6 +57,7 @@ function Outcome({ run }: { run: RunSummary }) {
 /** Historial de corridas del usuario (`GET /runs`). */
 export function RunHistory() {
   const [runs, setRuns] = useState<RunSummary[] | null>(null);
+  const [blockedRunIds, setBlockedRunIds] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [confirmingRunId, setConfirmingRunId] = useState<string | null>(null);
   const [deletingRunId, setDeletingRunId] = useState<string | null>(null);
@@ -62,7 +71,19 @@ export function RunHistory() {
     let cancelled = false;
     listRuns()
       .then((result) => {
-        if (!cancelled) setRuns(result);
+        if (cancelled) return;
+        setRuns(result);
+        // `GET /runs` no dice si una corrida lista quedó bloqueada por su validación: se consulta aparte.
+        const ready = result.filter((run) => run.status === "ready");
+        return Promise.all(
+          ready.map((run) =>
+            getValidation(run.run_id)
+              .then((validation) => (validation.tables.some((table) => table.status === "error") ? run.run_id : null))
+              .catch(() => null),
+          ),
+        ).then((ids) => {
+          if (!cancelled) setBlockedRunIds(new Set(ids.filter((id): id is string => id !== null)));
+        });
       })
       .catch((cause) => {
         if (!cancelled) setError(errorMessage(cause));
@@ -178,7 +199,7 @@ export function RunHistory() {
                         {run.filename} · <span className="font-mono">{run.run_id}</span>
                       </span>
                     </span>
-                    <Outcome run={run} />
+                    <Outcome run={run} blocked={run.status === "ready" && blockedRunIds.has(run.run_id)} />
                     <span className="text-xs text-zinc-500 sm:text-right">{formatDateTime(run.created_at)}</span>
                   </Link>
                   {run.status !== "running" && (

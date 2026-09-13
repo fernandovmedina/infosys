@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
 import { ApiError, errorMessage } from "@/lib/runs/errors";
-import { getValidation, startRun } from "@/lib/runs/api";
+import { deleteRun, getValidation, startRun } from "@/lib/runs/api";
 import type { RunState, ValidationResult } from "@/lib/runs/types";
 import { TableDiagnostics } from "./table-diagnostics";
 import { Button, LoadingBlock, Notice, Spinner } from "./ui";
@@ -21,6 +22,9 @@ export function ValidationView({
   const [validation, setValidation] = useState<ValidationResult | null>(null);
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<{ code?: string; message: string } | null>(null);
+  const [discarding, setDiscarding] = useState(false);
+  const [discardError, setDiscardError] = useState<string | null>(null);
+  const router = useRouter();
   const reportError = useEffectEvent(onError);
 
   useEffect(() => {
@@ -57,6 +61,19 @@ export function ValidationView({
         message: errorMessage(error),
       });
       setStarting(false);
+    }
+  }
+
+  /** Una corrida bloqueada nunca podrá iniciarse: se borra para que no quede en el historial. */
+  async function handleDiscard() {
+    setDiscarding(true);
+    setDiscardError(null);
+    try {
+      await deleteRun(runId);
+      router.push("/dashboard");
+    } catch (error) {
+      setDiscardError(errorMessage(error));
+      setDiscarding(false);
     }
   }
 
@@ -117,13 +134,26 @@ export function ValidationView({
         </Notice>
       )}
 
+      {discardError && (
+        <Notice tone="error" className="mt-4">
+          No se pudo descartar la corrida: {discardError}
+        </Notice>
+      )}
+
       <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
-        >
-          Cancelar
-        </Link>
+        {!validating && errors.length > 0 ? (
+          <Button onClick={() => void handleDiscard()} disabled={discarding} aria-busy={discarding}>
+            {discarding && <Spinner className="h-3.5 w-3.5" />}
+            Descartar y subir otro
+          </Button>
+        ) : (
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center justify-center rounded-md border border-zinc-300 bg-white px-3 py-1.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+          >
+            Cancelar
+          </Link>
+        )}
         <Button
           variant="primary"
           onClick={handleStart}

@@ -1,16 +1,13 @@
 "use client";
 
 import { useId, useState } from "react";
-import { CLOSED_BY_LABELS } from "@/lib/runs/labels";
+import { CLOSED_BY_LABELS, SIGNAL_LABELS, splitSignals } from "@/lib/runs/labels";
 import type { ClosedBy } from "@/lib/runs/types";
 import { useCaseFile } from "./case-file-context";
 import { DeclinedLeadCard } from "./declined-lead-card";
 import { Button, Icon } from "./ui";
 
 const normalize = (text: string) => text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-
-/** Detector del lead: la parte de `signal` antes de los dos puntos. */
-const detectorOf = (signal: string) => signal.split(":")[0].trim();
 
 /** Leads no perseguidos, en el cuerpo del case file (EXAMPLE §7.8). */
 export function LeadsSection() {
@@ -30,13 +27,15 @@ export function LeadsSection() {
     );
   }
 
-  const detectors = [...new Set(leads.map((lead) => detectorOf(lead.signal)))];
+  const detectors = [...new Set(leads.flatMap((lead) => splitSignals(lead.signal)))].sort((a, b) =>
+    (SIGNAL_LABELS[a] ?? a).localeCompare(SIGNAL_LABELS[b] ?? b, "es"),
+  );
   const closers = [...new Set(leads.flatMap((lead) => (lead.closed_by ? [lead.closed_by] : [])))];
   const needle = normalize(query.trim());
   const visible = leads
     .map((lead, index) => ({ lead, index }))
     .filter(({ lead }) => !closedBy || lead.closed_by === closedBy)
-    .filter(({ lead }) => !detector || detectorOf(lead.signal) === detector)
+    .filter(({ lead }) => !detector || splitSignals(lead.signal).includes(detector))
     .filter(({ lead }) => !needle || normalize(lead.entity).includes(needle) || normalize(entity(lead.entity).name).includes(needle));
 
   const selectClass = "w-full rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm text-zinc-900";
@@ -57,7 +56,7 @@ export function LeadsSection() {
           <select id={ids.detector} value={detector} onChange={(event) => setDetector(event.target.value)} className={selectClass}>
             <option value="">Todos</option>
             {detectors.map((item) => (
-              <option key={item} value={item}>{item}</option>
+              <option key={item} value={item}>{SIGNAL_LABELS[item] ?? item}</option>
             ))}
           </select>
         </div>

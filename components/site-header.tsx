@@ -38,7 +38,7 @@ export function SiteHeader() {
     <header className="border-b border-zinc-200">
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
         <Link
-          href="/"
+          href={user ? "/dashboard" : "/"}
           className="text-base font-semibold tracking-tight text-zinc-900"
         >
           Infosys

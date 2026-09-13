@@ -37,9 +37,13 @@ export function DatasetUpload() {
       .filter((table): table is SourceTable => table !== null),
   );
   const missingTables = UPLOAD_TABLES.filter((table) => !selectedTables.has(table));
+  // Los CSV sin nombre reconocible se identifican por columnas en el backend y aún podrían cubrirlas.
+  const unrecognizedCount = files.filter((file) => tableForFilename(file.name) === null).length;
+  const missingRequired = REQUIRED_TABLES.filter((table) => !selectedTables.has(table));
+  const requiredError = csvSelection && !clientError && missingRequired.length > unrecognizedCount;
 
   async function handleSubmit() {
-    if (files.length === 0 || clientError || submitting) return;
+    if (files.length === 0 || clientError || requiredError || submitting) return;
     setSubmitting(true);
     setSubmitError(null);
     try {
@@ -99,6 +103,18 @@ export function DatasetUpload() {
           {clientError}
         </Notice>
       )}
+      {requiredError && (
+        <Notice tone="error" className="mt-4">
+          {missingRequired.length === 1 ? "Falta la tabla" : "Faltan las tablas"}{" "}
+          {missingRequired.map((table, index) => (
+            <span key={table}>
+              {index > 0 && " y "}
+              <TableName table={table} className="text-xs" />
+            </span>
+          ))}
+          . Sin {missingRequired.length === 1 ? "ella" : "ellas"} no se puede iniciar la investigación; agrégala{missingRequired.length === 1 ? "" : "s"} a la selección.
+        </Notice>
+      )}
       {submitError && (
         <Notice tone="error" title="No se pudo subir el dataset" className="mt-4">
           <p>{submitError.message}</p>
@@ -111,7 +127,7 @@ export function DatasetUpload() {
       )}
 
       <div className="mt-4 flex justify-end">
-        <Button variant="primary" onClick={handleSubmit} disabled={files.length === 0 || Boolean(clientError) || submitting}>
+        <Button variant="primary" onClick={handleSubmit} disabled={files.length === 0 || Boolean(clientError) || requiredError || submitting}>
           {submitting && <Spinner className="h-3.5 w-3.5" />}
           {submitting ? "Subiendo…" : "Subir y validar"}
         </Button>

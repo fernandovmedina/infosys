@@ -128,6 +128,11 @@ export const SIGNAL_LABELS: Record<string, string> = {
   CLABE_INVALID_LENGTH: "CLABE que no tiene 18 dígitos",
 };
 
+/** Claves de una lista de señales separada por comas (`LeadNotPursued.signal`). */
+export function splitSignals(signal: string): string[] {
+  return signal.split(",").map((key) => key.trim()).filter(Boolean);
+}
+
 /** Glosario del header (EXAMPLE §12). */
 export const GLOSSARY: { term: string; definition: string }[] = [
   { term: "SAT", definition: "Servicio de Administración Tributaria: la autoridad fiscal de México." },
