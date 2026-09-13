@@ -170,7 +170,6 @@ function CaseFileLayout({ justFinished }: { justFinished: boolean }) {
         <ExecutiveSummary report={report} />
       </div>
       <ExplainabilityChat />
-
       <div className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[13rem_minmax(0,1fr)]">
         <aside className="min-w-0 lg:sticky lg:top-16 lg:self-start">
           <SectionNav />
