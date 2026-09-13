@@ -116,7 +116,7 @@ export function FlowEdge({ id, sourceX, sourceY, targetX, targetY, data, markerE
         markerEnd={markerEnd}
         interactionWidth={18}
         style={{
-          stroke: data?.highlighted ? "#18181b" : data?.color ?? "#71717a",
+          stroke: data?.highlighted ? "var(--color-zinc-900)" : data?.color ?? "var(--color-zinc-500)",
           strokeWidth: width,
           strokeDasharray: data?.dashed ? "6 4" : undefined,
         }}

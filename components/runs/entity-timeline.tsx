@@ -4,11 +4,11 @@ import { formatDate, formatMoney, formatMonthShort, parseDate } from "@/lib/form
 import type { EntityTimeline as TimelineData, SourceTable, TimelineLane } from "@/lib/runs/types";
 
 const LANE_COLORS: Record<TimelineLane["key"], string> = {
-  contracts: "#0f766e",
-  purchase_orders: "#7c3aed",
-  invoices: "#2563eb",
-  bank_txns: "#18181b",
-  registration: "#b45309",
+  contracts: "fill-teal-700",
+  purchase_orders: "fill-violet-600",
+  invoices: "fill-blue-600",
+  bank_txns: "fill-zinc-900",
+  registration: "fill-amber-700",
 };
 
 /**
@@ -62,8 +62,8 @@ export function EntityTimeline({
             const mx = Math.max(labelWidth, x(iso));
             return (
               <g key={iso}>
-                <line x1={mx} x2={mx} y1={top - 6} y2={height - 4} stroke="#e4e4e7" />
-                <text x={mx + 3} y={top - 10} fontSize={10} fill="#71717a">{formatMonthShort(month)}</text>
+                <line x1={mx} x2={mx} y1={top - 6} y2={height - 4} className="stroke-zinc-200" />
+                <text x={mx + 3} y={top - 10} fontSize={10} className="fill-zinc-500">{formatMonthShort(month)}</text>
               </g>
             );
           })}
@@ -73,8 +73,8 @@ export function EntityTimeline({
             const anchorEnd = ax > width - 200;
             return (
               <g key={`${annotation.date}-${index}`}>
-                <line x1={ax} x2={ax} y1={10 + index * 14} y2={height - 4} stroke="#dc2626" strokeDasharray="3 3" />
-                <text x={anchorEnd ? ax - 4 : ax + 4} y={12 + index * 14} fontSize={10} fill="#b91c1c" textAnchor={anchorEnd ? "end" : "start"}>
+                <line x1={ax} x2={ax} y1={10 + index * 14} y2={height - 4} className="stroke-red-600" strokeDasharray="3 3" />
+                <text x={anchorEnd ? ax - 4 : ax + 4} y={12 + index * 14} fontSize={10} className="fill-red-700" textAnchor={anchorEnd ? "end" : "start"}>
                   {annotation.label}
                 </text>
               </g>
@@ -87,13 +87,13 @@ export function EntityTimeline({
             const perDay = new Map<string, number>();
             return (
               <g key={lane.key}>
-                <line x1={labelWidth} x2={width - 8} y1={y} y2={y} stroke="#f4f4f5" strokeWidth={laneHeight - 10} />
-                <text x={0} y={y + 4} fontSize={compact ? 10 : 11} fill="#3f3f46">{lane.label}</text>
+                <line x1={labelWidth} x2={width - 8} y1={y} y2={y} className="stroke-zinc-100" strokeWidth={laneHeight - 10} />
+                <text x={0} y={y + 4} fontSize={compact ? 10 : 11} className="fill-zinc-700">{lane.label}</text>
                 {lane.events.length === 0 && lane.note && (
-                  <text x={labelWidth + 8} y={y + 4} fontSize={10} fill="#a1a1aa" fontStyle="italic">← {lane.note}</text>
+                  <text x={labelWidth + 8} y={y + 4} fontSize={10} className="fill-zinc-400" fontStyle="italic">← {lane.note}</text>
                 )}
                 {lane.events.length > 0 && lane.note && (
-                  <text x={width - 10} y={y - laneHeight / 2 + 12} fontSize={9} fill="#a1a1aa" textAnchor="end" fontStyle="italic">{lane.note}</text>
+                  <text x={width - 10} y={y - laneHeight / 2 + 12} fontSize={9} className="fill-zinc-400" textAnchor="end" fontStyle="italic">{lane.note}</text>
                 )}
                 {lane.events.map((event) => {
                   const stack = perDay.get(event.date) ?? 0;
@@ -118,9 +118,9 @@ export function EntityTimeline({
                     >
                       <title>{label}</title>
                       {lane.key === "registration" ? (
-                        <rect x={ex - 5} y={y - 5} width={10} height={10} transform={`rotate(45 ${ex} ${y})`} fill={color} stroke="white" strokeWidth={1.5} />
+                        <rect x={ex - 5} y={y - 5} width={10} height={10} transform={`rotate(45 ${ex} ${y})`} className={`${color} stroke-white`} strokeWidth={1.5} />
                       ) : (
-                        <rect x={ex - 3} y={y - 9} width={6} height={18} rx={1.5} fill={color} stroke="white" strokeWidth={1} />
+                        <rect x={ex - 3} y={y - 9} width={6} height={18} rx={1.5} className={`${color} stroke-white`} strokeWidth={1} />
                       )}
                     </g>
                   );

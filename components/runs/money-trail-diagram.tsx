@@ -126,11 +126,11 @@ export function MoneyTrailDiagram({
           source: step.from,
           target: step.to,
           type: "flow",
-          markerEnd: { type: MarkerType.ArrowClosed, width: 18, height: 18, markerUnits: "userSpaceOnUse", color: highlighted ? "#18181b" : "#71717a" },
+          markerEnd: { type: MarkerType.ArrowClosed, width: 18, height: 18, markerUnits: "userSpaceOnUse", color: highlighted ? "var(--color-zinc-900)" : "var(--color-zinc-500)" },
           data: {
             offset: model.offsets.get(`step-${index}`) ?? 0,
             strokeWidth: strokeWidthFor(step.amount, model.maxAmount),
-            color: "#71717a",
+            color: "var(--color-zinc-500)",
             highlighted,
             label: (
               <span onMouseEnter={() => onHoverExhibit(step.exhibit_id)} onMouseLeave={() => onHoverExhibit(null)} className="block">

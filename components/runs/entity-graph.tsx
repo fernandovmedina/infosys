@@ -70,7 +70,7 @@ export function EntityGraph() {
     });
 
     const edges: FlowEdgeType[] = graph.edges.map((edge) => {
-      const color = edge.in_cycle ? "#dc2626" : edge.kind === "relation" ? "#a1a1aa" : "#71717a";
+      const color = edge.in_cycle ? "var(--color-red-600)" : edge.kind === "relation" ? "var(--color-zinc-400)" : "var(--color-zinc-500)";
       return {
         id: edge.id,
         source: edge.from,

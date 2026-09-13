@@ -366,7 +366,7 @@ export function Drawer({
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div aria-hidden className="absolute inset-0 bg-zinc-900/30" onClick={onClose} />
+      <div aria-hidden className="absolute inset-0 bg-zinc-900/30 dark:bg-black/60" onClick={onClose} />
       <div
         ref={panelRef}
         role="dialog"
@@ -415,7 +415,7 @@ export function Modal({
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[10vh]">
-      <div aria-hidden className="absolute inset-0 bg-zinc-900/30" onClick={onClose} />
+      <div aria-hidden className="absolute inset-0 bg-zinc-900/30 dark:bg-black/60" onClick={onClose} />
       <div
         ref={panelRef}
         role="dialog"

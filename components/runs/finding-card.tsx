@@ -29,8 +29,17 @@ export function CardBlock({ label, children, className = "" }: { label: ReactNod
  * → evidencia → reconciliación → revisión adversarial.
  */
 export function FindingCard({ findingIndex, finding }: { findingIndex: number; finding: Finding }) {
-  const { report, entity, openEntity, openFinding } = useCaseFile();
+  const { report, entity, openEntity, openFinding, params } = useCaseFile();
   const [hoveredExhibit, setHoveredExhibit] = useState<string | null>(null);
+  const [open, setOpen] = useState(true);
+  // Si se navega a este hallazgo (índice, drawer, búsqueda) mientras está retraído, se expande.
+  const targeted = params.get("finding") === String(findingIndex + 1);
+  const [wasTargeted, setWasTargeted] = useState(targeted);
+  if (targeted !== wasTargeted) {
+    setWasTargeted(targeted);
+    if (targeted) setOpen(true);
+  }
+  const bodyId = `finding-${findingIndex + 1}-body`;
   const extra = report.findings_extra.find((item) => item.finding_index === findingIndex);
   const [primaryId, ...otherIds] = finding.entities;
   const primary = entity(primaryId);
@@ -77,6 +86,18 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
               {sharedChips(primaryId)}
             </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+            aria-controls={bodyId}
+            aria-label={open ? `Retraer hallazgo #${findingIndex + 1}` : `Expandir hallazgo #${findingIndex + 1}`}
+            className="-mr-1 shrink-0 rounded-md p-1.5 text-zinc-500 outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus-visible:ring-2 focus-visible:ring-zinc-900"
+          >
+            <svg aria-hidden viewBox="0 0 24 24" className={`h-4 w-4 transition-transform ${open ? "rotate-90" : ""}`}>
+              <path d="M8 5v14l11-7z" fill="currentColor" />
+            </svg>
+          </button>
         </div>
         {otherIds.length > 0 && (
           <div className="mt-2 flex flex-wrap items-center gap-2 pl-8 text-xs text-zinc-500">
@@ -100,65 +121,67 @@ export function FindingCard({ findingIndex, finding }: { findingIndex: number; f
         </div>
       </header>
 
-      <div className="divide-y divide-zinc-100 border-t border-zinc-100">
-        <CardBlock label="Regla violada">
-          <p className="border-l-4 border-red-500 pl-3 text-base font-medium text-zinc-900">{finding.rule_broken}</p>
-        </CardBlock>
+      {open && (
+        <div id={bodyId} className="divide-y divide-zinc-100 border-t border-zinc-100">
+          <CardBlock label="Regla violada">
+            <p className="border-l-4 border-red-500 pl-3 text-base font-medium text-zinc-900">{finding.rule_broken}</p>
+          </CardBlock>
 
-        <CardBlock label="Monto y confianza">
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-2xl font-semibold tabular-nums tracking-tight text-zinc-900">{formatMoneyMXN(finding.peso_amount)}</span>
-            <Tooltip content={confidence.tooltip}>
-              <button
-                type="button"
-                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 ${
-                  finding.confidence === "proven" ? "bg-red-50 text-red-700 ring-red-200" : "bg-orange-50 text-orange-800 ring-orange-200"
-                }`}
-              >
-                <Icon name={finding.confidence === "proven" ? "xCircle" : "alert"} className="h-4 w-4" />
-                {confidence.label}
-              </button>
-            </Tooltip>
-          </div>
-          {finding.confidence === "probable" && (
-            <p className="mt-2 text-sm text-orange-900">
-              <span className="font-medium">Por qué es probable y no comprobado:</span> {confidence.tooltip} El eslabón que falta se describe en “Qué pasó”.
+          <CardBlock label="Monto y confianza">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-2xl font-semibold tabular-nums tracking-tight text-zinc-900">{formatMoneyMXN(finding.peso_amount)}</span>
+              <Tooltip content={confidence.tooltip}>
+                <button
+                  type="button"
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-sm font-medium ring-1 ring-inset outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 ${
+                    finding.confidence === "proven" ? "bg-red-50 text-red-700 ring-red-200" : "bg-orange-50 text-orange-800 ring-orange-200"
+                  }`}
+                >
+                  <Icon name={finding.confidence === "proven" ? "xCircle" : "alert"} className="h-4 w-4" />
+                  {confidence.label}
+                </button>
+              </Tooltip>
+            </div>
+            {finding.confidence === "probable" && (
+              <p className="mt-2 text-sm text-orange-900">
+                <span className="font-medium">Por qué es probable y no comprobado:</span> {confidence.tooltip} El eslabón que falta se describe en “Qué pasó”.
+              </p>
+            )}
+          </CardBlock>
+
+          <CardBlock label="Qué pasó">
+            <p className="max-w-3xl text-[0.9375rem] leading-relaxed text-zinc-800">
+              <RichText
+                text={finding.narrative}
+                renderEntity={(id) => <CaseEntityChip id={id} />}
+                renderExhibit={(exhibitId) => <ExhibitChip findingIndex={findingIndex} exhibitId={exhibitId} onHover={setHoveredExhibit} />}
+              />
             </p>
+          </CardBlock>
+
+          <CardBlock label="Rastro del dinero">
+            <MoneyTrailDiagram findingIndex={findingIndex} finding={finding} hoveredExhibit={hoveredExhibit} onHoverExhibit={setHoveredExhibit} />
+          </CardBlock>
+
+          <CardBlock label={`Evidencia (${finding.exhibits.length})`}>
+            <ExhibitsTable findingIndex={findingIndex} finding={finding} hoveredExhibit={hoveredExhibit} onHoverExhibit={setHoveredExhibit} />
+          </CardBlock>
+
+          <CardBlock label="Reconciliación">
+            {extra ? (
+              <Reconciliation findingIndex={findingIndex} data={extra.reconciliation} />
+            ) : (
+              <Notice tone="error">El backend no mandó la reconciliación de este hallazgo.</Notice>
+            )}
+          </CardBlock>
+
+          {extra?.adversarial_review && (
+            <div className="px-4 py-4 sm:px-5">
+              <AdversarialReview findingIndex={findingIndex} review={extra.adversarial_review} />
+            </div>
           )}
-        </CardBlock>
-
-        <CardBlock label="Qué pasó">
-          <p className="max-w-3xl text-[0.9375rem] leading-relaxed text-zinc-800">
-            <RichText
-              text={finding.narrative}
-              renderEntity={(id) => <CaseEntityChip id={id} />}
-              renderExhibit={(exhibitId) => <ExhibitChip findingIndex={findingIndex} exhibitId={exhibitId} onHover={setHoveredExhibit} />}
-            />
-          </p>
-        </CardBlock>
-
-        <CardBlock label="Rastro del dinero">
-          <MoneyTrailDiagram findingIndex={findingIndex} finding={finding} hoveredExhibit={hoveredExhibit} onHoverExhibit={setHoveredExhibit} />
-        </CardBlock>
-
-        <CardBlock label={`Evidencia (${finding.exhibits.length})`}>
-          <ExhibitsTable findingIndex={findingIndex} finding={finding} hoveredExhibit={hoveredExhibit} onHoverExhibit={setHoveredExhibit} />
-        </CardBlock>
-
-        <CardBlock label="Reconciliación">
-          {extra ? (
-            <Reconciliation findingIndex={findingIndex} data={extra.reconciliation} />
-          ) : (
-            <Notice tone="error">El backend no mandó la reconciliación de este hallazgo.</Notice>
-          )}
-        </CardBlock>
-
-        {extra?.adversarial_review && (
-          <div className="px-4 py-4 sm:px-5">
-            <AdversarialReview findingIndex={findingIndex} review={extra.adversarial_review} />
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </article>
   );
 }

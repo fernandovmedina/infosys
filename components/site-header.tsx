@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCurrentUser, signOut, type CurrentUser } from "@/lib/auth";
+import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
   const router = useRouter();
@@ -45,6 +46,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="flex items-center gap-2">
+          <ThemeToggle />
           {loading ? null : user ? (
             <>
               <span className="px-3 py-1.5 text-sm text-zinc-500">
